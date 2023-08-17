@@ -1,0 +1,107 @@
+package com.bestshop.admin.user;
+
+import com.bestshop.common.entity.Role;
+import com.bestshop.common.entity.User;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.Rollback;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class UserRepositoryTest {
+
+    @Autowired
+    UserRepository repository;
+
+    @Autowired
+    RoleRespository roleRespository;
+
+    @Autowired
+    private TestEntityManager testEntityManager;
+
+    @Test
+    @DisplayName("Test Create User With One Role")
+    public void testCreateUserWithOneRole(){
+        Role roleAdmin = testEntityManager.find(Role.class, 1);
+        User user = new User("pedro@aqwrwqrqwret", "pedro2020", "pedro", "carvalho");
+        user.addRole(roleAdmin);
+
+        User savedUser = repository.save(user);
+        assertEquals(savedUser.getFirstName(), user.getFirstName());
+        assertTrue(savedUser.getId() > 0);
+    }
+
+    @Test
+    @DisplayName("Test Create User With Two Roles")
+    public void testCreateUserWithTwoRoles(){
+        User user = new User("andre@andre.com", "andre2020", "andre", "duarte");
+        user.addRole(new Role(1));
+        user.addRole(new Role(5));
+
+        User savedUser = repository.save(user);
+
+        assertTrue(savedUser.getId() > 0);
+    }
+
+    @Test
+    public void testListAllUSers(){
+        Iterable<User> userList = repository.findAll();
+        userList.forEach(System.out::println);
+
+        assertNotNull(userList);
+        assertFalse(((List<User>)userList).isEmpty());
+    }
+
+    @Test
+    public void testGetUserById(){
+        User user = repository.findById(1).orElse(null);
+        assertNotNull(user);
+    }
+
+    @Test
+    @Rollback(value = false)
+    public void testUpdateUserDetails(){
+        User user = repository.findById(1).orElse(null);
+        assert user != null;
+
+        user.setEnabled(true);
+        user.setEmail("pedroduarte@pedro.com");
+
+        repository.save(user);
+    }
+
+    @Test
+    @Rollback(value = false)
+    public void testUpdateUserRoles(){
+        User user = repository.findById(5).orElse(null);
+        assert user != null;
+
+        Role editor = roleRespository.findById(2).orElse(null);
+        Role shipper = roleRespository.findById(1).orElse(null);
+
+        user.getRoles().remove(shipper);
+        user.addRole(editor);
+
+        repository.save(user);
+    }
+
+    @Test
+    @Rollback(value = false)
+    public void testDeleteUser(){
+        Integer id = 5;
+        repository.deleteById(id);
+        Optional<User> deletedUser = repository.findById(id);
+
+        assertTrue(deletedUser.isEmpty());
+    }
+}
