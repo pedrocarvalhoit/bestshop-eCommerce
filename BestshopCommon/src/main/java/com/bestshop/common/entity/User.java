@@ -30,6 +30,8 @@ public class User {
 
     private boolean enabled;
 
+
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
@@ -115,6 +117,10 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     @Override

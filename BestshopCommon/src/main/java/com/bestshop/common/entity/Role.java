@@ -57,6 +57,8 @@ public class Role {
         this.description = description;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -73,8 +75,6 @@ public class Role {
 
     @Override
     public String toString() {
-        return "Role{" +
-                "name='" + name + '\'' +
-                '}';
+        return this.name;
     }
 }
