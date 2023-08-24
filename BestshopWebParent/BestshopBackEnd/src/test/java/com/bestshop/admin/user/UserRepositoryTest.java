@@ -44,7 +44,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("Test Create User With Two Roles")
     public void testCreateUserWithTwoRoles(){
-        User user = new User("andre@andre.com", "andre2020", "andre", "duarte");
+        User user = new User("paulo@andre.com", "paulo2020", "Paulo", "duarte");
         user.addRole(new Role(1));
         user.addRole(new Role(5));
 
@@ -96,12 +96,42 @@ class UserRepositoryTest {
     }
 
     @Test
-    @Rollback(value = false)
     public void testDeleteUser(){
         Integer id = 5;
         repository.deleteById(id);
         Optional<User> deletedUser = repository.findById(id);
 
         assertTrue(deletedUser.isEmpty());
+    }
+
+    @Test
+    public void testGetUserByEmail(){
+        User user = repository.getUserByEmail("pedroduarte@pedro.com");
+        System.out.println(user);
+
+        assertNotNull(user);
+        assertEquals(user.getId(), 1);
+    }
+
+    @Test
+    void testCountById() {
+        Integer id = 1;
+        Long  countByid = repository.countById(id);
+
+        assertTrue(countByid > 0);
+    }
+
+    @Test
+    @Rollback(value = false)
+    void updateDisableStatus() {
+        Integer id = 107;
+        repository.updateEnabledStatus(id, false);
+    }
+
+    @Test
+    @Rollback(value = false)
+    void updateEnableStatus() {
+        Integer id = 107;
+        repository.updateEnabledStatus(id, true);
     }
 }
