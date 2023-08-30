@@ -151,4 +151,14 @@ class UserRepositoryTest {
 
         assertEquals(listUsers.size(), pageSize);
     }
+
+    @Test
+    public void testSearchUser() {
+        String keyword = "bruce";
+        Pageable pageable = PageRequest.of(0, 4);
+
+        Page<User> resultList = repository.findAll(keyword, pageable);
+        resultList.forEach(System.out::println);
+
+    }
 }
