@@ -3,6 +3,7 @@ package com.bestshop.admin.user;
 import com.bestshop.admin.FileUploadUtil;
 import com.bestshop.common.entity.Role;
 import com.bestshop.common.entity.User;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -130,6 +131,13 @@ public class UserController {
         String status = enabled ? "Enabled" : "Disabled";
         redirectAttributes.addFlashAttribute("message", "User iD " + id + " has been " + status);
         return "redirect:/users";
+    }
+
+    @GetMapping("/users/export/csv")
+    public void exportToCSV(HttpServletResponse response) throws IOException {
+        List<User> listUsers = service.listAll();
+        UserCsvExporter exporter = new UserCsvExporter();
+        exporter.export(listUsers, response);
     }
 
 

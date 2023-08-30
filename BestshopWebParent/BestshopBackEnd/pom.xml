@@ -10,12 +10,30 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>BestshopBeckEnd</artifactId>
+    <name>BestshopBackEnd</name>
+    <description>Bestshop Admin Project</description>
+
     <dependencies>
         <dependency>
             <groupId>com.bestshop</groupId>
             <artifactId>BestshopCommon</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.supercsv</groupId>
+            <artifactId>super-csv</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.1.0</version>
         </dependency>
     </dependencies>
 
