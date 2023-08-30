@@ -41,53 +41,13 @@
             <table class="table table-bordered table-striped table-hover table-responsive-xl">
                 <thead class="thead-dark">
                     <tr>
-                        <th>
-                            <a th:href="@{/users/page/{pageNum}(pageNum=${currentPage},sortField='id',sortDir=${sortDir == 'asc' ? 'desc' : 'asc'}, keyword=${keyword != null ? keyword : ' '})}" class="text-white">
-                                User id
-                                <span th:if="${sortField == 'id'}">
-                                    <span th:if="${sortDir == 'asc'}" class="fas fa-sort-up"></span>
-                                    <span th:if="${sortDir == 'desc'}" class="fas fa-sort-down"></span>
-                                </span>
-                            </a>
-                        </th>
+                        <th th:replace="fragments/sortable-column :: column_link('id', 'User ID')"></th>
                         <th>Photos</th>
-                        <th>
-                            <a th:href="@{/users/page/{pageNum}(pageNum=${currentPage}, sortField='email', sortDir=${sortDir == 'asc' ? 'desc' : 'asc'}, keyword=${keyword != null ? keyword : ' '})}" class="text-white">
-                                Email
-                                <span th:if="${sortField == 'email'}">
-                                    <span th:if="${sortDir == 'asc'}" class="fas fa-sort-up"></span>
-                                    <span th:if="${sortDir == 'desc'}" class="fas fa-sort-down"></span>
-                                </span>
-                            </a>
-                        </th>
-                        <th>
-                            <a th:href="@{/users/page/{pageNum}(pageNum=${currentPage}, sortField='firstName', sortDir=${sortDir == 'asc' ? 'desc' : 'asc'}, keyword=${keyword != null ? keyword : ' '})}" class="text-white">
-                                First Name
-                                <span th:if="${sortField == 'firstName'}">
-                                    <span th:if="${sortDir == 'asc'}" class="fas fa-sort-up"></span>
-                                    <span th:if="${sortDir == 'desc'}" class="fas fa-sort-down"></span>
-                                </span>
-                            </a>
-                        </th>
-                        <th>
-                            <a th:href="@{/users/page/{pageNum}(pageNum = ${currentPage},sortField = 'lastName', sortDir=${sortDir == 'asc' ? 'desc' : 'asc'}, keyword=${keyword != null ? keyword : ' '})}" class="text-white">
-                                Last Name
-                                <span th:if="${sortField == 'lastName'}">
-                                    <span th:if="${sortDir == 'asc'}" class="fas fa-sort-up"></span>
-                                    <span th:if="${sortDir == 'desc'}" class="fas fa-sort-down"></span>
-                                </span>
-                            </a>
-                        </th>
+                        <th th:replace="fragments/sortable-column :: column_link('email', 'Email')"></th>
+                        <th th:replace="fragments/sortable-column :: column_link('firstName', 'First Name')"></th>
+                        <th th:replace="fragments/sortable-column :: column_link('lastName', 'Last Name')"></th>
                         <th>Roles</th>
-                        <th>
-                            <a th:href="@{/users/page/{pageNum}(pageNum=${currentPage}, sortField='enabled', sortDir=${sortDir=='asc' ? 'desc' : 'asc'}, keyword=${keyword != null ? keyword : ' '})}" class="text-white">
-                                Enabled
-                                <span th:if="${sortField == 'enabled'}">
-                                    <span th:if="${sortDir == 'asc'}" class="fas fa-sort-up"></span>
-                                    <span th:if="${sortDir == 'desc'}" class="fas fa-sort-down"></span>
-                                </span>
-                            </a>
-                        </th>
+                        <th th:replace="fragments/sortable-column :: column_link('enabled', 'Enabled')"></th>
                         <th>Edit/Delete</th>
                     </tr>
                 </thead>
@@ -99,7 +59,7 @@
                         </td>
                         <td>[[${user.email}]]</td>
                         <td>[[${user.firstName}]]</td>
-                        <td>[[${user.firstName}]]</td>
+                        <td>[[${user.lastName}]]</td>
                         <td>[[${user.roles}]]</td>
                         <td>
                             <a th:if="${user.enabled == true}" class="fas fa-check-circle fa-2x icon-blue"
@@ -132,22 +92,22 @@
             <nav>
                 <ul class="pagination justify-content-center">
                     <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                        <a class="page-link" th:href="@{'/users/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ' '}}">First</a>
+                        <a th:replace="fragments/sortable-column :: page_link(1, 'First')"></a>
                     </li>
                     <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'} ">
-                        <a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ' '}}">Previous</a>
+                        <a th:replace="fragments/sortable-column :: page_link(${currentPage} - 1, 'Previous')"> </a>
                     </li>
 
                     <li th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
                         th:each="i : ${#numbers.sequence(1, totalPages)}">
-                        <a class="page-link" th:href="@{'/users/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ' '}}">[[${i}]]</a>
+                        <a th:replace="fragments/sortable-column :: page_link(${i}, ${i})"></a>
                     </li>
 
                     <li th:class="${currentPage >= totalPages ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link" th:href="@{'/users/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ' '}}">Next</a>
+                        <a th:replace="fragments/sortable-column :: page_link(${currentPage} + 1, 'Next')"></a>
                     </li>
                     <li th:class="${currentPage >= totalPages ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link" th:href="@{'/users/page/' + ${totalPages}} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ' '}">Last</a>
+                        <a th:replace="fragments/sortable-column :: page_link(${totalPages}, 'Last')"></a>
                     </li>
                 </ul>
             </nav>
