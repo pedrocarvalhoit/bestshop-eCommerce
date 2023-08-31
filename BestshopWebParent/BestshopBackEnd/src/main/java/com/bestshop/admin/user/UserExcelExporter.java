@@ -48,7 +48,7 @@ public class UserExcelExporter extends AbstractExporter{
             row.createCell(1).setCellValue(user.getEmail());
             row.createCell(2).setCellValue(user.getFirstName());
             row.createCell(3).setCellValue(user.getLastName());
-            row.createCell(4).setCellValue(String.valueOf(user.getRoles()));
+            row.createCell(4).setCellValue(user.getRoles().toString());
             row.createCell(5).setCellValue(user.isEbabled());
         }
 

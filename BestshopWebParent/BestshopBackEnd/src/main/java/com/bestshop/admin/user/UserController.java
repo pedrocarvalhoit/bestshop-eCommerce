@@ -3,6 +3,7 @@ package com.bestshop.admin.user;
 import com.bestshop.admin.FileUploadUtil;
 import com.bestshop.common.entity.Role;
 import com.bestshop.common.entity.User;
+import com.itextpdf.text.DocumentException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -144,6 +145,13 @@ public class UserController {
     public void exportToExcel(HttpServletResponse response) throws IOException {
         List<User> listUsers = service.listAll();
         UserExcelExporter exporter = new UserExcelExporter();
+        exporter.export(listUsers, response);
+    }
+
+    @GetMapping("/users/export/pdf")
+    public void exportToPDF(HttpServletResponse response) throws IOException, DocumentException {
+        List<User> listUsers = service.listAll();
+        UserPDFExporter exporter = new UserPDFExporter();
         exporter.export(listUsers, response);
     }
 
