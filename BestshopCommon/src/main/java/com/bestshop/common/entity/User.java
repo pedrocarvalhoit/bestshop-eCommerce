@@ -123,6 +123,11 @@ public class User {
         return enabled;
     }
 
+    @Transient
+    public String getFullName(){
+        return firstName + " " + lastName;
+    }
+
     @Override
     public String toString() {
         return "User{" +

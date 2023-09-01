@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+    <title>Login - Bestshop Admin</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+<body>
+    <div class="container-fluid text-center">
+        <div>
+            <img th:src="@{/images/BestshopAdminBig.png}">
+        </div>
+
+        <form th:action="@{/login}" method="post" class="border border-secondary rounded p-3" style="max-width: 350px; margin: 0 auto">
+            <div>
+                <p>Access to Shopme Control Panel</p>
+            </div>
+
+            <div class="form-group">
+                <input type="email" name="email" class="form-control" id="login" placeholder="Enter your login">
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Password">
+            </div>
+            <button type="submit" value="login" class="btn btn-primary">Submit</button>
+        </form>
+
+        <div>
+            Bestshop Control Panel - Copyright &copy; Bestshop
+        </div>
+    </div>
+</body>
+</html>

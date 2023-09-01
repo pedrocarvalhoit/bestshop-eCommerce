@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <td th:fragment="photo">
+        <span th:if="${user.photos == null}" class="fas - fa-portrait fa-3x icon-silver"></span>
+        <img width="100" th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}">
+    </td>
+
+    <td th:fragment="enabled">
+        <a th:if="${user.enabled == true}" class="fas fa-check-circle fa-2x icon-light-blue"
+           th:href="@{'/users/' + ${user.id}} + '/enabled/false'" title="Disable user"></a>
+        <a th:if="${user.enabled == false}" class="fas fa-circle fa-2x icon-light-red"
+           th:href="@{'/users/' + ${user.id}} + '/enabled/true'" title="Enable user"></a>
+    </td>
+
+    <a th:fragment="edit" class="fas fa-edit fa-2x icon-green" th:href="@{'/users/edit/' + ${user.id}}" title="Edit this user"></a>
+
+    <a th:fragment="delete" class="fas fa-trash fa-2x icon-dark link-delete"
+       th:href="@{'/users/delete/' + ${user.id}}"
+       th:userId="${user.id}"
+       title="Delete this user"></a>
+</body>
+</html>

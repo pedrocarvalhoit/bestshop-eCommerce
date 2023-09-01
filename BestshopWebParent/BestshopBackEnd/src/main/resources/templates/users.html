@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:href="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:href="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
@@ -18,13 +18,10 @@
 
         <div>
             <h2>Manage Users</h2>
-            <a th:href="@{/users/new}">Create New user</a>
-            &nbsp;|&nbsp;
-            <a th:href="@{/users/export/csv}">Export to Csv</a>
-            &nbsp;|&nbsp;
-            <a th:href="@{/users/export/excel}">Export to Excel</a>
-            &nbsp;|&nbsp;
-            <a th:href="@{/users/export/pdf}">Export to Pdf</a>
+            <a th:href="@{/users/new}" title="Create new User" class=" fas fa-user-plus fa-2x icon-dark mr-2"></a>
+            <a th:href="@{/users/export/csv}" title="Export to Csv"  class=" fas fa-file-csv fa-2x icon-dark mr-2"></a>
+            <a th:href="@{/users/export/excel}" title="Export to Excel" class=" fas fa-file-excel fa-2x icon-dark mr-2"></a>
+            <a th:href="@{/users/export/pdf}" title="Export to Pdf" class=" fas fa-file-pdf fa-2x icon-dark mr-2"></a>
         </div>
 
         <div th:if="${message != null}" class="alert alert-success text-center">
@@ -37,13 +34,17 @@
                 <input type="hidden" name="sortDir" th:value="${sortDir}">
 
                 Filter:&nbsp;
-                <input type="search" name="keyword" th:value="${keyword}" class="form-control" required placeholder="Type the keyword"/>&nbsp;&nbsp;
-                <input type="submit" value="Search" class="btn btn-primary"/>&nbsp;&nbsp;
-                <input type="button" value="Clear" class="btn btn-secondary" onclick="clearFilter()">
+                <input type="search" name="keyword" th:value="${keyword}" class="form-control  mt-3" required placeholder="Type the keyword"/>&nbsp;&nbsp;
+                <button type="submit" title="Search" class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                </button>&nbsp;&nbsp;
+                <button type="button" title="Clear" class="btn btn-secondary" onclick="clearFilter()">
+                    <i class="fas fa-eraser"></i>
+                </button>
             </form>
         </div>
 
-        <div>
+        <div class="full-details">
             <table class="table table-bordered table-striped table-hover table-responsive-xl">
                 <thead class="thead-dark">
                     <tr>
@@ -60,32 +61,40 @@
                 <tbody>
                     <tr th:each="user: ${listUsers}">
                         <td>[[${user.id}]]</td>
-                        <td><span th:if="${user.photos == null}" class="fas - fa-portrait fa-3x icon-silver"></span>
-                            <img width="100" th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}">
+                        <td th:replace="fragments/listingUserIcons :: photo">
                         </td>
                         <td>[[${user.email}]]</td>
                         <td>[[${user.firstName}]]</td>
                         <td>[[${user.lastName}]]</td>
                         <td>[[${user.roles}]]</td>
-                        <td>
-                            <a th:if="${user.enabled == true}" class="fas fa-check-circle fa-2x icon-blue"
-                                th:href="@{'/users/' + ${user.id}} + '/enabled/false'" title="Disable user"></a>
-                            <a th:if="${user.enabled == false}" class="fas fa-circle fa-2x icon-red"
-                               th:href="@{'/users/' + ${user.id}} + '/enabled/true'" title="Enable user"></a>
-                        </td>
+                        <td th:replace="fragments/listingUserIcons :: enabled"></td>
                         <td style="display: flex;">
-                            <a class="fas fa-edit fa-2x icon-green" th:href="@{'/users/edit/' + ${user.id}}" title="Edit this user"></a>
+                            <a th:replace="fragments/listingUserIcons :: edit"></a>
                             &nbsp;
-                            <a class="fas fa-trash fa-2x icon-dark link-delete"
-                               th:href="@{'/users/delete/' + ${user.id}}"
-                               th:userId="${user.id}"
-                               title="Delete this user"></a>
-
+                            <a th:replace="fragments/listingUserIcons :: delete"></a>
                         </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="less-details">
+            <div th:each="user : ${listUsers}" class="row m-1">
+                <div th:replace="fragments/listingUserIcons :: photo" class="col-4"></div>
+                <div class="col-8">
+                    <div>[[${user.fullName}]]</div>
+                    <div>[[${user.roles}]]</div>
+                    <div class="mt-2">
+                        <a th:replace="fragments/listingUserIcons :: enabled"></a>
+                        &nbsp;
+                        <a th:replace="fragments/listingUserIcons :: edit"></a>
+                        &nbsp;
+                        <a th:replace="fragments/listingUserIcons :: delete"></a>
+                    </div>
+                </div>
             </div>
+
+        </div>
 
         <div class="text-center m-1" th:if="${totalItems > 0}">
             <span>Showing users # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>
@@ -94,7 +103,7 @@
             <span>No users found</span>
         </div>
 
-        <div th:if="${totalPages > 1}">
+        <div th:if="${totalPages > 1}" class="full-details-pagination">
             <nav>
                 <ul class="pagination justify-content-center">
                     <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
@@ -107,6 +116,30 @@
                     <li th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
                         th:each="i : ${#numbers.sequence(1, totalPages)}">
                         <a th:replace="fragments/sortable-column :: page_link(${i}, ${i})"></a>
+                    </li>
+
+                    <li th:class="${currentPage >= totalPages ? 'page-item disabled' : 'page-item'}">
+                        <a th:replace="fragments/sortable-column :: page_link(${currentPage} + 1, 'Next')"></a>
+                    </li>
+                    <li th:class="${currentPage >= totalPages ? 'page-item disabled' : 'page-item'}">
+                        <a th:replace="fragments/sortable-column :: page_link(${totalPages}, 'Last')"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div >
+
+        <div th:if="${totalPages > 1}" class="less-details-pagination">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                        <a th:replace="fragments/sortable-column :: page_link(1, 'First')"></a>
+                    </li>
+                    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'} ">
+                        <a th:replace="fragments/sortable-column :: page_link(${currentPage} - 1, 'Previous')"> </a>
+                    </li>
+
+                    <li th:class="${currentPage == currentPage ? 'page-item active' : 'page-item'}">
+                        <a th:replace="fragments/sortable-column :: page_link(${currentPage}, ${currentPage})"></a>
                     </li>
 
                     <li th:class="${currentPage >= totalPages ? 'page-item disabled' : 'page-item'}">

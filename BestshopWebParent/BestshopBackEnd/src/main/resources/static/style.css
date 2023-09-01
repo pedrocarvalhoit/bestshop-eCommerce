@@ -6,4 +6,36 @@
 *.icon-blue{color: blue}
 *.icon-red{color: red}
 *.icon-black{color: black}
+*.icon-ligth-blue{color: #00BFFF}
+*.icon-light-red{color: #f55353}
+
+@media screen and (max-width: 768px){
+    /*Small screen */
+    div.full-details{display: none}
+    div.less-details{display: block}
+
+    div.full-details-pagination{display: none}
+    div.less-details-pagination{display: block}
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px){
+    /*Medium screen */
+    div.full-details{display: block}
+    div.less-details{display: none}
+
+    div.full-details-pagination{display: block}
+    div.less-details-pagination{display: none}
+}
+
+@media screen and (min-width: 1024px){
+    /*Big screen */
+    div.full-details{display: block}
+    div.less-details{display: none}
+
+    div.full-details-pagination{display: block}
+    div.less-details-pagination{display: none}
+}
+
+
+
 
