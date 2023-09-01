@@ -1,7 +1,10 @@
 package com.bestshop.admin.secutiry;
 
+import com.bestshop.common.entity.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -17,6 +20,11 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
+
+    @Bean
+    public UserDetailsService userDetailsService(){
+        return new BestShopUserDetailsService();
+    }
 
     @Bean
     public PasswordEncoder PasswordEncoder(){
@@ -37,6 +45,19 @@ public class WebSecurityConfig {
 
         return http.build();
     }
+
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http,
+                                                       PasswordEncoder encoder,
+                                                       BestShopUserDetailsService userDetailsService) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(encoder)
+                .and()
+                .build();
+    }
+
+
 
 
 }
