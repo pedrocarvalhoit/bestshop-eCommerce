@@ -7,16 +7,20 @@
     <title>Login - Bestshop Admin</title>
 
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 </head>
 <body>
     <div class="container-fluid text-center">
         <div>
-            <img th:src="@{/images/BestshopAdminBig.png}">
+            <img class="p-3" th:src="@{/images/BestshopAdminBig.png}">
         </div>
 
         <form th:action="@{/login}" method="post" class="border border-secondary rounded p-3" style="max-width: 350px; margin: 0 auto">
             <div th:if="${param.error}">
                 <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+            </div>
+            <div th:if="${param.logout}">
+                <p class="logout-success-message">Logout successful!</p>
             </div>
             <div>
                 <p>Access to Shopme Control Panel</p>

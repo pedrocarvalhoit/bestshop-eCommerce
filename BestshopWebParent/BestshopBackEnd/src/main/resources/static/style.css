@@ -8,6 +8,18 @@
 *.icon-black{color: black}
 *.icon-ligth-blue{color: #00BFFF}
 *.icon-light-red{color: #f55353}
+*.icon-dark-blue{color: #021170}
+
+.logout-success-message{
+    background-color: #4CAF50; /* Cor de fundo verde */
+    color: white; /* Cor do texto branco */
+    padding: 10px; /* Espaçamento interno */
+    text-align: center; /* Alinhamento centralizado do texto */
+    font-weight: bold; /* Texto em negrito */
+    border-radius: 5px; /* Borda arredondada */
+    margin: 10px auto; /* Centralizar na página */
+    width: 300px; /* Largura fixa ou a que você preferir */
+}
 
 @media screen and (max-width: 768px){
     /*Small screen */

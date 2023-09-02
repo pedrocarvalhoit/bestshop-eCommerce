@@ -1,4 +1,14 @@
-<div xmlns:th="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" >
+<head>
+</head>
+<body>
+<div th:fragment="header">
+
+    <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+        <input type="submit" />
+    </form>
+
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
         <a class="navbar-brand" th:href="@{/}">
             <img th:src="@{/images/BestshopAdminSmall.png}" alt="Small logo Bestshop">
@@ -41,7 +51,21 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/settings}">Settings</a>
                 </li>
+                <li>
+                    <span class="fas fa-user  icon-dark-blue"></span>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle " data-toggle="dropdown"
+                       sec:authentication="principal.fullName"></a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item " id="logoutLink" href="">Logout</a>
+                    </div>
+                </li>
             </ul>
         </div>
     </nav>
+
 </div>
+</body>
+</html>
+

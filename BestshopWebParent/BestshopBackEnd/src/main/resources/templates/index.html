@@ -1,28 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" >
-<head>
-    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head th:replace="fragments/pageStructure :: head('Home - Bestshop Admin')">
 
-    <title>Home - Bestshop Admin</title>
-
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 </head>
 <body>
     <div class="container-fluid">
-        <div th:include="fragments/_navbar"></div>
+        <div th:replace="fragments/navbar :: header"></div>
 
         <div>
             <h1>Bestshop Control Pane</h1>
         </div>
 
-        <div>
-            Bestshop Control Panel - Copyright &copy; Bestshop
-        </div>
+        <div th:replace="fragments/pageStructure :: page_footer"></div>
     </div>
-
-
 </body>
 </html>
