@@ -37,15 +37,22 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests()
-                .anyRequest().authenticated();
 
-        http.formLogin()
-                .loginPage("/login")
-                .usernameParameter("email")
-                .permitAll()
-            .and()
-                .logout().permitAll();
+        http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated()
+        ).formLogin((form) -> form.loginPage("/login").usernameParameter("email").permitAll()
+        ).logout(LogoutConfigurer::permitAll)
+                .rememberMe((remember) -> remember.key("abcdefghijklmnopq_1234567890").tokenValiditySeconds(7 * 24 * 60 * 60));
+
+//        http.authorizeHttpRequests()
+//                .anyRequest().authenticated();
+//
+//        http.formLogin()
+//                .loginPage("/login")
+//                .usernameParameter("email")
+//                .permitAll()
+//            .and()
+//                .logout().permitAll()
+//                .and().rememberMe();
 
         return http.build();
     }
