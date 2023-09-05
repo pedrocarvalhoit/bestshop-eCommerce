@@ -6,9 +6,10 @@
 *.icon-blue{color: blue}
 *.icon-red{color: red}
 *.icon-black{color: black}
-*.icon-ligth-blue{color: #00BFFF}
+*.icon-ligth-blue{}
 *.icon-light-red{color: #f55353}
 *.icon-dark-blue{color: #021170}
+*.text-color-blue{color: #00BFFF}
 
 .logout-success-message{
     background-color: #4CAF50; /* Cor de fundo verde */
@@ -19,6 +20,11 @@
     border-radius: 5px; /* Borda arredondada */
     margin: 10px auto; /* Centralizar na página */
     width: 300px; /* Largura fixa ou a que você preferir */
+}
+
+.less-details{
+    display: flex;
+    justify-content: center;
 }
 
 @media screen and (max-width: 768px){

@@ -1,5 +1,6 @@
 package com.bestshop.admin.user;
 
+import com.bestshop.admin.FileUploadUtil;
 import com.bestshop.common.entity.Role;
 import com.bestshop.common.entity.User;
 import jakarta.transaction.Transactional;
@@ -10,7 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -111,4 +115,34 @@ public class UserService {
         userRepository.updateEnabledStatus(id, enabled);
     }
 
+    public User findByUsername(String email){
+        return userRepository.getUserByEmail(email);
+    }
+
+
+    public void updateDetails(User loggedUser, User userData) {
+        loggedUser.setFirstName(userData.getFirstName());
+        loggedUser.setLastName(userData.getLastName());
+        if (userData.getPassword() == null || userData.getPassword().isEmpty()) {
+            userData.setPassword(loggedUser.getPassword());
+        }else {
+            loggedUser.setPassword(userData.getPassword());
+            encodePassword(loggedUser);
+        }
+        if (userData.getPhotos() == null || userData.getPhotos().isEmpty()) {
+            userData.setPhotos(loggedUser.getPhotos());
+        }else {
+            loggedUser.setPhotos(userData.getPhotos());
+        }
+
+    }
+
+    public void savePhoto(User user, MultipartFile multipartFile) throws IOException {
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        user.setPhotos(fileName);
+
+        String upoadDir = "user-photos/" + user.getId();
+        FileUploadUtil.cleanDir(upoadDir);
+        FileUploadUtil.saveFile(upoadDir, fileName, multipartFile);
+    }
 }

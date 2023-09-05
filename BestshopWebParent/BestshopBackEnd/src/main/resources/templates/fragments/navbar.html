@@ -54,11 +54,15 @@
                 <li>
                     <span class="fas fa-user  icon-dark-blue"></span>
                 </li>
+                <li>
+
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle " data-toggle="dropdown"
                        sec:authentication="principal.fullName"></a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item " id="logoutLink" href="">Logout</a>
+                        <a class="dropdown-item text-color-blue" th:href="@{/account}">Config</a>
+                        <a class="dropdown-item" id="logoutLink" href="">Logout</a>
                     </div>
                 </li>
             </ul>

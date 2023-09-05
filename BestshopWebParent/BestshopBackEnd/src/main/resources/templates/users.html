@@ -69,7 +69,7 @@
             </table>
         </div>
 
-        <div class="less-details">
+        <div class="less-details" >
             <div th:each="user : ${listUsers}" class="row m-1">
                 <div th:replace="fragments/listingUserIcons :: photo" class="col-4"></div>
                 <div class="col-8">
@@ -84,7 +84,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <div class="text-center m-1" th:if="${totalItems > 0}">

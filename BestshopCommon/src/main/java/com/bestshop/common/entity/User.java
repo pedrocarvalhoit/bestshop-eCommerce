@@ -30,8 +30,6 @@ public class User {
 
     private boolean enabled;
 
-
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
@@ -43,13 +41,14 @@ public class User {
     public User() {
     }
 
+    private String confirmPassword;
+
     public User(String email, String password, String firstName, String lastName) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
 
     public void addRole(Role role){
         this.roles.add(role);
@@ -121,6 +120,14 @@ public class User {
 
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     @Transient
