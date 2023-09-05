@@ -7,10 +7,9 @@
     <title>Login - Bestshop Admin</title>
 
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 </head>
 <body>
-    <div class="container-fluid text-center">
+    <div class="container-fluid text-center d-flex flex-column align-items-center">
         <div>
             <img class="p-3" th:src="@{/images/BestshopAdminBig.png}">
         </div>
@@ -22,6 +21,7 @@
             <div th:if="${param.logout}">
                 <p class="logout-success-message">Logout successful!</p>
             </div>
+
             <div>
                 <p>Access to Shopme Control Panel</p>
             </div>
