@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -95,7 +96,7 @@ public class UserService {
         if (isCreatingNew) {
             if (userByEmail != null) return false;
         } else {
-            if (userByEmail.getId() != id) {
+            if (!userByEmail.getId().equals(id)) {
                 return false;
             }
         }
