@@ -1,6 +1,8 @@
-package com.bestshop.admin.user;
+package com.bestshop.admin.user.controller;
 
 import com.bestshop.admin.FileUploadUtil;
+import com.bestshop.admin.user.UserNotFoundException;
+import com.bestshop.admin.user.UserService;
 import com.bestshop.admin.user.export.UserCsvExporter;
 import com.bestshop.admin.user.export.UserExcelExporter;
 import com.bestshop.admin.user.export.UserPDFExporter;
@@ -53,7 +55,7 @@ public class UserController {
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("keyword", keyword);
-        return "users";
+        return "users/users";
     }
 
     @GetMapping("/users/new")
@@ -67,7 +69,7 @@ public class UserController {
         model.addAttribute("listRoles", listRoles);
         model.addAttribute("pageTitle", "Create New User");
 
-        return "user_form";
+        return "users/user_form";
     }
 
     @PostMapping("users/save")
@@ -107,7 +109,7 @@ public class UserController {
             model.addAttribute("pageTitle", "Edit User (ID: " + id + ")");
             model.addAttribute("listRoles", listRoles);
 
-            return "user_form";
+            return "users/user_form";
         } catch (UserNotFoundException ex) {
             redirectAttributes.addFlashAttribute("message", ex.getMessage());
             return "redirect:/users";

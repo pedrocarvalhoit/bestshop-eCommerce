@@ -1,4 +1,4 @@
-package com.bestshop.admin.acount;
+package com.bestshop.admin.user.controller;
 
 import com.bestshop.admin.secutiry.BestshopUserDetails;
 import com.bestshop.admin.user.UserNotFoundException;
@@ -42,7 +42,7 @@ public class AcountController {
         model.addAttribute("userFullName", loggedUser.getFullName());
         model.addAttribute("rolesList", rolesList);
 
-        return "account_form";
+        return "users/account_form";
     }
 
     @PostMapping("/account/updateDetails")

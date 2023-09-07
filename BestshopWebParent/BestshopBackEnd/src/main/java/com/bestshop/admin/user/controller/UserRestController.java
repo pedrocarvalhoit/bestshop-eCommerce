@@ -1,5 +1,6 @@
-package com.bestshop.admin.user;
+package com.bestshop.admin.user.controller;
 
+import com.bestshop.admin.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.PostMapping;
