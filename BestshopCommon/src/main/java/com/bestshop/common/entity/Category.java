@@ -42,6 +42,22 @@ public class Category {
         this.parent = parent;
     }
 
+    public static Category copyIdAndName(Category category){
+        Category copyCategory = new Category();
+        copyCategory.setId(category.getId());
+        copyCategory.setName(category.getName());
+
+        return copyCategory;
+    }
+
+    public static Category copyIdAndName(Integer id, String name){
+        Category copyCategory = new Category();
+        copyCategory.setId(id);
+        copyCategory.setName(name);
+
+        return copyCategory;
+    }
+
     public Category(String name) {
         this.name = name;
         this.alias = name;
@@ -78,6 +94,10 @@ public class Category {
         return alias;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public void setAlias(String alias) {
         this.alias = alias;
     }
@@ -109,5 +129,10 @@ public class Category {
     @Override
     public String toString() {
         return name ;
+    }
+
+    public String getImagePath() {
+        if (id == null || image == null) return "/images/image-thumbnail.png";
+        return "/category-image/" + this.id + "/" + this.image;
     }
 }

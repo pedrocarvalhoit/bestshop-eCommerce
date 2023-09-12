@@ -21,6 +21,7 @@ public class FileUploadUtil {
                                 MultipartFile multipartFile) throws IOException {
         Path uploadPath = Paths.get(uploadDir);
 
+        //If is a new Object, will create a new folder
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
@@ -43,13 +44,11 @@ public class FileUploadUtil {
                         Files.delete(file);
                     } catch (IOException ex) {
                         LOGGER.error("Could not delete file: " + file);
-                       // System.out.println("Could not delete file: " + file);
                     }
                 }
             });
         } catch (IOException ex) {
             LOGGER.error("Could not list directory: " + dirPath);
- //           System.out.println("Could not list directory: " + dirPath);
         }
     }
 
