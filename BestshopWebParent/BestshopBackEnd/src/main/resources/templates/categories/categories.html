@@ -10,73 +10,54 @@
     <div>
         <h2>Manage Categories</h2>
         <a th:href="@{/categories/new}" title="Create New Category" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
-        <a title="Export to Csv" class=" fas fa-file-csv fa-2x icon-dark mr-2"></a>
+        <a th:href="@{/categories/export/csv}" class=" fas fa-file-csv fa-2x icon-dark mr-2"></a>
     </div>
 
-    <form class="form-inline m-3">
-        Filter:&nbsp;
-        <div>
-            <input type="search" name="keyword" th:value="${keyword}" class="form-control " required
-                   placeholder="Type the keyword">
+    <div>
+        <form th:action="@{/categories/page/1}" class="form-inline m-3">
+            <input type="hidden" name="sortField" th:value="${sortField}">
+            <input type="hidden" name="sortDir" th:value="${sortDir}">
+
+            Filter:&nbsp;
+            <input type="search" name="keyword" th:value="${keyword}" class="form-control" required/>
+            &nbsp;&nbsp;
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-search"></i>
             </button>&nbsp;&nbsp;
-            <button type="button" title="Clear" class="btn btn-secondary">
-                <i>
-                    <i class="fas fa-eraser"></i>
-                </i>
+            <button type="button" title="Clear" class="btn btn-secondary" onclick="clearFilter()">
+                <i class="fas fa-eraser"></i>
             </button>
-        </div>
-    </form>
+        </form>
+    </div>
 
     <div>
         <table class="table table-bordered table-striped table-hover table-responsive-xl">
             <thead class="thead-dark">
-                <th>
-                    ID
-                </th>
-                <th>
-                    Category Image
-                </th>
-                <th>
-                    Category Name
-                </th>
-                <th>
-                    Alias
-                </th>
-                <th>
-                    Enabled
-                </th>
-                <th>
-
-                </th>
+                <th>ID</th>
+                <th>Category Image</th>
+                <th>Category Name</th>
+                <th>Alias</th>
+                <th>Enabled</th>
+                <th></th>
             </thead>
 
             <tbody th:each="category: ${categoryList}">
+                <td>[[${category.id}]] </td>
+                <td>[[${category.image}]]</td>
+                <td>[[${category.name}]] </td>
+                <td>[[${category.alias}]]</td>
                 <td>
-                    [[${category.id}]]
+                    <a th:if="${category.enabled == true}"  th:href="@{'/categories/' + ${category.id}} + '/enabled/false'" class="fas fa-check-circle fa-2x icon-light-blue"></a>
+                    <a th:if="${category.enabled == false}" th:href="@{'/categories/' + ${category.id}} + '/enabled/true'" class="fas fa-circle fa-2x icon-light-red"></a>
                 </td>
                 <td>
-                    [[${category.image}]]
-                </td>
-                <td>
-                    [[${category.name}]]
-                </td>
-                <td>
-                    [[${category.alias}]]
-                </td>
-                <td>
-                    <a th:href=" " th:if="${category.enabled == true}" class="fas fa-check-circle fa-2x icon-light-blue"></a>
-                    <a th:if="${category.enabled == false}" class="fas fa-circle fa-2x icon-light-red"></a>
-                </td>
-                <td>
-                    <a class="fas fa-trash fa-2x icon-dark link-delete"></a>
-                    <a class="fas fa-edit fa-2x icon-green"></a>
+                    <a th:href="@{'/categories/delete/' + ${category.id}}" class="fas fa-trash fa-2x icon-dark link-delete"></a>
+                    <a th:href="@{'/categories/edit/' + ${category.id}}" class="fas fa-edit fa-2x icon-green"></a>
                 </td>
             </tbody>
         </table>
     </div>
 
-
+    <div th:replace="fragments/pageStructure :: page_footer"></div>
 </body>
 </html>
