@@ -15,4 +15,7 @@ public interface CategoryReposiroty extends JpaRepository<Category, Integer> {
 
     Set<Category> findAllById(Integer id);
 
+    @Query("SELECT c FROM Category c WHERE c.parent.id is NULL")
+    public List<Category> findRootCategories();
+
 }

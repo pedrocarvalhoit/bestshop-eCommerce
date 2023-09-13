@@ -20,5 +20,14 @@ public class MvcConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/" + dirName + "/**")// any request for a URL that starts with /user-photos/ will be handled by this resource handler.
                 .addResourceLocations("file:/" + userPhotosPath + "/");
+
+        String categoryImagesDirName = "../category-images";
+        Path categoryImagesDir = Paths.get(categoryImagesDirName);
+
+        String categoryImagesPath = categoryImagesDir.toFile().getAbsolutePath();
+
+        registry.addResourceHandler("/category-images/**")
+                .addResourceLocations("file:/" + categoryImagesPath + "/");
     }
+
 }

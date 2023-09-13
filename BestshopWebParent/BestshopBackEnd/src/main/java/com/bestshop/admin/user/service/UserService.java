@@ -1,6 +1,9 @@
-package com.bestshop.admin.user;
+package com.bestshop.admin.user.service;
 
 import com.bestshop.admin.FileUploadUtil;
+import com.bestshop.admin.user.exception.UserNotFoundException;
+import com.bestshop.admin.user.repository.RoleRespository;
+import com.bestshop.admin.user.repository.UserRepository;
 import com.bestshop.common.entity.Role;
 import com.bestshop.common.entity.User;
 import jakarta.transaction.Transactional;
@@ -17,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 @Service
 @Transactional

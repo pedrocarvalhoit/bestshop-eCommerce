@@ -48,17 +48,21 @@
             <tbody th:each="category: ${categoryList}">
                 <td>[[${category.id}]] </td>
                 <td>
-                    <img width="100" th:src="@{${category.imagePath}}">
+                    <img th:src="@{${category.imagePath}}" style="width: 100px" class="img-fluid"/>
                 </td>
-                <td>[[${category.name}]] </td>
+
+                <td>
+                    [[${category.name}]]
+                </td>
+
                 <td>[[${category.alias}]]</td>
                 <td>
                     <a th:if="${category.enabled == true}"  th:href="@{'/categories/' + ${category.id}} + '/enabled/false'" class="fas fa-check-circle fa-2x icon-light-blue"></a>
                     <a th:if="${category.enabled == false}" th:href="@{'/categories/' + ${category.id}} + '/enabled/true'" class="fas fa-circle fa-2x icon-light-red"></a>
                 </td>
                 <td>
-                    <a th:href="@{'/categories/delete/' + ${category.id}}" class="fas fa-trash fa-2x icon-dark link-delete"></a>
-                    <a th:href="@{'/categories/edit/' + ${category.id}}" class="fas fa-edit fa-2x icon-green"></a>
+                    <a th:href="@{'/categories/delete/' + ${category.id}}" class="fas fa-trash fa-2x icon-dark link-delete ml-3"></a>
+                    <a th:href="@{'/categories/edit/' + ${category.id}}" class="fas fa-edit fa-2x icon-green ml-3"></a>
                 </td>
             </tbody>
         </table>

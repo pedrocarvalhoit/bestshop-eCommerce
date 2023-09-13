@@ -27,6 +27,7 @@ public class CategoryController {
     @GetMapping("/categories")
     public String listAll(Model model){
         List<Category> categoryList = service.listAll();
+
         model.addAttribute("categoryList", categoryList);
 
         return "categories/categories";
@@ -36,43 +37,73 @@ public class CategoryController {
     public String createCategoryForm(Model model){
         List<Category> categoryList = service.listCategoriesUsedInForm();
 
+
         model.addAttribute("category", new Category());
         model.addAttribute("categoryList", categoryList);
+        model.addAttribute("pageTitle", "Create New Category");
 
         return "categories/category_form";
     }
 
     @PostMapping("/categories/save")
     public String createCategory(Category category, @RequestParam("fileImage")MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws IOException {
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());//Get the original name of the image
-        category.setImage(fileName);
+        if(!multipartFile.isEmpty()){
+            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());//Get the original name of the image
+            category.setImage(fileName);
 
-        Category savedCategory = service.save(category);
-        String uploadDir = "../category-image/" + savedCategory.getId();//Sets the file upload direction
-        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);//Saves the file
+            Category savedCategory = service.save(category);
+            String uploadDir = "../category-images/" + savedCategory.getId();//Sets the file upload direction
 
-        redirectAttributes.addFlashAttribute("message", "Category created successfully");
+            FileUploadUtil.cleanDir(uploadDir);
+            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);//Saves the file
+            redirectAttributes.addFlashAttribute("message", "Category " + savedCategory.getName().toUpperCase() + " updated successfully");
+        }else{
+            service.save(category);
+            redirectAttributes.addFlashAttribute("message", "Category created successfully");
+        }
+
+
         return "redirect:/categories";
     }
     @GetMapping("/categories/edit/{id}")
-    public String editCategory(@PathVariable(name = "id") Integer id, Model model){
-        Category category = service.get(id);
-        model.addAttribute("category", category);
+    public String editCategory(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes ra) throws CategoryNotFoundException {
+        try{
+            Category category = service.get(id);
+            List<Category> listCategories = service.listCategoriesUsedInForm();
 
-        return "categories/category_form";
+            model.addAttribute("category", category);
+            model.addAttribute("listCategories", listCategories);
+            model.addAttribute("pageTitle", "Edit the category with Name: " + category.getName());
+
+            return "categories/category_form";
+        }catch (CategoryNotFoundException exception){
+            ra.addFlashAttribute("message", exception.getMessage());
+            return "redirect:/categories";
+        }
     }
 
 
     @GetMapping("/categories/{id}/enabled/{enabled}")
-    public String changeEnabled(@PathVariable(name = "id") Integer id, @PathVariable(name = "enabled") boolean enabled){
+    public String changeEnabled(@PathVariable(name = "id") Integer id, @PathVariable(name = "enabled") boolean enabled, Model model, RedirectAttributes redirectAttributes){
         service.updateEnabled(id, enabled);
 
         return "redirect:/categories";
     }
 
     @GetMapping("/categories/delete/{id}")
-    public String deleteCategory(@PathVariable(name = "id") Integer id){
-        service.deleteCategory(id);
+    public String deleteCategory(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) throws CategoryNotFoundException{
+        try{
+            Category categoryToDelete = service.get(id);
+            String uploadDir = "../category-images/" + categoryToDelete.getId();
+            FileUploadUtil.cleanDir(uploadDir);
+            FileUploadUtil.deleteDir(uploadDir);
+            service.deleteCategory(id);
+            redirectAttributes.addFlashAttribute("message", "Category " + categoryToDelete.getName().toUpperCase() + " has been delted");
+
+        }catch (CategoryNotFoundException exception){
+            redirectAttributes.addFlashAttribute("message", exception.getMessage());
+        }
+
 
         return "redirect:/categories";
     }

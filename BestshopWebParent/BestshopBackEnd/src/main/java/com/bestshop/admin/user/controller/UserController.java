@@ -1,8 +1,8 @@
 package com.bestshop.admin.user.controller;
 
 import com.bestshop.admin.FileUploadUtil;
-import com.bestshop.admin.user.UserNotFoundException;
-import com.bestshop.admin.user.UserService;
+import com.bestshop.admin.user.exception.UserNotFoundException;
+import com.bestshop.admin.user.service.UserService;
 import com.bestshop.admin.user.export.UserCsvExporter;
 import com.bestshop.admin.user.export.UserExcelExporter;
 import com.bestshop.admin.user.export.UserPDFExporter;

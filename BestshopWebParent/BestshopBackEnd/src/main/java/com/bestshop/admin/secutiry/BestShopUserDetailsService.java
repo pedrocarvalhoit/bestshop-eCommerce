@@ -1,6 +1,6 @@
 package com.bestshop.admin.secutiry;
 
-import com.bestshop.admin.user.UserRepository;
+import com.bestshop.admin.user.repository.UserRepository;
 import com.bestshop.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

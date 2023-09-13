@@ -1,26 +1,19 @@
 package com.bestshop.admin.user.controller;
 
-import com.bestshop.admin.secutiry.BestshopUserDetails;
-import com.bestshop.admin.user.UserNotFoundException;
-import com.bestshop.admin.user.UserRepository;
-import com.bestshop.admin.user.UserService;
-import com.bestshop.common.entity.Role;
+import com.bestshop.admin.user.repository.UserRepository;
+import com.bestshop.admin.user.service.UserService;
 import com.bestshop.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 @Controller

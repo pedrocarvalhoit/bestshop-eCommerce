@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "categories")
+@Entity
+@Table(name = "categories")
 public class Category {
 
     @Id
@@ -53,6 +54,24 @@ public class Category {
     public static Category copyIdAndName(Integer id, String name){
         Category copyCategory = new Category();
         copyCategory.setId(id);
+        copyCategory.setName(name);
+
+        return copyCategory;
+    }
+
+    public static Category copyFull(Category category){
+        Category copyCategory = new Category();
+        copyCategory.setId(category.getId());
+        copyCategory.setName(category.getName());
+        copyCategory.setImage(category.getImage());
+        copyCategory.setAlias(category.getAlias());
+        copyCategory.setEnabled(category.isEnabled());
+
+        return copyCategory;
+    }
+
+    public static Category copyFull(Category category, String name){
+        Category copyCategory = Category.copyFull(category);
         copyCategory.setName(name);
 
         return copyCategory;
@@ -131,8 +150,9 @@ public class Category {
         return name ;
     }
 
+    @Transient
     public String getImagePath() {
-        if (id == null || image == null) return "/images/image-thumbnail.png";
-        return "/category-image/" + this.id + "/" + this.image;
+        if (this.id == null) return "/images/image-thumbnail.png";
+        return "/category-images/" + this.id + "/" + this.image;
     }
 }

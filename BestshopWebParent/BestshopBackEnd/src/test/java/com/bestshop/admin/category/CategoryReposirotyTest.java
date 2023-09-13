@@ -2,11 +2,13 @@ package com.bestshop.admin.category;
 
 import com.bestshop.common.entity.Category;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.common.input.LineSeparatorDetector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CategoryReposirotyTest {
 
     @Autowired
-    private CategoryReposiroty reposiroty;
+    CategoryReposiroty reposiroty;
 
     @Test
     public void createRootCategory(){
@@ -76,6 +78,10 @@ class CategoryReposirotyTest {
         }
     }
 
-
+    @Test
+    public void testRootCategories(){
+        List<Category> rootCategories = reposiroty.findRootCategories();
+        rootCategories.forEach(System.out::println);
+    }
 
 }
