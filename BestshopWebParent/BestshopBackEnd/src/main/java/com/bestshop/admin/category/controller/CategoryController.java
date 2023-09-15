@@ -52,7 +52,7 @@ public class CategoryController {
         if(!multipartFile.isEmpty()){
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());//Get the original name of the image
             category.setImage(fileName);
-     //       boolean registeredCategory = service.checkExistingCategory(category);
+            boolean registeredCategory = service.checkExistingCategory(category);
 
             Category savedCategory = service.save(category);
             String uploadDir = "../category-images/" + savedCategory.getId();//Sets the file upload direction
@@ -60,7 +60,7 @@ public class CategoryController {
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);//Saves the file
 
-      //      String message = registeredCategory ? "Category " + savedCategory.getName().toUpperCase() + " updated successfully" : "Category created successfully";
+            String message = registeredCategory ? "Category " + savedCategory.getName().toUpperCase() + " updated successfully" : "Category created successfully";
 
             redirectAttributes.addFlashAttribute("message", "Category created successfully");
 
