@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.SecondaryTable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -20,10 +19,10 @@ public class CategoryService {
     public static final int CATEGORIES_PER_PAGE = 6;
 
     @Autowired
-    private CategoryReposiroty reposiroty;
+    private CategoryReposiroty repository;
 
     public List<Category> listAll() {
-        List<Category> rootCategories = reposiroty.findRootCategories();
+        List<Category> rootCategories = repository.findRootCategories();
         return listHierarchicalCategories(rootCategories);
     }
 
@@ -36,23 +35,23 @@ public class CategoryService {
 
 
     public Category save(Category category) {
-        return reposiroty.save(category);
+        return repository.save(category);
     }
 
     public void updateEnabled(Integer id, boolean enabled) {
-        Category category = reposiroty.findById(id).get();
+        Category category = repository.findById(id).get();
         category.setEnabled(enabled);
-        reposiroty.save(category);
+        repository.save(category);
     }
 
     public void deleteCategory(Integer id) {
-        Category category = reposiroty.findById(id).get();
-        reposiroty.deleteById(id);
+        Category category = repository.findById(id).get();
+        repository.deleteById(id);
     }
 
     public Category get(Integer id) throws CategoryNotFoundException{
         try{
-            return reposiroty.findById(id).get();
+            return repository.findById(id).get();
         }catch (NoSuchElementException exception){
             throw new CategoryNotFoundException("Could not find any category with id: " + id);
         }
@@ -66,7 +65,7 @@ public class CategoryService {
      */
     public List<Category> listCategoriesUsedInForm() {
         List<Category> categoriesUsedInForm = new ArrayList<>();
-        reposiroty.findAll().stream()
+        repository.findAll().stream()
                 .filter(category -> category.getParent() == null)
                 .forEach(category -> processSubCategories(categoriesUsedInForm, category, 0));
 
@@ -100,4 +99,40 @@ public class CategoryService {
 
         return hierarchicalCategories;// Return the hierarchicalCategories list for the current branch
     }
+
+    public boolean checkExistingCategory(Category category) {
+        if (category.getId() == null) {
+            return false;
+        }
+        return repository.findById(category.getId()).isPresent();
+    }
+
+    public String checkUnique(Integer id, String name, String alias){
+        boolean isANewCategory = (id == null || id == 0);
+        Category categoryByName = repository.findByName(name);
+
+        if (isANewCategory){
+            if (categoryByName != null){
+                return "DuplicatedName";
+            }else {
+                Category categoryByAlias = repository.findByAlias(alias);
+                if (categoryByAlias != null){
+                    return "DuplicatedAlias";
+                }
+            }
+        }else {
+            if (categoryByName != null && categoryByName.getId() != id) {
+                return "DuplicateName";
+            }
+
+            Category categoryByAlias = repository.findByAlias(alias);
+            if (categoryByAlias != null && categoryByAlias.getId() != id) {
+                return "DuplicateAlias";
+            }
+
+        }
+
+        return "OK";
+    }
+
 }

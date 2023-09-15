@@ -13,7 +13,11 @@ import java.util.Set;
 @Repository
 public interface CategoryReposiroty extends JpaRepository<Category, Integer> {
 
-    Set<Category> findAllById(Integer id);
+    public Category findAllById(Integer id);
+
+    public Category findByName(String name);
+
+    public Category findByAlias(String alias);
 
     @Query("SELECT c FROM Category c WHERE c.parent.id is NULL")
     public List<Category> findRootCategories();

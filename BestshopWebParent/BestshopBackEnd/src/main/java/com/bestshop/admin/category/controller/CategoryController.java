@@ -1,6 +1,8 @@
-package com.bestshop.admin.category;
+package com.bestshop.admin.category.controller;
 
 import com.bestshop.admin.FileUploadUtil;
+import com.bestshop.admin.category.CategoryNotFoundException;
+import com.bestshop.admin.category.CategoryService;
 import com.bestshop.common.entity.Category;
 import com.itextpdf.text.pdf.qrcode.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class CategoryController {
     public String listAll(Model model){
         List<Category> categoryList = service.listAll();
 
-        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("listCategories", categoryList);
 
         return "categories/categories";
     }
@@ -39,7 +41,7 @@ public class CategoryController {
 
 
         model.addAttribute("category", new Category());
-        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("listCategories", categoryList);
         model.addAttribute("pageTitle", "Create New Category");
 
         return "categories/category_form";
@@ -50,21 +52,25 @@ public class CategoryController {
         if(!multipartFile.isEmpty()){
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());//Get the original name of the image
             category.setImage(fileName);
+     //       boolean registeredCategory = service.checkExistingCategory(category);
 
             Category savedCategory = service.save(category);
             String uploadDir = "../category-images/" + savedCategory.getId();//Sets the file upload direction
 
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);//Saves the file
-            redirectAttributes.addFlashAttribute("message", "Category " + savedCategory.getName().toUpperCase() + " updated successfully");
+
+      //      String message = registeredCategory ? "Category " + savedCategory.getName().toUpperCase() + " updated successfully" : "Category created successfully";
+
+            redirectAttributes.addFlashAttribute("message", "Category created successfully");
+
         }else{
             service.save(category);
             redirectAttributes.addFlashAttribute("message", "Category created successfully");
         }
-
-
         return "redirect:/categories";
     }
+
     @GetMapping("/categories/edit/{id}")
     public String editCategory(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes ra) throws CategoryNotFoundException {
         try{

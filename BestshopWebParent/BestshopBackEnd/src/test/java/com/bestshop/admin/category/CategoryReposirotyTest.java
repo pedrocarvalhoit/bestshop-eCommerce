@@ -84,4 +84,27 @@ class CategoryReposirotyTest {
         rootCategories.forEach(System.out::println);
     }
 
+    @Test
+    public void testFindByName() {
+        String name = "House";
+        reposiroty.save(new Category(name));
+
+        Category saved = reposiroty.findByName(name);
+
+        assertNotNull(saved);
+        assertEquals(name, saved.getName());
+    }
+
+    @Test
+    public void testFindByAlias() {
+        String alias = "house";
+        Category category = new Category("House");
+        category.setAlias(alias);
+        reposiroty.save(category);
+
+        Category saved = reposiroty.findByName(alias);
+
+        assertNotNull(saved);
+        assertEquals(alias, saved.getAlias());
+    }
 }
