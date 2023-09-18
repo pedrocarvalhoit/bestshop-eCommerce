@@ -93,9 +93,9 @@
         $.post(url, params, function(response) {
             if (response == "OK") {
                 form.submit();
-            } else if (response == "DuplicateName") {
+            } else if (response == "DuplicatedName") {
                 showWarningModal("There is another category having same name " + catName);
-            } else if (response == "DuplicateAlias") {
+            } else if (response == "DuplicatedAlias") {
                 showWarningModal("There is another category having same alias " + catAlias);
             } else {
                 showErrorModal("Unknown response from server");

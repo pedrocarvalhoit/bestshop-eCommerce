@@ -6,6 +6,7 @@ import org.junit.jupiter.params.shadow.com.univocity.parsers.common.input.LineSe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
@@ -80,7 +81,7 @@ class CategoryReposirotyTest {
 
     @Test
     public void testRootCategories(){
-        List<Category> rootCategories = reposiroty.findRootCategories();
+        List<Category> rootCategories = reposiroty.findRootCategories(Sort.by("name").ascending());
         rootCategories.forEach(System.out::println);
     }
 

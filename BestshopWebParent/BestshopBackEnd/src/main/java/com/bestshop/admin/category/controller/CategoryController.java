@@ -27,10 +27,17 @@ public class CategoryController {
     private CategoryService service;
 
     @GetMapping("/categories")
-    public String listAll(Model model){
-        List<Category> categoryList = service.listAll();
+    public String listAll(@Param("sortDir") String sortDir, Model model) {
+        if (sortDir ==  null || sortDir.isEmpty()) {
+            sortDir = "asc";
+        }
 
-        model.addAttribute("listCategories", categoryList);
+        List<Category> listCategories = service.listAll(sortDir);
+
+        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+
+        model.addAttribute("listCategories", listCategories);
+        model.addAttribute("reverseSortDir", reverseSortDir);
 
         return "categories/categories";
     }
@@ -38,7 +45,6 @@ public class CategoryController {
     @GetMapping("/categories/new")
     public String createCategoryForm(Model model){
         List<Category> categoryList = service.listCategoriesUsedInForm();
-
 
         model.addAttribute("category", new Category());
         model.addAttribute("listCategories", categoryList);
@@ -116,7 +122,7 @@ public class CategoryController {
 
     @GetMapping("/categories/export/csv")
     public void expotToCsv(){
-        List<Category> categoryList = service.listAll();
+        List<Category> categoryList = service.listAll(Sort.by("name").ascending());
     }
 
 }
