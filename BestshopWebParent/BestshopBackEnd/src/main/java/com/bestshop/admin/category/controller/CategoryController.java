@@ -94,10 +94,12 @@ public class CategoryController {
         }
     }
 
-
     @GetMapping("/categories/{id}/enabled/{enabled}")
     public String changeEnabled(@PathVariable(name = "id") Integer id, @PathVariable(name = "enabled") boolean enabled, Model model, RedirectAttributes redirectAttributes){
         service.updateEnabled(id, enabled);
+
+        String message = enabled ? "Category id " + id + " has been Enabled" : "Category id " + id + " has been Disabled";
+        redirectAttributes.addFlashAttribute("message", message);
 
         return "redirect:/categories";
     }
@@ -105,17 +107,15 @@ public class CategoryController {
     @GetMapping("/categories/delete/{id}")
     public String deleteCategory(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) throws CategoryNotFoundException{
         try{
-            Category categoryToDelete = service.get(id);
-            String uploadDir = "../category-images/" + categoryToDelete.getId();
+            service.deleteCategory(id);
+            String uploadDir = "../category-images/" + id;
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.deleteDir(uploadDir);
-            service.deleteCategory(id);
-            redirectAttributes.addFlashAttribute("message", "Category " + categoryToDelete.getName().toUpperCase() + " has been delted");
+            redirectAttributes.addFlashAttribute("message", "Category ID: " + id + " has been delted");
 
         }catch (CategoryNotFoundException exception){
             redirectAttributes.addFlashAttribute("message", exception.getMessage());
         }
-
 
         return "redirect:/categories";
     }

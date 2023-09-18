@@ -47,8 +47,11 @@ public class CategoryService {
         repository.save(category);
     }
 
-    public void deleteCategory(Integer id) {
-        Category category = repository.findById(id).get();
+    public void deleteCategory(Integer id) throws CategoryNotFoundException{
+        Long countByid = repository.countById(id);
+        if (countByid == null || countByid == 0){
+            throw new CategoryNotFoundException("Category id: " + id + " don´t exists");
+        }
         repository.deleteById(id);
     }
 
