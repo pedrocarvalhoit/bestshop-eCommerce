@@ -18,21 +18,25 @@ import java.util.stream.Collectors;
 @Transactional
 public class CategoryService {
 
-    public static final int CATEGORIES_PER_PAGE = 4;
+    public static final int ROOT_CATEGORIES_PER_PAGE = 4;
 
     @Autowired
     private CategoryReposiroty repository;
 
-    public List<Category> listAll(@NotNull String sortDir) {
+    public List<Category> listByPage(CategoryPageInfo pageInfo, int pageNumber, String sortDir) {
         Sort sort = Sort.by("name");
-
         if (sortDir.equals("asc")) {
             sort = sort.ascending();
         } else if (sortDir.equals("desc")) {
             sort = sort.descending();
         }
+        Pageable pageable = PageRequest.of(pageNumber - 1, ROOT_CATEGORIES_PER_PAGE, sort);
 
-        List<Category> rootCategories = repository.findRootCategories(sort);
+        Page<Category> pageCategories = repository.findRootCategories(pageable);
+        List<Category> rootCategories = pageCategories.getContent();
+
+        pageInfo.setTotalElements(pageCategories.getTotalElements());
+        pageInfo.setTotalPages(pageCategories.getTotalPages());
 
         return listHierarchicalCategories(rootCategories);
     }

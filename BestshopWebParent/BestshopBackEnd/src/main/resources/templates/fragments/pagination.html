@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+</head>
+<body>
+
+<div th:fragment="pagination(module)" th:remove="tag">
+
+    <div class="text-center m-1" th:if="${totalItems > 0}">
+        <span>Showing [[${module}]] # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>
+    </div>
+    <div class="text-center m-1" th:unless="${totalItems > 0}">
+        <span>No [[${module}]] found</span>
+    </div>
+
+    <div th:if="${totalPages > 1}" class="full-details-pagination">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments/sortable-column :: page_link(${module}, 1, 'First')"></a>
+                </li>
+                <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'} ">
+                    <a th:replace="fragments/sortable-column :: page_link(${module}, ${currentPage} - 1, 'Previous')"> </a>
+                </li>
+
+                <li th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
+                    th:each="i : ${#numbers.sequence(1, totalPages)}">
+                    <a th:replace="fragments/sortable-column :: page_link(${module}, ${i}, ${i})"></a>
+                </li>
+
+                <li th:class="${currentPage >= totalPages ? 'page-item disabled' : 'page-item'}">
+                    <a th:replace="fragments/sortable-column :: page_link(${module}, ${currentPage} + 1, 'Next')"></a>
+                </li>
+                <li th:class="${currentPage >= totalPages ? 'page-item disabled' : 'page-item'}">
+                    <a th:replace="fragments/sortable-column :: page_link(${module}, ${totalPages}, 'Last')"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div th:if="${totalPages > 1}" class="less-details-pagination">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="fragments/sortable-column :: page_link(${module}, 1, 'First')"></a>
+                </li>
+                <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'} ">
+                    <a th:replace="fragments/sortable-column :: page_link(${module}, ${currentPage} - 1, 'Previous')"> </a>
+                </li>
+
+                <li th:class="${currentPage == currentPage ? 'page-item active' : 'page-item'}">
+                    <a th:replace="fragments/sortable-column :: page_link(${module}, ${currentPage}, ${currentPage})"></a>
+                </li>
+
+                <li th:class="${currentPage >= totalPages ? 'page-item disabled' : 'page-item'}">
+                    <a th:replace="fragments/sortable-column :: page_link(${module}, ${currentPage} + 1, 'Next')"></a>
+                </li>
+                <li th:class="${currentPage >= totalPages ? 'page-item disabled' : 'page-item'}">
+                    <a th:replace="fragments/sortable-column :: page_link(${module}, ${totalPages}, 'Last')"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -2,11 +2,13 @@ package com.bestshop.admin.category.controller;
 
 import com.bestshop.admin.FileUploadUtil;
 import com.bestshop.admin.category.CategoryNotFoundException;
+import com.bestshop.admin.category.CategoryPageInfo;
 import com.bestshop.admin.category.CategoryService;
 import com.bestshop.common.entity.Category;
 import com.itextpdf.text.pdf.qrcode.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -23,23 +25,43 @@ import java.util.List;
 @Controller
 public class CategoryController {
 
+    public static final int ROOT_CATEGORIES_PER_PAGE = 4;
+
     @Autowired
     private CategoryService service;
 
     @GetMapping("/categories")
-    public String listAll(@Param("sortDir") String sortDir, Model model) {
-        if (sortDir ==  null || sortDir.isEmpty()) {
-            sortDir = "asc";
-        }
+    public String listFirstPage(@Param("sortDir")String sortDir, Model model) {
+        return listByPage(1, sortDir, model);
+    }
 
-        List<Category> listCategories = service.listAll(sortDir);
+    @GetMapping("/categories/page/{pageNum}")
+    public String listByPage(@PathVariable(name = "pageNum")int pageNum, @Param("sortDir")String sortDir, Model model){
+        if(sortDir == null || sortDir.isEmpty()){sortDir = "asc";}
+
+        CategoryPageInfo pageInfo = new CategoryPageInfo();
+        List<Category> listCategories = service.listByPage(pageInfo, pageNum, sortDir);
 
         String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
 
+        long startCount = pageNum == 1 ? 1 : 1 + ROOT_CATEGORIES_PER_PAGE;
+        long endCount = (long) pageNum * ROOT_CATEGORIES_PER_PAGE;
+        if (endCount > listCategories.size()){
+            endCount = listCategories.size();
+        }
+
+        model.addAttribute("totalPages", pageInfo.getTotalPages());
+        model.addAttribute("totalItems", pageInfo.getTotalElements());
+        model.addAttribute("currentPage", pageNum);
         model.addAttribute("listCategories", listCategories);
         model.addAttribute("reverseSortDir", reverseSortDir);
+        model.addAttribute("sortField", "name");
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("startCount", startCount);
+        model.addAttribute("endCount", endCount);
+        model.addAttribute("totalElements", listCategories.size());
 
-        return "categories/categories";
+        return"categories/categories";
     }
 
     @GetMapping("/categories/new")
