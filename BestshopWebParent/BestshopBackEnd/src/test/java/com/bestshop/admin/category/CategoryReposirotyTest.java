@@ -1,8 +1,8 @@
 package com.bestshop.admin.category;
 
+import com.bestshop.admin.category.repository.CategoryReposiroty;
 import com.bestshop.common.entity.Category;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.common.input.LineSeparatorDetector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

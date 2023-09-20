@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:href="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
-<head th:replace="fragments/pageStructure :: head('Users')">
+<head th:replace="~{fragments/pageStructure :: head('Users')}">
 
 </head>
 <body>
 
-    <div th:replace="fragments/navbar :: header"></div>
+    <div th:replace="~{fragments/navbar :: header}"></div>
 
     <div>
         <h2>Manage Users</h2>
@@ -19,51 +19,36 @@
         [[${message}]]
     </div>
 
-    <div>
-        <form th:action="@{/users/page/1}" class="form-inline m-3">
-            <input type="hidden" name="sortField" th:value="${sortField}">
-            <input type="hidden" name="sortDir" th:value="${sortDir}">
-
-            Filter:&nbsp;
-            <input type="search" name="keyword" th:value="${keyword}" class="form-control" required/>
-            &nbsp;&nbsp;
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-search"></i>
-            </button>&nbsp;&nbsp;
-            <button type="button" title="Clear" class="btn btn-secondary" onclick="clearFilter()">
-                <i class="fas fa-eraser"></i>
-            </button>
-        </form>
-    </div>
+    <div th:replace="~{fragments/search-filter :: searchForm('/users/page/1')}"></div>
 
     <div class="full-details">
         <table class="table table-bordered table-striped table-hover table-responsive-xl">
             <thead class="thead-dark">
             <tr>
-                <th th:replace="fragments/sortable-column :: column_link('id', 'User ID')"></th>
+                <th th:replace="~{fragments/sortable-column :: column_link('/users' ,'id', 'User ID')}"></th>
                 <th>Photos</th>
-                <th th:replace="fragments/sortable-column :: column_link('email', 'Email')"></th>
-                <th th:replace="fragments/sortable-column :: column_link('firstName', 'First Name')"></th>
-                <th th:replace="fragments/sortable-column :: column_link('lastName', 'Last Name')"></th>
+                <th th:replace="~{fragments/sortable-column :: column_link('/users' ,'email', 'Email')}"></th>
+                <th th:replace="~{fragments/sortable-column :: column_link('/users' ,'firstName', 'First Name')}"></th>
+                <th th:replace="~{fragments/sortable-column :: column_link('/users' ,'lastName', 'Last Name')}"></th>
                 <th>Roles</th>
-                <th th:replace="fragments/sortable-column :: column_link('enabled', 'Enabled')"></th>
+                <th th:replace="~{fragments/sortable-column :: column_link('/users' ,'enabled', 'Enabled')}"></th>
                 <th>Edit/Delete</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="user: ${listUsers}">
                 <td>[[${user.id}]]</td>
-                <td th:replace="fragments/listingUserIcons :: photo">
+                <td th:replace="~{fragments/listingUserIcons :: photo}">
                 </td>
                 <td>[[${user.email}]]</td>
                 <td>[[${user.firstName}]]</td>
                 <td>[[${user.lastName}]]</td>
                 <td>[[${user.roles}]]</td>
-                <td th:replace="fragments/listingUserIcons :: enabled"></td>
+                <td th:replace="~{fragments/listingUserIcons :: enabled}"></td>
                 <td style="display: flex;">
-                    <a th:replace="fragments/listingUserIcons :: edit"></a>
+                    <a th:replace="~{fragments/listingUserIcons :: edit}" ></a>
                     &nbsp;
-                    <a th:replace="fragments/listingUserIcons :: delete"></a>
+                    <a th:replace="~{fragments/listingUserIcons :: delete}"></a>
                 </td>
             </tr>
             </tbody>
@@ -72,22 +57,22 @@
 
     <div class="less-details">
         <div th:each="user : ${listUsers}" class="row m-1">
-            <div th:replace="fragments/listingUserIcons :: photo" class="col-4"></div>
+            <div th:replace="~{fragments/listingUserIcons :: photo}" class="col-4"></div>
             <div class="col-8">
                 <div>[[${user.fullName}]]</div>
                 <div>[[${user.roles}]]</div>
                 <div class="mt-2">
-                    <a th:replace="fragments/listingUserIcons :: enabled"></a>
+                    <a th:replace="~{fragments/listingUserIcons :: enabled}"></a>
                     &nbsp;
-                    <a th:replace="fragments/listingUserIcons :: edit"></a>
+                    <a th:replace="~{fragments/listingUserIcons :: edit}"></a>
                     &nbsp;
-                    <a th:replace="fragments/listingUserIcons :: delete"></a>
+                    <a th:replace="~{fragments/listingUserIcons :: delete}"></a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div th:replace="fragments/pagination :: pagination(users)">
+    <div th:replace="~{fragments/pagination :: pagination('/users', 'users')}">
 
     </div>
 
@@ -111,7 +96,7 @@
         </div>
     </div>
 
-    <div th:replace="fragments/pageStructure :: page_footer"></div>
+    <div th:replace="~{fragments/pageStructure :: page_footer}"></div>
 
 
 <script type="text/javascript">

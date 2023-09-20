@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
 </head>
 <body>
-    <th th:fragment="column_link(fieldName, columnLabel)">
-        <a th:href="@{/users/page/{pageNum}(pageNum=${currentPage},sortField=${fieldName},sortDir=${sortDir == 'asc' ? 'desc' : 'asc'}, keyword=${keyword != null ? keyword : ' '})}" class="text-white">
+    <th th:fragment="column_link(moduleURL, fieldName, columnLabel)">
+        <a th:href="@{${moduleURL} + '/page/{pageNum}(pageNum=${currentPage},sortField=${fieldName},sortDir=${sortDir == 'asc' ? 'desc' : 'asc'}, keyword=${keyword != null ? keyword : ' '})}" class="text-white">
             [[${columnLabel}]]
             <span th:if="${sortField == fieldName}">
                 <span th:if="${sortDir == 'asc'}" class="fas fa-sort-up"></span>
@@ -14,7 +14,7 @@
         </a>
     </th>
 
-    <a th:fragment="page_link(module, pageNum, label)" class="page-link"
-        th:href="@{'/' + ${module} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ' '}}">[[${label}]]</a>
+    <a th:fragment="page_link(moduleURL, pageNum, label)" class="page-link"
+        th:href="@{${moduleURL} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ' '}}">[[${label}]]</a>
 </body>
 </html>

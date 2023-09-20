@@ -3,12 +3,9 @@ package com.bestshop.admin.category.controller;
 import com.bestshop.admin.FileUploadUtil;
 import com.bestshop.admin.category.CategoryNotFoundException;
 import com.bestshop.admin.category.CategoryPageInfo;
-import com.bestshop.admin.category.CategoryService;
+import com.bestshop.admin.category.service.CategoryService;
 import com.bestshop.common.entity.Category;
-import com.itextpdf.text.pdf.qrcode.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -19,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.net.UnknownServiceException;
 import java.util.List;
 
 @Controller

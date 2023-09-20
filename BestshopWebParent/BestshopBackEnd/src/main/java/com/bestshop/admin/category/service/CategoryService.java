@@ -1,7 +1,9 @@
-package com.bestshop.admin.category;
+package com.bestshop.admin.category.service;
 
+import com.bestshop.admin.category.CategoryNotFoundException;
+import com.bestshop.admin.category.CategoryPageInfo;
+import com.bestshop.admin.category.repository.CategoryReposiroty;
 import com.bestshop.common.entity.Category;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +25,7 @@ public class CategoryService {
     @Autowired
     private CategoryReposiroty repository;
 
-    public List<Category> listByPage(CategoryPageInfo pageInfo, int pageNumber, String sortDir) {
+    public List<Category> listByPage(CategoryPageInfo categoryPageInfo, int pageNumber, String sortDir) {
         Sort sort = Sort.by("name");
         if (sortDir.equals("asc")) {
             sort = sort.ascending();
@@ -35,8 +37,8 @@ public class CategoryService {
         Page<Category> pageCategories = repository.findRootCategories(pageable);
         List<Category> rootCategories = pageCategories.getContent();
 
-        pageInfo.setTotalElements(pageCategories.getTotalElements());
-        pageInfo.setTotalPages(pageCategories.getTotalPages());
+        categoryPageInfo.setTotalElements(pageCategories.getTotalElements());
+        categoryPageInfo.setTotalPages(pageCategories.getTotalPages());
 
         return listHierarchicalCategories(rootCategories);
     }
