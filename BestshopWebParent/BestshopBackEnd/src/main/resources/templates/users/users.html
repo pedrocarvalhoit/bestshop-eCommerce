@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:href="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
-<head th:replace="~{fragments/pageStructure :: head('Users')}">
+<head th:replace="~{fragments/page-structure :: head('Users')}">
 
 </head>
 <body>
@@ -38,17 +38,17 @@
             <tbody>
             <tr th:each="user: ${listUsers}">
                 <td>[[${user.id}]]</td>
-                <td th:replace="~{fragments/listingUserIcons :: photo}">
+                <td th:replace="~{fragments/listing-userIcons :: photo}">
                 </td>
                 <td>[[${user.email}]]</td>
                 <td>[[${user.firstName}]]</td>
                 <td>[[${user.lastName}]]</td>
                 <td>[[${user.roles}]]</td>
-                <td th:replace="~{fragments/listingUserIcons :: enabled}"></td>
+                <td th:replace="~{fragments/listing-userIcons :: enabled}"></td>
                 <td style="display: flex;">
-                    <a th:replace="~{fragments/listingUserIcons :: edit}" ></a>
+                    <a th:replace="~{fragments/listing-userIcons :: edit}" ></a>
                     &nbsp;
-                    <a th:replace="~{fragments/listingUserIcons :: delete}"></a>
+                    <a th:replace="~{fragments/listing-userIcons :: delete}"></a>
                 </td>
             </tr>
             </tbody>
@@ -57,16 +57,16 @@
 
     <div class="less-details">
         <div th:each="user : ${listUsers}" class="row m-1">
-            <div th:replace="~{fragments/listingUserIcons :: photo}" class="col-4"></div>
+            <div th:replace="~{fragments/listing-userIcons :: photo}" class="col-4"></div>
             <div class="col-8">
                 <div>[[${user.fullName}]]</div>
                 <div>[[${user.roles}]]</div>
                 <div class="mt-2">
-                    <a th:replace="~{fragments/listingUserIcons :: enabled}"></a>
+                    <a th:replace="~{fragments/listing-userIcons :: enabled}"></a>
                     &nbsp;
-                    <a th:replace="~{fragments/listingUserIcons :: edit}"></a>
+                    <a th:replace="~{fragments/listing-userIcons :: edit}"></a>
                     &nbsp;
-                    <a th:replace="~{fragments/listingUserIcons :: delete}"></a>
+                    <a th:replace="~{fragments/listing-userIcons :: delete}"></a>
                 </div>
             </div>
         </div>
@@ -96,7 +96,7 @@
         </div>
     </div>
 
-    <div th:replace="~{fragments/pageStructure :: page_footer}"></div>
+    <div th:replace="~{fragments/page-structure :: page_footer}"></div>
 
 
 <script type="text/javascript">

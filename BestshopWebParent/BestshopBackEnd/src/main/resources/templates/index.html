@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-<head th:replace="fragments/pageStructure :: head('Home - Bestshop Admin')">
+<head th:replace="fragments/page-structure :: head('Home - Bestshop Admin')">
 
 </head>
 <body>
@@ -18,7 +18,7 @@
             <span sec:authentication="principal.authorities"></span>
         </div>
 
-        <div th:replace="fragments/pageStructure :: page_footer"></div>
+        <div th:replace="fragments/page-structure :: page_footer"></div>
     </div>
 </body>
 </html>

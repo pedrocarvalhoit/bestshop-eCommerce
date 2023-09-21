@@ -28,22 +28,24 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public String listFirstPage(@Param("sortDir")String sortDir, Model model) {
-        return listByPage(1, sortDir, model);
+        return listByPage(1, sortDir, null, model);
     }
 
     @GetMapping("/categories/page/{pageNum}")
-    public String listByPage(@PathVariable(name = "pageNum")int pageNum, @Param("sortDir")String sortDir, Model model){
+    public String listByPage(@PathVariable(name = "pageNum")int pageNum,
+                             @Param("sortDir")String sortDir,
+                             @Param("keyword")String keyword, Model model){
         if(sortDir == null || sortDir.isEmpty()){sortDir = "asc";}
 
         CategoryPageInfo pageInfo = new CategoryPageInfo();
-        List<Category> listCategories = service.listByPage(pageInfo, pageNum, sortDir);
+        List<Category> listCategories = service.listByPage(pageInfo, pageNum, sortDir, keyword);
 
         String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
 
-        long startCount = pageNum == 1 ? 1 : 1 + ROOT_CATEGORIES_PER_PAGE;
-        long endCount = (long) pageNum * ROOT_CATEGORIES_PER_PAGE;
-        if (endCount > listCategories.size()){
-            endCount = listCategories.size();
+        long startCount = (long) (pageNum - 1) * CategoryService.ROOT_CATEGORIES_PER_PAGE + 1;
+        long endCount = startCount + CategoryService.ROOT_CATEGORIES_PER_PAGE - 1;
+        if (endCount > pageInfo.getTotalElements()) {
+            endCount = pageInfo.getTotalElements();
         }
 
         model.addAttribute("totalPages", pageInfo.getTotalPages());
@@ -53,6 +55,7 @@ public class CategoryController {
         model.addAttribute("reverseSortDir", reverseSortDir);
         model.addAttribute("sortField", "name");
         model.addAttribute("sortDir", sortDir);
+        model.addAttribute("keyword", keyword);
         model.addAttribute("startCount", startCount);
         model.addAttribute("endCount", endCount);
         model.addAttribute("totalElements", listCategories.size());

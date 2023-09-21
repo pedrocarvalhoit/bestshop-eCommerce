@@ -28,4 +28,7 @@ public interface CategoryReposiroty extends JpaRepository<Category, Integer> {
     @Query("SELECT c FROM Category c WHERE c.parent.id is NULL")
     public Page<Category> findRootCategories(Pageable pageable);
 
+    @Query("SELECT c FROM Category c WHERE CONCAT(c.name, ' ', c.alias,' ') LIKE %?1%")
+    public Page<Category> searchCategory(String keyword, Pageable pageable);
+
 }

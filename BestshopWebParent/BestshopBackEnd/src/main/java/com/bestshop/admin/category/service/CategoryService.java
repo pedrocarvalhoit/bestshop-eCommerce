@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,7 +26,7 @@ public class CategoryService {
     @Autowired
     private CategoryReposiroty repository;
 
-    public List<Category> listByPage(CategoryPageInfo categoryPageInfo, int pageNumber, String sortDir) {
+    public List<Category> listByPage(CategoryPageInfo categoryPageInfo, int pageNumber, String sortDir, String keyword) {
         Sort sort = Sort.by("name");
         if (sortDir.equals("asc")) {
             sort = sort.ascending();
@@ -34,13 +35,29 @@ public class CategoryService {
         }
         Pageable pageable = PageRequest.of(pageNumber - 1, ROOT_CATEGORIES_PER_PAGE, sort);
 
-        Page<Category> pageCategories = repository.findRootCategories(pageable);
-        List<Category> rootCategories = pageCategories.getContent();
+        Page<Category> pageRootCategories = null;
 
-        categoryPageInfo.setTotalElements(pageCategories.getTotalElements());
-        categoryPageInfo.setTotalPages(pageCategories.getTotalPages());
+        if (StringUtils.hasLength(keyword)){
+            pageRootCategories = repository.searchCategory(keyword, pageable);
+        }else {
+            pageRootCategories = repository.findRootCategories(pageable);
+        }
 
-        return listHierarchicalCategories(rootCategories);
+        List<Category> rootCategories = pageRootCategories.getContent();
+
+        categoryPageInfo.setTotalElements(pageRootCategories.getTotalElements());
+        categoryPageInfo.setTotalPages(pageRootCategories.getTotalPages());
+
+        if (StringUtils.hasLength(keyword)){
+            List<Category> searchResult = pageRootCategories.getContent();
+            for (Category category : searchResult){
+                category.setHasChildren(category.getChildren().size() > 0);
+            }
+
+            return searchResult;
+        }else {
+            return listHierarchicalCategories(rootCategories);
+        }
     }
 
     public Category save(Category category) {

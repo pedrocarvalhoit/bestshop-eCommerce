@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:href="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
-<head th:replace="fragments/pageStructure :: head('Categories - Bestshop Admin')">
+<head th:replace="fragments/page-structure :: head('Categories - Bestshop Admin')">
 
 </head>
 <body>
@@ -17,22 +17,7 @@
     [[${message}]]
 </div>
 
-<div>
-    <form th:action="@{/categories/page/1}" class="form-inline m-3">
-        <input type="hidden" name="sortField" th:value="${sortField}">
-        <input type="hidden" name="sortDir" th:value="${sortDir}">
-
-        Filter:&nbsp;
-        <input type="search" name="keyword" th:value="${keyword}" class="form-control" required/>
-        &nbsp;&nbsp;
-        <button type="submit" class="btn btn-primary">
-            <i class="fas fa-search"></i>
-        </button>&nbsp;&nbsp;
-        <button type="button" title="Clear" class="btn btn-secondary" onclick="clearFilter()">
-            <i class="fas fa-eraser"></i>
-        </button>
-    </form>
-</div>
+<div th:replace="~{fragments/search-filter :: searchForm('/categories/page/1')}"></div>
 
 <div>
     <table class="table table-bordered table-striped table-hover table-responsive-xl">
@@ -40,7 +25,8 @@
         <th>ID</th>
         <th>Category Image</th>
         <th>
-            <a class="text-white" th:href="@{'/categories/page/' + ${pageNum} + '?sortDir=' + ${reverseSortDir}}">Category Name</a>
+            <a class="text-white" th:href="@{/categories/page/{pageNum}(pageNum=${currentPage},sortField=${fieldName},sortDir=${sortDir == 'asc' ? 'desc' : 'asc'}, keyword=${keyword != null ? keyword : ' '})}">
+                Category Name</a>
             <span th:class="${reverseSortDir == 'desc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
         </th>
         <th>Alias</th>
@@ -82,9 +68,13 @@
     </table>
 </div>
 
-<div th:replace="~{fragments/pagination :: pagination('/categories' ,'top-level categories')}">
-
+<div th:if="${keyword != null}" class="text-center">
+    <span>Search result does not show categories in hierarchical form</span>
+    <div th:replace="~{fragments/pagination :: pagination('/categories' ,'categories')}"></div>
 </div>
+
+<th:block th:unless="${keyword != null}">
+    <div th:replace="~{fragments/pagination :: pagination('/categories' ,'top-level categories')}"></div></th:block>
 
 <div class="modal fade text-center" id="confirmModal">
     <div class="modal-dialog">
@@ -106,7 +96,7 @@
     </div>
 </div>
 
-<div th:replace="fragments/pageStructure :: page_footer"></div>
+<div th:replace="fragments/page-structure :: page_footer"></div>
 
 <script type="text/javascript">
     $(document).ready(function(){
