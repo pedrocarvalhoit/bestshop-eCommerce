@@ -3,8 +3,10 @@ package com.bestshop.admin.category.controller;
 import com.bestshop.admin.FileUploadUtil;
 import com.bestshop.admin.category.CategoryNotFoundException;
 import com.bestshop.admin.category.CategoryPageInfo;
+import com.bestshop.admin.category.export.CategoryCsvExporter;
 import com.bestshop.admin.category.service.CategoryService;
 import com.bestshop.common.entity.Category;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
@@ -145,8 +147,10 @@ public class CategoryController {
     }
 
     @GetMapping("/categories/export/csv")
-    public void expotToCsv(){
+    public void expotToCsv(HttpServletResponse response) throws IOException {
         List<Category> categoryList = service.listAll(Sort.by("name").ascending());
+        CategoryCsvExporter exporter = new CategoryCsvExporter();
+        exporter.export(categoryList, response, "categories");
     }
 
 }

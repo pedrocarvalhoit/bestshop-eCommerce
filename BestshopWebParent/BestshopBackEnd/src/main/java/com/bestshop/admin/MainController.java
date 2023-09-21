@@ -17,9 +17,9 @@ public class MainController {
         return "/login";
     }
 
-    @GetMapping("/bs/logout")
-    public String performLogout() {
-        // .. perform logout
-        return "redirect:/login&logout";
-    }
+//    @GetMapping("/bs/logout")
+//    public String performLogout() {
+//        // .. perform logout
+//        return "redirect:/login&logout";
+//    }
 }

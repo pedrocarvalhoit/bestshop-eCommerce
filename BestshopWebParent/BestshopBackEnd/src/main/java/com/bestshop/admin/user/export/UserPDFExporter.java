@@ -1,5 +1,6 @@
 package com.bestshop.admin.user.export;
 
+import com.bestshop.admin.AbstractExporter;
 import com.bestshop.common.entity.User;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -16,8 +17,8 @@ public class UserPDFExporter extends AbstractExporter {
     Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.BLACK);
 
 
-    public void export(List<User> listUsers, HttpServletResponse response) throws IOException, DocumentException {
-        super.setResponseHeader(response, "application/pdf", ".pdf");
+    public void export(List<User> listUsers, HttpServletResponse response, String moduleName) throws IOException, DocumentException {
+        super.setResponseHeader(response, "application/pdf", ".pdf", moduleName);
 
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());

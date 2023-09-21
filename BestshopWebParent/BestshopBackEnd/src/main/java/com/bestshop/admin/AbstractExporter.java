@@ -1,4 +1,4 @@
-package com.bestshop.admin.user.export;
+package com.bestshop.admin;
 
 import com.bestshop.common.entity.User;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,16 +11,20 @@ import java.util.List;
 
 public class AbstractExporter {
 
-    public void setResponseHeader(HttpServletResponse response, String contentType, String extension) throws IOException {
+    public void setResponseHeader(HttpServletResponse response, String contentType, String extension, String moduleName) throws IOException {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String timestamp = dateFormatter.format(new Date());
-        String fileName = "users_" + timestamp + extension;
+        String fileName = moduleName + "_" + timestamp + extension;
 
         response.setContentType(contentType);
 
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=" + fileName;
         response.setHeader(headerKey, headerValue);
+    }
+
+    public void refactor(){
+
     }
 
 }

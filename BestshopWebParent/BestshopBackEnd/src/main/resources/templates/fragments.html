@@ -19,6 +19,8 @@
 	<p>Bestshop Control Panel - Copyright &copy; Bestshop</p>
 </div>
 
+<!-- -->
+
 <th th:fragment="column_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
 	<a class="text-white"
 	   th:href="@{'/users/page/' + ${currentPage} + '?sortField=' + ${fieldName}  +'&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
@@ -28,15 +30,28 @@
 		  th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}" ></span>
 </th>
 
+<!-- -->
+
 <a th:fragment="page_link(moduleURL, pageNum, label)"
    class="page-link"
    th:href="@{${moduleURL} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">[[${label}]]</a>
+
+<!--User Photo -->
 
 <div th:fragment="user_photos" th:remove="tag">
 	<span th:if="${user.photos == null}" class="fas fa-portrait fa-3x icon-silver"></span>
 	<img th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}"
 		 style="width: 100px" />
 </div>
+
+<!--Category Image -->
+
+<div th:fragment="category_image" th:remove="tag">
+	<img th:src="@{${cat.imagePath}}" style="width: 100px" class="img-fluid"/>
+</div>
+
+
+<!-- -->
 
 <div th:fragment="user_status" th:remove="tag">
 	<a th:if="${user.enabled == true}" class="fas fa-check-circle fa-2x icon-green"
@@ -50,6 +65,8 @@
 	></a>
 </div>
 
+<!-- -->
+
 <div th:fragment="user_actions" th:remove="tag">
 	<a class="fas fa-edit fa-2x icon-green" th:href="@{'/users/edit/' + ${user.id}}"
 	   title="Edit this user"></a>
@@ -59,6 +76,8 @@
 	   th:entityId="${user.id}"
 	   title="Delete this user"></a>
 </div>
+
+<!-- -->
 
 <div th:fragment="category_status" th:remove="tag">
 	<a th:if="${cat.enabled == true}" class="fas fa-check-circle fa-2x icon-green"
@@ -72,6 +91,8 @@
 	></a>
 </div>
 
+<!-- -->
+
 <div th:fragment="category_actions" th:remove="tag">
 	<a class="fas fa-edit fa-2x icon-green" th:href="@{'/categories/edit/' + ${cat.id}}"
 	   title="Edit this category"></a>
@@ -83,6 +104,8 @@
 		   title="Delete this category"></a>
 	</th:block>
 </div>
+
+<!-- -->
 
 <div th:fragment="pagination(moduleURL, entityName)" th:remove="tag">
 	<div class="text-center m-1" th:if="${totalItems > 0}">
@@ -118,6 +141,8 @@
 		</nav>
 	</div>
 </div>
+
+<!-- -->
 
 <div th:fragment="search_form(moduleURL)">
 	<form th:action="@{${moduleURL}}" class="form-inline m-3">

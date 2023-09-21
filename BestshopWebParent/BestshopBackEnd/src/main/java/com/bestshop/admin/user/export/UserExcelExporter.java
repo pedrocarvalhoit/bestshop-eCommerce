@@ -1,5 +1,6 @@
 package com.bestshop.admin.user.export;
 
+import com.bestshop.admin.AbstractExporter;
 import com.bestshop.common.entity.User;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.*;
@@ -16,8 +17,8 @@ public class UserExcelExporter extends AbstractExporter {
         workbook = new XSSFWorkbook();
     }
 
-    public void export (List<User> listUsers, HttpServletResponse response) throws IOException {
-        super.setResponseHeader(response, "application/octet-stream", ".xlsx");
+    public void export (List<User> listUsers, HttpServletResponse response, String moduleName) throws IOException {
+        super.setResponseHeader(response, "application/octet-stream", ".xlsx", moduleName);
 
         Sheet sheet = workbook.createSheet("Users");
 

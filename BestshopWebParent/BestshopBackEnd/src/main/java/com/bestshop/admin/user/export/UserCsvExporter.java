@@ -1,5 +1,6 @@
 package com.bestshop.admin.user.export;
 
+import com.bestshop.admin.AbstractExporter;
 import com.bestshop.common.entity.User;
 import jakarta.servlet.http.HttpServletResponse;
 import org.supercsv.io.CsvBeanWriter;
@@ -11,8 +12,8 @@ import java.util.List;
 
 public class UserCsvExporter extends AbstractExporter {
 
-    public void export(List<User> listUsers, HttpServletResponse response) throws IOException {
-        super.setResponseHeader(response, "text/csv", ".csv");
+    public void export(List<User> listUsers, HttpServletResponse response, String moduleName) throws IOException {
+        super.setResponseHeader(response, "text/csv", ".csv", moduleName);
 
         ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(),
                 CsvPreference.STANDARD_PREFERENCE);
