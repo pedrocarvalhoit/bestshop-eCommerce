@@ -1,48 +1,37 @@
 $(document).ready(function() {
-    $("#logoutLink").on("click", function(e) {
-        e.preventDefault();
-        document.logoutForm.submit();
-    });
+	$("#logoutLink").on("click", function(e) {
+		e.preventDefault();
+		document.logoutForm.submit();
+	});
+
+	customizeDropDownMenu();
+	customizeTabs();
 });
 
-$(document).ready(function(){
-    $("#buttonCancel").on("click", function(){
-        window.location = "[[@{/users}]]";
-    });
+function customizeDropDownMenu() {
+	$(".navbar .dropdown").hover(
+		function() {
+			$(this).find('.dropdown-menu').first().stop(true, true).delay(250).slideDown();
+		},
+		function() {
+			$(this).find('.dropdown-menu').first().stop(true, true).delay(100).slideUp();
+		}
+	);
 
-    $("#fileImage").change(function() {
-        fileSize = this.files[0].size;
-        if(fileSize > 102400){
-            this.setCustomValidity("You must choose an image less than 100KB!");
-            this.reportValidity();
-        }else{
-            this.setCustomValidity("");
-            showImageThumbnail(this);
-        }
-
-
-    });
-});
-
-function showImageThumbnail(fileInput){
-    var file = fileInput.files[0];
-    var reader = new FileReader();
-    reader.onload = function(e) {
-        $("#thumbnail").attr("src", e.target.result);
-    };
-    reader.readAsDataURL(file);
+	$(".dropdown > a").click(function() {
+		location.href = this.href;
+	});
 }
 
-function showModalDialog(title, message) {
-    $("#modalTitle").text(title);
-    $("#modalBody").text(message);
-    $("#modalDialog").modal();
-}
+function customizeTabs() {
+	// Javascript to enable link to tab
+	var url = document.location.toString();
+	if (url.match('#')) {
+		$('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
+	}
 
-function showErrorModal(message){
-    showModalDialog("Error", message)
-}
-
-function showWarningModal(message){
-    showModalDialog("Warning", message)
+	// Change hash for page-reload
+	$('.nav-tabs a').on('shown.bs.tab', function(e) {
+		window.location.hash = e.target.hash;
+	})
 }

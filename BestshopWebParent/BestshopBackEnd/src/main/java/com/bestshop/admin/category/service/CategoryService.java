@@ -26,37 +26,41 @@ public class CategoryService {
     @Autowired
     private CategoryReposiroty repository;
 
-    public List<Category> listByPage(CategoryPageInfo categoryPageInfo, int pageNumber, String sortDir, String keyword) {
+    public List<Category> listByPage(CategoryPageInfo pageInfo, int pageNum, String sortDir,
+                                     String keyword) {
         Sort sort = Sort.by("name");
+
         if (sortDir.equals("asc")) {
             sort = sort.ascending();
         } else if (sortDir.equals("desc")) {
             sort = sort.descending();
         }
-        Pageable pageable = PageRequest.of(pageNumber - 1, ROOT_CATEGORIES_PER_PAGE, sort);
 
-        Page<Category> pageRootCategories = null;
+        Pageable pageable = PageRequest.of(pageNum - 1, ROOT_CATEGORIES_PER_PAGE, sort);
 
-        if (StringUtils.hasLength(keyword)){
-            pageRootCategories = repository.searchCategory(keyword, pageable);
-        }else {
-            pageRootCategories = repository.findRootCategories(pageable);
+        Page<Category> pageCategories = null;
+
+        if (keyword != null && !keyword.isEmpty()) {
+            pageCategories = repository.search(keyword, pageable);
+        } else {
+            pageCategories = repository.findRootCategories(pageable);
         }
 
-        List<Category> rootCategories = pageRootCategories.getContent();
+        List<Category> rootCategories = pageCategories.getContent();
 
-        categoryPageInfo.setTotalElements(pageRootCategories.getTotalElements());
-        categoryPageInfo.setTotalPages(pageRootCategories.getTotalPages());
+        pageInfo.setTotalElements(pageCategories.getTotalElements());
+        pageInfo.setTotalPages(pageCategories.getTotalPages());
 
-        if (StringUtils.hasLength(keyword)){
-            List<Category> searchResult = pageRootCategories.getContent();
-            for (Category category : searchResult){
+        if (keyword != null && !keyword.isEmpty()) {
+            List<Category> searchResult = pageCategories.getContent();
+            for (Category category : searchResult) {
                 category.setHasChildren(category.getChildren().size() > 0);
             }
 
             return searchResult;
-        }else {
-            return listHierarchicalCategories(rootCategories);
+
+        } else {
+            return listHierarchicalCategories(rootCategories, sortDir);
         }
     }
 
@@ -86,63 +90,85 @@ public class CategoryService {
         }
     }
 
-    public List<Category> listHierarchicalCategories(List<Category> rootCategories) {
-        return rootCategories.stream()// Create a stream of rootCategories and flatten the results using flatMap
-                .flatMap(category -> listSubHierarchicalCategories(category, 0).stream())// For each root category, call the listSubHierarchicalCategories method
-                .collect(Collectors.toList());// Collect all the results into a single list
+    private List<Category> listHierarchicalCategories(List<Category> rootCategories, String sortDir) {
+        List<Category> hierarchicalCategories = new ArrayList<>();
+
+        for (Category rootCategory : rootCategories) {
+            hierarchicalCategories.add(Category.copyFull(rootCategory));
+
+            Set<Category> children = sortSubCategories(rootCategory.getChildren(), sortDir);
+
+            for (Category subCategory : children) {
+                String name = "--" + subCategory.getName();
+                hierarchicalCategories.add(Category.copyFull(subCategory, name));
+
+                listSubHierarchicalCategories(hierarchicalCategories, subCategory, 1, sortDir);
+            }
+        }
+
+        return hierarchicalCategories;
     }
 
-    /**
-     * Fetches a list of categories to be used in a form.
-     * The list includes parent categories and their subcategories.
-     *
-     * @return a list of categories with '--' repeated prefix indicating their level
-     */
     public List<Category> listCategoriesUsedInForm() {
         List<Category> categoriesUsedInForm = new ArrayList<>();
-        repository.findRootCategories(Sort.by("name").ascending()).stream()
-                .filter(category -> category.getParent() == null)
-                .forEach(category -> processSubCategories(categoriesUsedInForm, category, 0));
+
+        Iterable<Category> categoriesInDB = repository.findRootCategories(Sort.by("name").ascending());
+
+        for (Category category : categoriesInDB) {
+            categoriesUsedInForm.add(Category.copyIdAndName(category));
+
+            Set<Category> children = sortSubCategories(category.getChildren());
+
+            for (Category subCategory : children) {
+                String name = "--" + subCategory.getName();
+                categoriesUsedInForm.add(Category.copyIdAndName(subCategory.getId(), name));
+
+                listSubCategoriesUsedInForm(categoriesUsedInForm, subCategory, 1);
+            }
+        }
 
         return categoriesUsedInForm;
     }
 
-    /**
-     * Processes a category and its children recursively, adding them to the provided list.
-     *
-     * @param list     the list to add the categories to
-     * @param category the current category being processed
-     * @param level    the current level (depth) of the category in the hierarchy
-     */
-    private void processSubCategories(List<Category> list, Category category, int level) {
-        list.add(Category.copyIdAndName(category.getId(), "--".repeat(level) + category.getName()));
+    private void listSubHierarchicalCategories(List<Category> hierarchicalCategories,
+                                               Category parent, int subLevel, String sortDir) {
+        Set<Category> children = sortSubCategories(parent.getChildren(), sortDir);
+        int newSubLevel = subLevel + 1;
 
-        SortedSet<Category> sortedChilder = sortSubCategories(category.getChildren());
-        sortedChilder
-                .forEach(child -> processSubCategories(list, child, level + 1));
+        for (Category subCategory : children) {
+            String name = "";
+            for (int i = 0; i < newSubLevel; i++) {
+                name += "--";
+            }
+            name += subCategory.getName();
+
+            hierarchicalCategories.add(Category.copyFull(subCategory, name));
+
+            listSubHierarchicalCategories(hierarchicalCategories, subCategory, newSubLevel, sortDir);
+        }
+
     }
 
-    private List<Category> listSubHierarchicalCategories(Category parent, int subLevel) {
-        List<Category> hierarchicalCategories = new ArrayList<>();// Create a list to store hierarchical categories for the current branch
-        String prefix = "--".repeat(subLevel);// Create a prefix string to indicate the level of indentation
+    private void listSubCategoriesUsedInForm(List<Category> categoriesUsedInForm,
+                                             Category parent, int subLevel) {
+        int newSubLevel = subLevel + 1;
+        Set<Category> children = sortSubCategories(parent.getChildren());
 
-        hierarchicalCategories.add(Category.copyFull(parent, prefix + parent.getName()));// Add the current parent category with the appropriate indentation to the list
+        for (Category subCategory : children) {
+            String name = "";
+            for (int i = 0; i < newSubLevel; i++) {
+                name += "--";
+            }
+            name += subCategory.getName();
 
-        Set<Category> children = sortSubCategories(parent.getChildren()); // Retrieve the children of the parent category
-        int newSubLevel = subLevel + 1;// Increment the subLevel to indicate we are going one level deeper in the hierarchy
+            categoriesUsedInForm.add(Category.copyIdAndName(subCategory.getId(), name));
 
-        children.forEach(subCategory -> {// Process each child category using a forEach loop
-            hierarchicalCategories.addAll(listSubHierarchicalCategories(subCategory, newSubLevel));// Add the child category with the updated indentation to the list
-        });
-
-        return hierarchicalCategories;// Return the hierarchicalCategories list for the current branch
+            listSubCategoriesUsedInForm(categoriesUsedInForm, subCategory, newSubLevel);
+        }
     }
 
-    private SortedSet<Category> sortSubCategories(Set<Category> children){
-        SortedSet<Category> sortedChildren = new TreeSet<>(Comparator.comparing(Category::getName));
-        sortedChildren.addAll(children);
-
-        return sortedChildren;
+    private SortedSet<Category> sortSubCategories(Set<Category> children) {
+        return sortSubCategories(children, "asc");
     }
 
     public boolean checkExistingCategory(Category category) {
@@ -150,6 +176,23 @@ public class CategoryService {
             return false;
         }
         return repository.findById(category.getId()).isPresent();
+    }
+
+    private SortedSet<Category> sortSubCategories(Set<Category> children, String sortDir) {
+        SortedSet<Category> sortedChildren = new TreeSet<>(new Comparator<Category>() {
+            @Override
+            public int compare(Category cat1, Category cat2) {
+                if (sortDir.equals("asc")) {
+                    return cat1.getName().compareTo(cat2.getName());
+                } else {
+                    return cat2.getName().compareTo(cat1.getName());
+                }
+            }
+        });
+
+        sortedChildren.addAll(children);
+
+        return sortedChildren;
     }
 
     public String checkUnique(Integer id, String name, String alias){
@@ -186,6 +229,6 @@ public class CategoryService {
         sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
 
         List<Category> rootCategories = repository.findRootCategories(sort);
-        return listHierarchicalCategories(rootCategories);
+        return listHierarchicalCategories(rootCategories, String.valueOf(sortDir));
     }
 }

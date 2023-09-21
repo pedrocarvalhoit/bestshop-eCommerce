@@ -1,59 +1,48 @@
-*.icon-white{color: white}
-*.icon-silver{color: silver}
-*.icon-green{color: green}
-*.icon-dark{color: gray}
-*.icon-silver{color: silver}
-*.icon-blue{color: blue}
-*.icon-red{color: red}
-*.icon-black{color: black}
-*.icon-ligth-blue{}
-*.icon-light-red{color: #f55353}
-*.icon-dark-blue{color: #021170}
-*.text-color-blue{color: #00BFFF}
-
-.logout-success-message{
-    background-color: #4CAF50; /* Cor de fundo verde */
-    color: white; /* Cor do texto branco */
-    padding: 10px; /* Espaçamento interno */
-    text-align: center; /* Alinhamento centralizado do texto */
-    font-weight: bold; /* Texto em negrito */
-    border-radius: 5px; /* Borda arredondada */
-    margin: 10px auto; /* Centralizar na página */
-    width: 300px; /* Largura fixa ou a que você preferir */
+*.icon-white {
+	color: white
 }
 
-.less-details{
-    display: flex;
-    justify-content: center;
+*.icon-silver {
+	color: silver
 }
 
-@media screen and (max-width: 768px){
-    /*Small screen */
-    div.full-details{display: none}
-    div.less-details{display: block}
-
-    div.full-details-pagination{display: none}
-    div.less-details-pagination{display: block}
+*.icon-green {
+	color: green
 }
 
-@media screen and (min-width: 768px) and (max-width: 1024px){
-    /*Medium screen */
-    div.full-details{display: block}
-    div.less-details{display: none}
-
-    div.full-details-pagination{display: block}
-    div.less-details-pagination{display: none}
+*.icon-dark {
+	color: gray
 }
 
-@media screen and (min-width: 1024px){
-    /*Big screen */
-    div.full-details{display: block}
-    div.less-details{display: none}
-
-    div.full-details-pagination{display: block}
-    div.less-details-pagination{display: none}
+@media screen and (max-width: 768px) {
+	/* small screen */
+	div.full-details {
+		display: none
+	}
+	div.less-details {
+		display: block;
+	}
 }
 
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+	/* medium screen */
+	div.full-details {
+		display: block;
+	}
+	div.less-details {
+		display: none;
+	}
+	.hideable-column {
+		display: none
+	}
+}
 
-
-
+@media screen and (min-width: 1024px) {
+	/* small screen */
+	div.less-details {
+		display: none;
+	}
+	.hideable-column {
+		display: table-cell;
+	}
+}

@@ -1,24 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-<head th:replace="fragments/page-structure :: head('Home - Bestshop Admin')">
-
-</head>
+	  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head th:replace="fragments :: page_head('Home - Bestshop Admin')"></head>
 <body>
-    <div class="container-fluid">
-        <div th:replace="fragments/navbar :: header"></div>
+<div class="container-fluid">
+	<div th:replace="navigation :: menu"></div>
+	<div>
+		<h2>Bestshop Control Panel</h2>
+		Welcome
+		<a th:href="@{/account}"
+		   sec:authentication="principal.fullName"></a>
+		<span sec:authentication="principal.authorities"></span>
+	</div>
 
-        <div >
-            <h1>Bestshop Control Pane</h1>
-        </div>
+	<div th:replace="fragments :: footer"></div>
 
-        <div>
-            Welcome
-            <a th:href="@{/account}" sec:authentication="principal.fullName"></a>
-            <span sec:authentication="principal.authorities"></span>
-        </div>
-
-        <div th:replace="fragments/page-structure :: page_footer"></div>
-    </div>
+</div>
 </body>
 </html>

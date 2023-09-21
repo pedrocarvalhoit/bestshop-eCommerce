@@ -1,114 +1,81 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:href="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
-<head th:replace="fragments/page-structure :: head('Categories - Bestshop Admin')">
-
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Categories - Bestshop Admin')"></head>
 <body>
-<div th:replace="fragments/navbar :: header">
+<div class="container-fluid">
+	<div th:replace="navigation :: menu"></div>
+	<div>
+		<h2>Manage Categories</h2>
+
+		<a th:href="@{/categories/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
+		<a th:href="@{/categories/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
+
+	</div>
+
+	<div th:if="${message != null}" class="alert alert-success text-center">
+		[[${message}]]
+	</div>
+
+	<div th:replace="fragments :: search_form('/categories/page/1')"></div>
+
+	<div class="full-details">
+		<table class="table table-bordered table-striped table-hover table-responsive-xl">
+			<thead class="thead-dark">
+			<tr>
+				<th>ID</th>
+				<th>Category Image</th>
+				<th>
+					<a class="text-white" th:href="@{'/categories/page/' + ${pageNum} + '?sortDir=' + ${reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Category Name</a>
+					<span th:class="${reverseSortDir == 'desc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}" ></span>
+				</th>
+				<th>Alias</th>
+				<th>Enabled</th>
+				<th></th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="cat : ${listCategories}">
+				<td>[[${cat.id}]]</td>
+				<td>
+					<img th:src="@{${cat.imagePath}}" style="width: 100px" class="img-fluid"/>
+				</td>
+				<td>[[${cat.name}]]</td>
+				<td>[[${cat.alias}]]</td>
+				<td>
+					<div th:replace="fragments :: category_status"></div>
+				</td>
+				<td>
+					<div th:replace="fragments :: category_actions"></div>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div th:if="${keyword != null}" class="text-center">
+		<span>Search result does not show categories in hierarchical form</span>
+		<div th:replace="fragments :: pagination('/categories', 'categories')"></div>
+	</div>
+
+	<th:block th:unless="${keyword != null}">
+		<div th:replace="fragments :: pagination('/categories', 'top-level categories')"></div>
+	</th:block>
 </div>
 
-<div>
-    <h2>Manage Categories</h2>
-    <a th:href="@{/categories/new}" title="Create New Category" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
-    <a th:href="@{/categories/export/csv}" class=" fas fa-file-csv fa-2x icon-dark mr-2"></a>
-</div>
+<div th:replace="modal_fragments :: confirm_modal"></div>
 
-<div th:if="${message != null}" class="alert alert-success text-center">
-    [[${message}]]
-</div>
+<div th:replace="fragments :: footer"></div>
 
-<div th:replace="~{fragments/search-filter :: searchForm('/categories/page/1')}"></div>
-
-<div>
-    <table class="table table-bordered table-striped table-hover table-responsive-xl">
-        <thead class="thead-dark">
-        <th>ID</th>
-        <th>Category Image</th>
-        <th>
-            <a class="text-white" th:href="@{/categories/page/{pageNum}(pageNum=${currentPage},sortField=${fieldName},sortDir=${sortDir == 'asc' ? 'desc' : 'asc'}, keyword=${keyword != null ? keyword : ' '})}">
-                Category Name</a>
-            <span th:class="${reverseSortDir == 'desc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
-        </th>
-        <th>Alias</th>
-        <th>Enabled</th>
-        <th></th>
-        </thead>
-
-        <tbody th:each="category: ${listCategories}">
-        <td>[[${category.id}]]</td>
-        <td>
-            <img th:src="@{${category.imagePath}}" style="width: 100px" class="img-fluid"/>
-        </td>
-
-        <td>
-            [[${category.name}]]
-        </td>
-
-        <td>[[${category.alias}]]</td>
-        <td>
-            <a th:if="${category.enabled == true}" th:href="@{'/categories/' + ${category.id}} + '/enabled/false'"
-               class="fas fa-check-circle fa-2x icon-light-blue"></a>
-            <a th:if="${category.enabled == false}" th:href="@{'/categories/' + ${category.id}} + '/enabled/true'"
-               class="fas fa-circle fa-2x icon-light-red"></a>
-        </td>
-        <td>
-            <a th:href="@{'/categories/edit/' + ${category.id}}"
-               title="Delete this category"
-               class="fas fa-edit fa-2x icon-green ml-3"></a>
-            &nbsp;
-            <th:block th:if="${category.hasChildren == false}">
-                <a th:href="@{'/categories/delete/' + ${category.id}}"
-                   th:categoryId="${category.id}"
-                   title="Delete This Category"
-                   class="fas fa-trash fa-2x icon-dark link-delete ml-3"></a>
-            </th:block>
-
-        </td>
-        </tbody>
-    </table>
-</div>
-
-<div th:if="${keyword != null}" class="text-center">
-    <span>Search result does not show categories in hierarchical form</span>
-    <div th:replace="~{fragments/pagination :: pagination('/categories' ,'categories')}"></div>
-</div>
-
-<th:block th:unless="${keyword != null}">
-    <div th:replace="~{fragments/pagination :: pagination('/categories' ,'top-level categories')}"></div></th:block>
-
-<div class="modal fade text-center" id="confirmModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Delete Confirmation</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <div class="modal-body">
-                <span id="confirmText"></span>
-            </div>
-
-            <div class="modal-footer">
-                <a class="btn btn-success" href="" id="yesButton">Yes</a>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div th:replace="fragments/page-structure :: page_footer"></div>
-
+<script th:src="@{/js/common_list.js}"></script>
 <script type="text/javascript">
-    $(document).ready(function(){
-        $(".link-delete").on("click", function(e){
-            e.preventDefault();//prevent de default behavior from the link
-            link = $(this);//takes the element clicked on and puts on variable link
-            categoryId = link.attr("categoryId");
-            $("#yesButton").attr("href", link.attr("href"));//Puts the original link on the yes button
-            $("#confirmText").text("Are you sure you want to delete this category ID " + categoryId + "?");
-            $("#confirmModal").modal();//Opens the modal with ID confirmModal
-        });
-    });
+	moduleURL = "[[@{/categories}]]";
+
+	$(document).ready(function() {
+		$(".link-delete").on("click", function(e) {
+			e.preventDefault();
+			showDeleteConfirmModal($(this), 'category');
+		});
+	});
 </script>
 </body>
 </html>
