@@ -92,14 +92,10 @@ public class CategoryController {
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);//Saves the file
 
-            String message = registeredCategory ? "Category " + savedCategory.getName().toUpperCase() + " updated successfully" : "Category created successfully";
-
-            redirectAttributes.addFlashAttribute("message", "Category created successfully");
-
         }else{
             service.save(category);
-            redirectAttributes.addFlashAttribute("message", "Category created successfully");
         }
+        redirectAttributes.addFlashAttribute("message", "Category has been saved successfully");
         return "redirect:/categories";
     }
 
