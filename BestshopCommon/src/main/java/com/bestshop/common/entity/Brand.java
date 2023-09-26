@@ -26,6 +26,14 @@ public class Brand {
                     inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
 
+    public Brand() {
+    }
+
+    public Brand(String name, String logo) {
+        this.name = name;
+        this.logo = logo;
+    }
+
     public String getName() {
         return name;
     }
@@ -54,5 +62,12 @@ public class Brand {
         return id;
     }
 
-
+    @Override
+    public String toString() {
+        return "Brand{" +
+                "name='" + name + '\'' +
+                ", logo='" + logo + '\'' +
+                ", categories=" + categories +
+                '}';
+    }
 }
