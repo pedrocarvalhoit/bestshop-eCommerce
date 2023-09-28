@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class BrandService {
@@ -31,5 +32,13 @@ public class BrandService {
 
     public void delete(Integer id) {
         repository.deleteById(id);
+    }
+
+    public Brand get(Integer id) throws BrandNotFoundException {
+        try {
+            return repository.findById(id).get();
+        } catch (NoSuchElementException exception) {
+            throw new BrandNotFoundException("Brand with " + id + " not found");
+        }
     }
 }

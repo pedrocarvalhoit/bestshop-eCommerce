@@ -62,6 +62,12 @@ public class Brand {
         return id;
     }
 
+    @Transient
+    public String getLogoPath(){
+        if(this.id == null || this.logo == null || this.logo.isEmpty()) return "/images/image-thumbnail.png";
+        return "/brand-logos/" + this.id + "/" + this.logo;
+    }
+
     @Override
     public String toString() {
         return "Brand{" +
