@@ -8,4 +8,7 @@ import org.springframework.stereotype.Repository;
 public interface BrandRepository extends JpaRepository<Brand,Integer> {
 
     Brand findByName(String name);
+
+    public Long countByid(Integer id);
+
 }

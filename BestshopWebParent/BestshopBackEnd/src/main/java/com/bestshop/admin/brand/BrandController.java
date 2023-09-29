@@ -49,8 +49,9 @@ public class BrandController {
     }
 
     @PostMapping("/brands/save")
-    public String createBrand(Brand brand, @RequestParam("logoImage")MultipartFile multipartFile, RedirectAttributes ra) throws IOException {
-        if(!multipartFile.isEmpty()){
+    public String saveBrand(Brand brand, @RequestParam("fileImage")MultipartFile multipartFile,
+                            RedirectAttributes ra) throws IOException {
+        if (!multipartFile.isEmpty()) {
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             brand.setLogo(fileName);
 
@@ -60,37 +61,47 @@ public class BrandController {
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 
-        }else {
+        } else {
             brandService.save(brand);
         }
-        ra.addFlashAttribute("message", "Brand has been saved successfully");
+
+        ra.addFlashAttribute("message", "The brand has been saved successfully.");
         return "redirect:/brands";
     }
 
-    @GetMapping("brands/edit/{id}")
-    public String editBrand(@PathVariable(name = "id")Integer id, Model model, RedirectAttributes ra) throws BrandNotFoundException{
-        try{
+    @GetMapping("/brands/edit/{id}")
+    public String editBrand(@PathVariable(name = "id") Integer id, Model model,
+                            RedirectAttributes ra) {
+        try {
             Brand brand = brandService.get(id);
             List<Category> listCategories = categoryService.listCategoriesUsedInForm();
 
-            model.addAttribute("listCategories", listCategories);
             model.addAttribute("brand", brand);
-            model.addAttribute("pageTitle", "Edit the brand with Name: " + brand.getName());
+            model.addAttribute("listCategories", listCategories);
+            model.addAttribute("pageTitle", "Edit Brand (ID: " + id + ")");
 
             return "brands/brand_form";
-        }catch (BrandNotFoundException exception){
-            ra.addFlashAttribute("message", exception.getMessage());
-            return "brands/brand_form";
+        } catch (BrandNotFoundException ex) {
+            ra.addFlashAttribute("message", ex.getMessage());
+            return "redirect:/brands";
         }
     }
 
     @GetMapping("brands/delete/{id}")
-    public String deleteBrand(@PathVariable(name = "id")Integer id, RedirectAttributes ra){
-        brandService.delete(id);
+    public String deleteBrand(@PathVariable(name = "id")Integer id, RedirectAttributes ra) throws BrandNotFoundException {
+        try{
+            String uploadDir = "../brand-logos/" + id;
+            FileUploadUtil.cleanDir(uploadDir);
+            FileUploadUtil.deleteDir(uploadDir);
 
-        ra.addFlashAttribute("message", "Brand with id: " + id + " has been deleted successfuly");
+            brandService.delete(id);
+            ra.addFlashAttribute("message", "Brand with id: " + id + " has been deleted successfuly");
+            return "redirect:/brands";
+        }catch (BrandNotFoundException exception){
+            ra.addFlashAttribute("message", exception.getMessage());
+            return "redirect:/brands";
+        }
 
-        return "redirect:/brands";
     }
 
     @GetMapping("/brands/export/csv")

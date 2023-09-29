@@ -30,15 +30,23 @@ public class BrandService {
         return repository.findById(id).get();
     }
 
-    public void delete(Integer id) {
-        repository.deleteById(id);
-    }
 
     public Brand get(Integer id) throws BrandNotFoundException {
         try {
             return repository.findById(id).get();
-        } catch (NoSuchElementException exception) {
-            throw new BrandNotFoundException("Brand with " + id + " not found");
+        } catch (NoSuchElementException ex) {
+            throw new BrandNotFoundException("Could not find any brand with ID " + id);
         }
     }
+
+    public void delete(Integer id) throws BrandNotFoundException {
+        Long countById = repository.countByid(id);
+
+        if(countById == null || countById == 0){
+            throw new BrandNotFoundException("Could not find any brand whith ID " + id);
+        }
+
+        repository.deleteById(id);
+    }
+
 }
