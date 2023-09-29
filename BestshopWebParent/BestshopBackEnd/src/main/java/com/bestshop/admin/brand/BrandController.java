@@ -68,10 +68,12 @@ public class BrandController {
     }
 
     @GetMapping("brands/edit/{id}")
-    public String editBrand(@PathVariable(name = "id")Integer id, Model model, RedirectAttributes ra){
+    public String editBrand(@PathVariable(name = "id")Integer id, Model model, RedirectAttributes ra) throws BrandNotFoundException{
         try{
             Brand brand = brandService.get(id);
+            List<Category> listCategories = categoryService.listCategoriesUsedInForm();
 
+            model.addAttribute("listCategories", listCategories);
             model.addAttribute("brand", brand);
             model.addAttribute("pageTitle", "Edit the brand with Name: " + brand.getName());
 

@@ -37,7 +37,7 @@
         <div class="form-group row">
             <label class="col-sm-4 col-form-label">Category(s)</label>
             <div class="col-sm-8">
-                <select id="categorySelect" class="form-control" th:field="*{categories}"
+                <select class="form-control" th:field="*{categories}"
                         multiple="multiple" required style="resize: vertical; height: 200px">
                     <th:block th:each="cat : ${listCategories}">
                         <option th:value="${cat.id}">[[${cat.name}]]</option>
@@ -46,7 +46,13 @@
             </div>
         </div>
 
-        <div class="selected-categories">
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Chosen categories:</label>
+            <div class="col-sm-8">
+                <div id="chosenCategories">
+                </div>
+            </div>
+        </div>
 
         </div>
 
@@ -64,24 +70,28 @@
 <script type="text/javascript">
     moduleURL = "[[@{/brands}]]";
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const selectElement = document.querySelector('#categorySelect');
-        const displayDiv = document.querySelector('.selected-categories');
+    $(document).ready(function() {
+        dropdownCategories = $("#categories");
+        divChosenCategories = $("#chosenCategories");
 
-        selectElement.addEventListener('change', function() {
-            // Limpe a div de exibição antes de adicionar novos valores
-            displayDiv.innerHTML = '';
-
-            // Para cada opção selecionada, adicione-a à div
-            for (let option of this.selectedOptions) {
-                const cleanCategoryName = option.textContent.trim().replace(/^-*\s*/, '');
-                const category = document.createElement('span');
-                category.className = 'badge badge-primary'; // Estilo bootstrap opcional
-                category.textContent = option.textContent;
-                displayDiv.appendChild(category);
-            }
+        dropdownCategories.change(function() {
+            divChosenCategories.empty();
+            showChosenCategories();
         });
+
+        showChosenCategories();
     });
+
+    function showChosenCategories() {
+        dropdownCategories.children("option:selected").each(function() {
+            selectedCategory = $(this);
+            catId = selectedCategory.val();
+            catName = selectedCategory.text().replace(/-/g, "");
+
+            divChosenCategories.append("<span class='badge badge-secondary m-1'>" + catName + "</span>");
+        });
+
+    }
 
 </script>
 <script th:src="@{/js/common_form.js}"></script>
