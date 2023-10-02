@@ -2,6 +2,9 @@ package com.bestshop.admin.brand;
 
 import com.bestshop.common.entity.Brand;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +17,26 @@ public class BrandService {
     @Autowired
     private BrandRepository repository;
 
-    public Brand save(Brand brand) {
-        return repository.save(brand);
-    }
+    public static final int NUMBER_ITEM_PER_PAGE = 10;
 
-    public List<Brand> findAll() {
-        return repository.findAll();
+    public Page<Brand> listByPage(int pageNum, String sortField, String sortDir, String keyword){
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+        Pageable pageable = PageRequest.of(pageNum - 1, NUMBER_ITEM_PER_PAGE, sort);
+
+        if (keyword != null){
+            return repository.findAll(keyword, pageable);
+        }
+
+        return repository.findAll(pageable);
     }
 
     public List<Brand> listAll(Sort sort) {
-        return repository.findAll(sort);
+        return (List<Brand>) repository.findAll(sort);
+    }
+
+    public Brand save(Brand brand) {
+        return repository.save(brand);
     }
 
     public Brand findById(Integer id) {

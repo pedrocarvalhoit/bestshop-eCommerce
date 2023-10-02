@@ -2,11 +2,14 @@ package com.bestshop.admin.brand;
 
 import com.bestshop.admin.FileUploadUtil;
 import com.bestshop.admin.category.service.CategoryService;
+import com.bestshop.admin.user.service.UserService;
 import com.bestshop.common.entity.Brand;
 import com.bestshop.common.entity.Category;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -30,9 +33,36 @@ public class BrandController {
     BrandService brandService;
 
     @GetMapping("/brands")
-    public String listAll(Model model){
-        List<Brand> listBrands = brandService.findAll();
+    public String listFirstPage(Model model){
+        return listByPage(1, "name", "asc", null, model);
+    }
+
+    @GetMapping("/brands/page/{page}")
+    public String listByPage(@PathVariable(name = "page")Integer pageNum ,
+                             @Param("sortField")String sortField,
+                             @Param("sortDir")String sortDir,
+                             @Param("keyword")String keyword, Model model){
+        Page<Brand> pageBrand = brandService.listByPage(pageNum, sortField, sortDir, keyword);
+        List<Brand> listBrands = pageBrand.getContent();
+
+        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+
+        int startCount = (pageNum -1) * BrandService.NUMBER_ITEM_PER_PAGE +1;
+        long endCount = startCount + BrandService.NUMBER_ITEM_PER_PAGE -1;
+        if(endCount > pageBrand.getTotalElements()){
+            endCount = pageBrand.getTotalElements();
+        }
+
         model.addAttribute("listBrands", listBrands);
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", reverseSortDir);
+        model.addAttribute("startCount", startCount);
+        model.addAttribute("endCount", endCount);
+        model.addAttribute("totalPages", pageBrand.getTotalPages());
+        model.addAttribute("totalItems", pageBrand.getTotalElements());
+        model.addAttribute("keyword", keyword);
 
         return "brands/brands";
     }

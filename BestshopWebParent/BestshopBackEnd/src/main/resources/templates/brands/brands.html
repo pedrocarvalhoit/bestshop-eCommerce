@@ -21,7 +21,9 @@
             <tr>
                 <th>Brand ID</th>
                 <th>Logo</th>
-                <th>Brand Name</th>
+                <th>
+                    <a th:replace="~{fragments :: column_link('/brands', 'name', 'Brand Name', 'none')}"></a>
+                </th>
                 <th>Categories</th>
                 <th></th>
             </tr>
@@ -46,6 +48,10 @@
             </tr>
             </tbody>
         </table>
+    </div>
+
+    <div th:replace="~{fragments :: pagination('/brands', 'brands')}">
+
     </div>
 
     <div th:replace="~{modal_fragments :: confirm_modal}"></div>
