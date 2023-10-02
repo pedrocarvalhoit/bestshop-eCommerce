@@ -49,4 +49,18 @@ public class BrandService {
         repository.deleteById(id);
     }
 
+    public String checkUnique(Integer id, String name) {
+        boolean isCreatingNew = (id == null || id == 0);
+        Brand brand = repository.findByName(name);
+
+        if (isCreatingNew){
+            if (brand != null)return "Duplicate";
+        }else {
+            if (brand != null && brand.getId() != id){
+                return "Duplicate";
+            }
+        }
+
+        return "OK";
+    }
 }

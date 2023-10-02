@@ -34,6 +34,10 @@ public class Brand {
         this.logo = logo;
     }
 
+    public Brand(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
