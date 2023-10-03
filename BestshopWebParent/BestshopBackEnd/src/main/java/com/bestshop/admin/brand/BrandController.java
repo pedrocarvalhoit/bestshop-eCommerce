@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class BrandController {
@@ -31,6 +32,8 @@ public class BrandController {
 
     @Autowired
     BrandService brandService;
+
+    private static final String REDIRECT_BRANDS = "redirect:/brands";
 
     @GetMapping("/brands")
     public String listFirstPage(Model model){
@@ -82,7 +85,7 @@ public class BrandController {
     public String saveBrand(Brand brand, @RequestParam("fileImage")MultipartFile multipartFile,
                             RedirectAttributes ra) throws IOException {
         if (!multipartFile.isEmpty()) {
-            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
             brand.setLogo(fileName);
 
             Brand savedBrand = brandService.save(brand);
@@ -96,7 +99,7 @@ public class BrandController {
         }
 
         ra.addFlashAttribute("message", "The brand has been saved successfully.");
-        return "redirect:/brands";
+        return REDIRECT_BRANDS;
     }
 
     @GetMapping("/brands/edit/{id}")
@@ -113,7 +116,7 @@ public class BrandController {
             return "brands/brand_form";
         } catch (BrandNotFoundException ex) {
             ra.addFlashAttribute("message", ex.getMessage());
-            return "redirect:/brands";
+            return REDIRECT_BRANDS;
         }
     }
 
@@ -126,10 +129,10 @@ public class BrandController {
 
             brandService.delete(id);
             ra.addFlashAttribute("message", "Brand with id: " + id + " has been deleted successfuly");
-            return "redirect:/brands";
+            return REDIRECT_BRANDS;
         }catch (BrandNotFoundException exception){
             ra.addFlashAttribute("message", exception.getMessage());
-            return "redirect:/brands";
+            return REDIRECT_BRANDS;
         }
 
     }

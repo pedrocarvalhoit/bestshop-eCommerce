@@ -29,6 +29,10 @@ public class Brand {
     public Brand() {
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Brand(String name, String logo) {
         this.name = name;
         this.logo = logo;
