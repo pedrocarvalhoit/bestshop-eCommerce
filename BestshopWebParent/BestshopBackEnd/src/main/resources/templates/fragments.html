@@ -88,6 +88,12 @@
 	<img th:src="@{${cat.imagePath}}" style="width: 100px" class="img-fluid"/>
 </div>
 
+<!--Brand Logo -->
+
+<div th:fragment="brand_logo" th:remove="tag">
+	<img th:src="@{${brand.logoPath}}" style="width: 100px" class="img-fluid"/>
+</div>
+
 
 <!--Status Enabled -->
 
