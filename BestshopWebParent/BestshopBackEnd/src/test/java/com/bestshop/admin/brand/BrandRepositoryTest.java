@@ -1,13 +1,12 @@
 package com.bestshop.admin.brand;
 
-import com.bestshop.admin.category.repository.CategoryReposiroty;
+import com.bestshop.admin.category.CategoryReposiroty;
 import com.bestshop.common.entity.Brand;
 import com.bestshop.common.entity.Category;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Rollback;
 
 import java.util.HashSet;
 import java.util.List;

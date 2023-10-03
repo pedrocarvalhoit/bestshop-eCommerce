@@ -1,4 +1,4 @@
-package com.bestshop.admin.user.repository;
+package com.bestshop.admin.user;
 
 import com.bestshop.common.entity.User;
 import org.springframework.data.domain.Page;

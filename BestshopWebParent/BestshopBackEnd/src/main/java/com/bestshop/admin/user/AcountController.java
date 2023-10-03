@@ -1,7 +1,5 @@
-package com.bestshop.admin.user.controller;
+package com.bestshop.admin.user;
 
-import com.bestshop.admin.user.repository.UserRepository;
-import com.bestshop.admin.user.service.UserService;
 import com.bestshop.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

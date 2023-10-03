@@ -1,4 +1,4 @@
-package com.bestshop.admin.category.export;
+package com.bestshop.admin.category;
 
 import com.bestshop.admin.AbstractExporter;
 import com.bestshop.common.entity.Category;

@@ -1,4 +1,4 @@
-package com.bestshop.admin.category.repository;
+package com.bestshop.admin.category;
 
 import com.bestshop.common.entity.Category;
 import org.springframework.data.domain.Page;

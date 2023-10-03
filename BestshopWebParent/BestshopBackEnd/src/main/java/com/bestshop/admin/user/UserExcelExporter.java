@@ -1,4 +1,4 @@
-package com.bestshop.admin.user.export;
+package com.bestshop.admin.user;
 
 import com.bestshop.admin.AbstractExporter;
 import com.bestshop.common.entity.User;

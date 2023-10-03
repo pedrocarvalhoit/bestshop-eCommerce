@@ -1,6 +1,5 @@
 package com.bestshop.admin.category;
 
-import com.bestshop.admin.category.repository.CategoryReposiroty;
 import com.bestshop.common.entity.Category;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

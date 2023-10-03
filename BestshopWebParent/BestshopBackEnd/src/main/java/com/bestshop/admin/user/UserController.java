@@ -1,11 +1,6 @@
-package com.bestshop.admin.user.controller;
+package com.bestshop.admin.user;
 
 import com.bestshop.admin.FileUploadUtil;
-import com.bestshop.admin.user.exception.UserNotFoundException;
-import com.bestshop.admin.user.service.UserService;
-import com.bestshop.admin.user.export.UserCsvExporter;
-import com.bestshop.admin.user.export.UserExcelExporter;
-import com.bestshop.admin.user.export.UserPDFExporter;
 import com.bestshop.common.entity.Role;
 import com.bestshop.common.entity.User;
 import com.itextpdf.text.DocumentException;

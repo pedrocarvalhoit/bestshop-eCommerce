@@ -1,9 +1,9 @@
-package com.bestshop.admin.user.service;
+package com.bestshop.admin.user;
 
 import com.bestshop.admin.FileUploadUtil;
-import com.bestshop.admin.user.exception.UserNotFoundException;
-import com.bestshop.admin.user.repository.RoleRespository;
-import com.bestshop.admin.user.repository.UserRepository;
+import com.bestshop.admin.user.UserNotFoundException;
+import com.bestshop.admin.user.RoleRespository;
+import com.bestshop.admin.user.UserRepository;
 import com.bestshop.common.entity.Role;
 import com.bestshop.common.entity.User;
 import jakarta.transaction.Transactional;

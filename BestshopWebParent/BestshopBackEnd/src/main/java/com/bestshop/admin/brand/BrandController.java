@@ -1,8 +1,7 @@
 package com.bestshop.admin.brand;
 
 import com.bestshop.admin.FileUploadUtil;
-import com.bestshop.admin.category.service.CategoryService;
-import com.bestshop.admin.user.service.UserService;
+import com.bestshop.admin.category.CategoryService;
 import com.bestshop.common.entity.Brand;
 import com.bestshop.common.entity.Category;
 import jakarta.servlet.http.HttpServletResponse;

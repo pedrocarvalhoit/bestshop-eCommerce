@@ -1,8 +1,8 @@
-package com.bestshop.admin.category.service;
+package com.bestshop.admin.category;
 
 import com.bestshop.admin.category.CategoryNotFoundException;
 import com.bestshop.admin.category.CategoryPageInfo;
-import com.bestshop.admin.category.repository.CategoryReposiroty;
+import com.bestshop.admin.category.CategoryReposiroty;
 import com.bestshop.common.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,10 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Service

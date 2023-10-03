@@ -1,6 +1,5 @@
-package com.bestshop.admin.category.controller;
+package com.bestshop.admin.category;
 
-import com.bestshop.admin.category.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.PostMapping;

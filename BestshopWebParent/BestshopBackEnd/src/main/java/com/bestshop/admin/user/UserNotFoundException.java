@@ -1,4 +1,4 @@
-package com.bestshop.admin.user.exception;
+package com.bestshop.admin.user;
 
 public class UserNotFoundException extends Throwable {
 
