@@ -12,6 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,6 +25,21 @@ class BrandServiceTest {
 
     @InjectMocks
     private BrandService service;
+
+    @Test
+    public void testEditExistingBrand(){
+        Integer id = 1;
+        String name = "Acer";
+        Brand brand = new Brand(id, name);
+
+        Mockito.when(repository.findById(1)).thenReturn(Optional.of(brand));
+
+        Brand savedBrand = service.save(brand);
+
+        assertNotNull(brand);
+        assertEquals(name, savedBrand.getName());
+
+    }
 
     @Test
     public void testCheckUniqueInNewModeReturnDuplicate(){

@@ -11,7 +11,7 @@ import java.util.Set;
 public class Brand {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(length = 45, nullable = false, unique = true)
@@ -35,6 +35,11 @@ public class Brand {
     }
 
     public Brand(String name) {
+        this.name = name;
+    }
+
+    public Brand(Integer id, String name) {
+        this.id = id;
         this.name = name;
     }
 

@@ -39,11 +39,6 @@ public class BrandService {
         return repository.save(brand);
     }
 
-    public Brand findById(Integer id) {
-        return repository.findById(id).get();
-    }
-
-
     public Brand get(Integer id) throws BrandNotFoundException {
         try {
             return repository.findById(id).get();
