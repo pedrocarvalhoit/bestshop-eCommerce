@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head th:replace="~{fragments :: page_head(Brands)}">
+<head th:replace="~{fragments :: page_head(${pageTitle})}">
 </head>
 <body>
 
@@ -57,11 +57,11 @@
             </div>
         </div>
 
-    </div>
+        <div class="text-center">
+            <input type="submit" value="Save" class="btn btn-primary m-3"/>
+            <input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel">
+        </div>
 
-    <div class="text-center">
-        <input type="submit" value="Save" class="btn btn-primary m-3"/>
-        <input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel">
     </div>
 
 </form>

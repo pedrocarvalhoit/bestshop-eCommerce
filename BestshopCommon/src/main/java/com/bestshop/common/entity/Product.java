@@ -1,12 +1,15 @@
 package com.bestshop.common.entity;
 
+import com.bestshop.common.dto.ProductSaveDto;
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "products")
+@NoArgsConstructor
 public class Product{
 
     @Id
@@ -48,6 +51,18 @@ public class Product{
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    public Product(ProductSaveDto dto){
+        this.name = dto.name();
+        this.alias = dto.alias();
+        this.shortDescription = dto.shortDescription();
+        this.fullDescription = dto.fullDescription();
+        this.enabled = dto.enabled();
+        this.inStock = dto.inStock();
+        this.cost = dto.cost();
+        this.price = dto.price();
+        this.discountPercent = dto.discountPercent();
+    }
 
     public Integer getId() {
         return id;

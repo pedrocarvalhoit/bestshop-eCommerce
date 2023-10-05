@@ -1,5 +1,8 @@
 package com.bestshop.admin.product;
 
+import com.bestshop.common.dto.ProductExibitionDto;
+import com.bestshop.common.dto.ProductSaveDto;
+import com.bestshop.common.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,4 +27,8 @@ public class ProductService {
                         product.getCategory(), product.isEnabled()));
     }
 
+    public Product save(ProductSaveDto productSaveDto) {
+
+        return repository.save(new Product(productSaveDto));
+    }
 }

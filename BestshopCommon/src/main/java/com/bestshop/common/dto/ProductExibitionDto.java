@@ -1,4 +1,4 @@
-package com.bestshop.admin.product;
+package com.bestshop.common.dto;
 
 import com.bestshop.common.entity.Brand;
 import com.bestshop.common.entity.Category;
