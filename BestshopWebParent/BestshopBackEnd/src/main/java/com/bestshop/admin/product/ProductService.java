@@ -1,10 +1,11 @@
 package com.bestshop.admin.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -12,11 +13,15 @@ public class ProductService {
     @Autowired
     ProductRepository repository;
 
-    public List<ProductExibitionDto> findAllProducts(){
-        return repository.findAll().stream()
+    private static final int NUMBER_ITEM_PER_PAGE = 5;
+
+    public Page<ProductExibitionDto> findAllProducts(){
+        Sort sort = Sort.by("name").ascending();
+        Pageable pageable = PageRequest.of(0, NUMBER_ITEM_PER_PAGE, sort);
+
+        return repository.findAll(pageable)
                 .map(product -> new ProductExibitionDto(product.getId(), product.getName(), product.getBrand(),
-                        product.getCategory(), product.isEnabled()))
-                .collect(Collectors.toList());
+                        product.getCategory(), product.isEnabled()));
     }
 
 }

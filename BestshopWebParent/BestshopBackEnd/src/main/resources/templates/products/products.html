@@ -62,6 +62,10 @@
                     <div th:replace="~{fragments :: status(${product.enabled}, 'product', '/products/' + ${product.id})}"></div>
                 </td>
                 <td>
+                    <a class="fas fa-file-alt fa-2x icon-blue"
+                       th:href="@{'/products/detail' + ${product.id}}"
+                        title="View Details"></a>
+                    &nbsp;
                     <div th:replace="~{fragments :: edit('product', '/products/edit/' + ${product.id})}"></div>
                     &nbsp;
                     <div th:replace="~{fragments :: delete('product', ${product.id},'/products/delete/' + ${product.id}, true)}"></div>
