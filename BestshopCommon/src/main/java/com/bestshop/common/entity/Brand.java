@@ -83,10 +83,6 @@ public class Brand {
 
     @Override
     public String toString() {
-        return "Brand{" +
-                "name='" + name + '\'' +
-                ", logo='" + logo + '\'' +
-                ", categories=" + categories +
-                '}';
+        return name;
     }
 }

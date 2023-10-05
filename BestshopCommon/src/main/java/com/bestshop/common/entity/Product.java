@@ -3,6 +3,8 @@ package com.bestshop.common.entity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -23,9 +25,9 @@ public class Product {
     private String fullDescription;
 
     @Column(name = "created_time")
-    private Date createdTime;
+    private LocalDateTime createdTime;
     @Column(name = "updated_time")
-    private Date updatedTime;
+    private LocalDateTime updatedTime;
 
     private boolean enabled;
     @Column(name = "in_stock")
@@ -89,19 +91,19 @@ public class Product {
         this.fullDescription = fullDescription;
     }
 
-    public Date getCreatedTime() {
+    public LocalDateTime getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Date createdTime) {
+    public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
     }
 
-    public Date getUpdatedTime() {
+    public LocalDateTime getUpdatedTime() {
         return updatedTime;
     }
 
-    public void setUpdatedTime(Date updatedTime) {
+    public void setUpdatedTime(LocalDateTime updatedTime) {
         this.updatedTime = updatedTime;
     }
 
@@ -126,6 +128,9 @@ public class Product {
     }
 
     public void setCost(BigDecimal cost) {
+        if(cost == null || cost.compareTo(BigDecimal.ZERO) < 0){
+            throw new IllegalArgumentException("Cost cannot be null or negative");
+        }
         this.cost = cost;
     }
 
@@ -134,6 +139,9 @@ public class Product {
     }
 
     public void setPrice(BigDecimal price) {
+        if(price == null || price.compareTo(BigDecimal.ZERO) < 0){
+            throw new IllegalArgumentException("Price cannot be null or negative");
+        }
         this.price = price;
     }
 
@@ -142,6 +150,9 @@ public class Product {
     }
 
     public void setDiscountPercent(BigDecimal discountPercent) {
+        if(discountPercent == null || discountPercent.compareTo(BigDecimal.ZERO) < 0){
+            throw new IllegalArgumentException("Discount Percent cannot be null or negative");
+        }
         this.discountPercent = discountPercent;
     }
 
@@ -193,4 +204,14 @@ public class Product {
         this.brand = brand;
     }
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", price=" + price +
+                ", category=" + category +
+                ", brand=" + brand +
+                '}';
+    }
 }
