@@ -18,9 +18,9 @@ public class ProductService {
 
     private static final int NUMBER_ITEM_PER_PAGE = 5;
 
-    public Page<ProductExibitionDto> findAllProducts(){
+    public Page<ProductExibitionDto> findAllProducts(int pageNum){
         Sort sort = Sort.by("name").ascending();
-        Pageable pageable = PageRequest.of(0, NUMBER_ITEM_PER_PAGE, sort);
+        Pageable pageable = PageRequest.of(pageNum - 1, NUMBER_ITEM_PER_PAGE, sort);
 
         return repository.findAll(pageable)
                 .map(product -> new ProductExibitionDto(product.getId(), product.getName(), product.getBrand(),
@@ -28,7 +28,6 @@ public class ProductService {
     }
 
     public Product save(ProductSaveDto productSaveDto) {
-
         return repository.save(new Product(productSaveDto));
     }
 }

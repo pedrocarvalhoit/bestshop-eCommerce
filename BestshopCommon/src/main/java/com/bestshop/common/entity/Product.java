@@ -20,9 +20,9 @@ public class Product{
     private String name;
     @Column(unique = true, length = 256, nullable = false)
     private String alias;
-    @Column(name = "short_description", length = 512, nullable = false)
+    @Column(name = "short_description", length = 512)
     private String shortDescription;
-    @Column(name = "full_description", length = 4096, nullable = false)
+    @Column(name = "full_description", length = 4096)
     private String fullDescription;
 
     @Column(name = "created_time")
@@ -55,8 +55,8 @@ public class Product{
     public Product(ProductSaveDto dto){
         this.name = dto.name();
         this.alias = dto.alias();
-        this.shortDescription = dto.shortDescription();
-        this.fullDescription = dto.fullDescription();
+        this.brand = dto.brand();
+        this.category = dto.category();
         this.enabled = dto.enabled();
         this.inStock = dto.inStock();
         this.cost = dto.cost();

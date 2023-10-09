@@ -32,7 +32,7 @@ public class BrandService {
     }
 
     public List<Brand> listAll(Sort sort) {
-        return (List<Brand>) repository.findAll(sort);
+        return repository.findAll(sort);
     }
 
     public Brand save(Brand brand) {
