@@ -18,7 +18,7 @@ public class Product{
 
     @Column(unique = true, length = 256, nullable = false)
     private String name;
-    @Column(unique = true, length = 256, nullable = false)
+    @Column(unique = true, length = 256)
     private String alias;
     @Column(name = "short_description", length = 512)
     private String shortDescription;
@@ -28,7 +28,7 @@ public class Product{
     @Column(name = "created_time")
     private LocalDateTime createdTime;
     @Column(name = "updated_time")
-    private LocalDateTime updatedTime;
+    private LocalDateTime updatedTime = LocalDateTime.now();
 
     private boolean enabled;
     @Column(name = "in_stock")
@@ -62,6 +62,12 @@ public class Product{
         this.cost = dto.cost();
         this.price = dto.price();
         this.discountPercent = dto.discountPercent();
+        this.shortDescription = dto.shortDescription();
+        this.fullDescription = dto.fullDescription();
+        this.length = dto.length();
+        this.width = dto.width();
+        this.heigth = dto.heigth();
+        this.weigth = dto.weigth();
     }
 
     public Integer getId() {

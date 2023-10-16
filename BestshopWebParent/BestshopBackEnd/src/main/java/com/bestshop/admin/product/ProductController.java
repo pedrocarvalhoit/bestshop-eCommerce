@@ -49,7 +49,7 @@ public class ProductController {
     public String saveProduct(Model model, ProductSaveDto productSaveDto, RedirectAttributes ra){
         service.save(productSaveDto);
 
-        ra.addFlashAttribute("Message", "Product Created Succeffuly");
+        ra.addFlashAttribute("message", "Product Created Succeffuly");
 
         return "redirect:/products";
     }
@@ -60,7 +60,8 @@ public class ProductController {
 
         model.addAttribute("productSaveDto", new ProductSaveDto(null, null, null,
                 null, null, true, true,
-                null, null, null));
+                null, null, null, null, null
+                ,null, null, null, null));
 
         model.addAttribute("listBrands" ,listBrands);
         model.addAttribute("pageTitle", "Create New Product");

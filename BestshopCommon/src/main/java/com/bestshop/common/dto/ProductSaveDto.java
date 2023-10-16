@@ -15,6 +15,12 @@ public record ProductSaveDto(
         Boolean inStock,
         BigDecimal cost,
         BigDecimal price,
-        BigDecimal discountPercent)
+        BigDecimal discountPercent,
+        String shortDescription,
+        String fullDescription,
+        Float length,
+        Float width,
+        Float heigth,
+        Float weigth)
 {
 }

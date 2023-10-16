@@ -10,6 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Service
 public class ProductService {
 
@@ -28,6 +31,19 @@ public class ProductService {
     }
 
     public Product save(ProductSaveDto productSaveDto) {
-        return repository.save(new Product(productSaveDto));
+        Product product = new Product(productSaveDto);
+
+        if (productSaveDto.id() == null){
+            product.setCreatedTime(LocalDateTime.now());
+        }
+
+        if (productSaveDto.alias().isEmpty() || productSaveDto.alias() == null){
+            String defaultAlias = productSaveDto.name().replace(" ", "-").toLowerCase();
+            product.setAlias(defaultAlias);
+        }else {
+            product.setAlias(productSaveDto.alias().replace(" ", "-").toLowerCase());
+        }
+
+        return repository.save(product);
     }
 }
