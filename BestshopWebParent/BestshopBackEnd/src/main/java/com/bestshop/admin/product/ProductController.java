@@ -73,8 +73,20 @@ public class ProductController {
     public String updateProductStatus(@PathVariable(name = "id")Integer id, @PathVariable(name = "enabled")boolean enabled, RedirectAttributes ra){
         service.updtadeStatus(id, enabled);
 
-        String message = enabled ? "Product ID: " + id + "has been Enabled" : "Product ID: " + id + "has been Disabled";
+        String message = enabled ? "Product ID: " + id + " has been Enabled" : "Product ID: " + id + " has been Disabled";
         ra.addFlashAttribute("message", message);
+
+        return "redirect:/products";
+    }
+
+    @GetMapping("/products/delete/{id}")
+    public String deleteProducto(@PathVariable(name = "id")Integer id, RedirectAttributes ra) throws ProductNotFoundException {
+        try{
+            service.deleteProductById(id);
+            ra.addFlashAttribute("message", "Product ID: " + id + " has been deleted");
+        }catch (ProductNotFoundException ex){
+            ra.addFlashAttribute("message", ex.getMessage());
+        }
 
         return "redirect:/products";
     }

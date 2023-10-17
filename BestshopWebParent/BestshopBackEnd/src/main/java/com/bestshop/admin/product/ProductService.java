@@ -68,4 +68,13 @@ public class ProductService {
         repository.save(product);
     }
 
+    public void deleteProductById(Integer id) throws ProductNotFoundException {
+        Long countById = repository.countById(id);
+
+        if (countById == 0 || countById == null){
+            throw new ProductNotFoundException("Could not find any product with ID: " + id);
+        }
+
+        repository.deleteById(id);
+    }
 }
