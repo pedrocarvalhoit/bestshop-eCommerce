@@ -21,7 +21,7 @@ public class ProductService {
 
     private static final int NUMBER_ITEM_PER_PAGE = 5;
 
-    public Page<ProductExibitionDto> findAllProducts(int pageNum){
+    public Page<ProductExibitionDto> findAllProducts(int pageNum) {
         Sort sort = Sort.by("name").ascending();
         Pageable pageable = PageRequest.of(pageNum - 1, NUMBER_ITEM_PER_PAGE, sort);
 
@@ -33,17 +33,32 @@ public class ProductService {
     public Product save(ProductSaveDto productSaveDto) {
         Product product = new Product(productSaveDto);
 
-        if (productSaveDto.id() == null){
+        if (productSaveDto.id() == null) {
             product.setCreatedTime(LocalDateTime.now());
         }
 
-        if (productSaveDto.alias().isEmpty() || productSaveDto.alias() == null){
+        if (productSaveDto.alias().isEmpty() || productSaveDto.alias() == null) {
             String defaultAlias = productSaveDto.name().replace(" ", "-").toLowerCase();
             product.setAlias(defaultAlias);
-        }else {
+        } else {
             product.setAlias(productSaveDto.alias().replace(" ", "-").toLowerCase());
         }
 
         return repository.save(product);
+    }
+
+    public String checkUnique(Integer id, String name) {
+        boolean newProduct = (id == null || id == 0);
+        Product product = repository.findByName(name);
+
+        if (newProduct && (product != null)) {
+            return "Duplicate";
+        }else {
+            if (product != null && product.getId() != id){
+                return "Duplicate";
+            }
+        }
+
+        return "OK";
     }
 }

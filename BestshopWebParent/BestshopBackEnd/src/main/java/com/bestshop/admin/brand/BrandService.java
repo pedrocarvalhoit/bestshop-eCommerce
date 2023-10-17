@@ -19,12 +19,12 @@ public class BrandService {
 
     public static final int NUMBER_ITEM_PER_PAGE = 10;
 
-    public Page<Brand> listByPage(int pageNum, String sortField, String sortDir, String keyword){
+    public Page<Brand> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
         Sort sort = Sort.by(sortField);
         sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
         Pageable pageable = PageRequest.of(pageNum - 1, NUMBER_ITEM_PER_PAGE, sort);
 
-        if (keyword != null){
+        if (keyword != null) {
             return repository.findAll(keyword, pageable);
         }
 
@@ -50,7 +50,7 @@ public class BrandService {
     public void delete(Integer id) throws BrandNotFoundException {
         Long countById = repository.countByid(id);
 
-        if(countById == null || countById == 0){
+        if (countById == null || countById == 0) {
             throw new BrandNotFoundException("Could not find any brand whith ID " + id);
         }
 
@@ -61,10 +61,10 @@ public class BrandService {
         boolean isCreatingNew = (id == null || id == 0);
         Brand brand = repository.findByName(name);
 
-        if (isCreatingNew){
-            if (brand != null)return "Duplicate";
-        }else {
-            if (brand != null && brand.getId() != id){
+        if (isCreatingNew) {
+            if (brand != null) return "Duplicate";
+        } else {
+            if (brand != null && brand.getId() != id) {
                 return "Duplicate";
             }
         }
