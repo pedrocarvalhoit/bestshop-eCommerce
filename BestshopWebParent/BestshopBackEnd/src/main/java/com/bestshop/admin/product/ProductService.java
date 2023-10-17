@@ -61,4 +61,11 @@ public class ProductService {
 
         return "OK";
     }
+
+    public void updtadeStatus(Integer id, boolean enabled) {
+        Product product = repository.findById(id).get();
+        product.setEnabled(enabled);
+        repository.save(product);
+    }
+
 }
