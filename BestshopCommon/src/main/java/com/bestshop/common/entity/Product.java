@@ -2,14 +2,21 @@ package com.bestshop.common.entity;
 
 import com.bestshop.common.dto.ProductSaveDto;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.awt.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
 @NoArgsConstructor
+@Getter
+@Setter
 public class Product{
 
     @Id
@@ -44,6 +51,9 @@ public class Product{
     private float heigth;
     private float weigth;
 
+    @Column(name = "main_image", nullable = false)
+    private String mainImage;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
@@ -51,6 +61,9 @@ public class Product{
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<ProductImage> images = new HashSet<>();
 
     public Product(ProductSaveDto dto){
         this.name = dto.name();
@@ -68,62 +81,6 @@ public class Product{
         this.width = dto.width();
         this.heigth = dto.heigth();
         this.weigth = dto.weigth();
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
-    }
-
-    public String getFullDescription() {
-        return fullDescription;
-    }
-
-    public void setFullDescription(String fullDescription) {
-        this.fullDescription = fullDescription;
-    }
-
-    public LocalDateTime getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(LocalDateTime createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public LocalDateTime getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(LocalDateTime updatedTime) {
-        this.updatedTime = updatedTime;
     }
 
     public boolean isEnabled() {
@@ -175,52 +132,15 @@ public class Product{
         this.discountPercent = discountPercent;
     }
 
-    public float getLength() {
-        return length;
+    public void addExtraImage(String name){
+        this.images.add(new ProductImage(name, this));
+
     }
 
-    public void setLength(float length) {
-        this.length = length;
-    }
-
-    public float getWidth() {
-        return width;
-    }
-
-    public void setWidth(float width) {
-        this.width = width;
-    }
-
-    public float getHeigth() {
-        return heigth;
-    }
-
-    public void setHeigth(float heigth) {
-        this.heigth = heigth;
-    }
-
-    public float getWeigth() {
-        return weigth;
-    }
-
-    public void setWeigth(float weigth) {
-        this.weigth = weigth;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
+    @Transient
+    public String getMainImagePath(){
+        if(this.id == null || this.mainImage == null || this.mainImage.isEmpty()) return "/images/image-thumbnail.png";
+        return "/product-images/" + this.id + "/" + this.mainImage;
     }
 
     @Override

@@ -16,6 +16,8 @@ public record ProductExibitionDto(
 
         Category category,
 
-        boolean enabled
+        boolean enabled,
+
+        String mainImagePath
         ) {
 }

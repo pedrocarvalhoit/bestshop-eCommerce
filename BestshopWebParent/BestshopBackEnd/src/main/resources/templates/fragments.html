@@ -94,6 +94,12 @@
 	<img th:src="@{${brand.logoPath}}" style="width: 100px" class="img-fluid"/>
 </div>
 
+<!--Product Image -->
+
+<div th:fragment="product_image" th:remove="tag">
+	<img th:src="@{${product.mainImagePath}}" style="width: 100px" class="img-fluid"/>
+</div>
+
 
 <!--Status Enabled -->
 

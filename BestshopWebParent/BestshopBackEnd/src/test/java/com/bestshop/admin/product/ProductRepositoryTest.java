@@ -121,4 +121,18 @@ class ProductRepositoryTest {
         assertTrue(result.isEmpty());
     }
 
+    @Test
+    public void testSaveProductWithImages(){
+        Product product = productRepository.findById(2).get();
+        product.setMainImage("Main Image Test");
+        product.addExtraImage("Extra Image 1");
+        product.addExtraImage("Extra Image 2");
+
+        productRepository.save(product);
+
+        Product savedProduct = productRepository.findById(2).get();
+
+        assertTrue(savedProduct.getImages().size() > 1);
+    }
+
 }

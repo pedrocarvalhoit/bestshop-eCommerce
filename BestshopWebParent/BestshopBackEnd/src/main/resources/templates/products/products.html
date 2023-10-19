@@ -54,7 +54,9 @@
             <tbody>
             <tr th:each="product : ${listProducts}">
                 <td>[[${product.id}]]</td>
-                <td></td>
+                <td>
+                    <div th:replace="~{fragments :: product_image}"></div>
+                </td>
                 <td>[[${product.name}]]</td>
                 <td>[[${product.brand}]]</td>
                 <td>[[${product.category}]]</td>

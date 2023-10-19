@@ -27,11 +27,29 @@ public class ProductService {
 
         return repository.findAll(pageable)
                 .map(product -> new ProductExibitionDto(product.getId(), product.getName(), product.getBrand(),
-                        product.getCategory(), product.isEnabled()));
+                        product.getCategory(), product.isEnabled(), product.getMainImagePath()));
     }
 
     public Product save(ProductSaveDto productSaveDto) {
         Product product = new Product(productSaveDto);
+
+        if (productSaveDto.id() == null) {
+            product.setCreatedTime(LocalDateTime.now());
+        }
+
+        if (productSaveDto.alias().isEmpty() || productSaveDto.alias() == null) {
+            String defaultAlias = productSaveDto.name().replace(" ", "-").toLowerCase();
+            product.setAlias(defaultAlias);
+        } else {
+            product.setAlias(productSaveDto.alias().replace(" ", "-").toLowerCase());
+        }
+
+        return repository.save(product);
+    }
+
+    public Product saveWithImage(ProductSaveDto productSaveDto, String mainImage) {
+        Product product = new Product(productSaveDto);
+        product.setMainImage(mainImage);
 
         if (productSaveDto.id() == null) {
             product.setCreatedTime(LocalDateTime.now());
@@ -77,4 +95,10 @@ public class ProductService {
 
         repository.deleteById(id);
     }
+
+    public Product findById(Integer id) throws ProductNotFoundException {
+        if (id == null) throw new ProductNotFoundException("Product not found");
+        return repository.findById(id).get();
+    }
+
 }
