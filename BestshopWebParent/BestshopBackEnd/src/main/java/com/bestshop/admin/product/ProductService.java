@@ -11,7 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -37,7 +37,7 @@ public class ProductService {
             product.setCreatedTime(LocalDateTime.now());
         }
 
-        if (productSaveDto.alias().isEmpty() || productSaveDto.alias() == null) {
+        if (productSaveDto.alias() == null || productSaveDto.alias().isEmpty()) {
             String defaultAlias = productSaveDto.name().replace(" ", "-").toLowerCase();
             product.setAlias(defaultAlias);
         } else {
@@ -47,15 +47,16 @@ public class ProductService {
         return repository.save(product);
     }
 
-    public Product saveWithImage(ProductSaveDto productSaveDto, String mainImage) {
+    public Product saveWithImages(ProductSaveDto productSaveDto, String mainImage, List<String> extraImageNames) {
         Product product = new Product(productSaveDto);
         product.setMainImage(mainImage);
+        extraImageNames.forEach(product::addExtraImage);
 
         if (productSaveDto.id() == null) {
             product.setCreatedTime(LocalDateTime.now());
         }
 
-        if (productSaveDto.alias().isEmpty() || productSaveDto.alias() == null) {
+        if (productSaveDto.alias() == null || productSaveDto.alias().isEmpty()) {
             String defaultAlias = productSaveDto.name().replace(" ", "-").toLowerCase();
             product.setAlias(defaultAlias);
         } else {
@@ -89,7 +90,7 @@ public class ProductService {
     public void deleteProductById(Integer id) throws ProductNotFoundException {
         Long countById = repository.countById(id);
 
-        if (countById == 0 || countById == null){
+        if (countById == null || countById == 0){
             throw new ProductNotFoundException("Could not find any product with ID: " + id);
         }
 

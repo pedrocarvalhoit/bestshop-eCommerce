@@ -21,8 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProductController {
@@ -39,12 +39,12 @@ public class ProductController {
     private static final String REDIRECT_PRODUCTS = "redirect:/products";
 
     @GetMapping("/products")
-    public String listFirstPage(Model model){
-        return  listByPage(1, model);
+    public String listFirstPage(Model model) {
+        return listByPage(1, model);
     }
 
     @GetMapping("/products/page/{pageNum}")
-    public String listByPage(@PathVariable(name = "pageNum")int pageNum, Model model){
+    public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model) {
         Page<ProductExibitionDto> listProductsPage = service.findAllProducts(pageNum);
         List<ProductExibitionDto> listProducts = listProductsPage.getContent();
 
@@ -53,36 +53,67 @@ public class ProductController {
         return "products/products";
     }
 
+
     @PostMapping("/products/save")
-    public String saveProduct(ProductSaveDto productSaveDto, @RequestParam("fileImage") MultipartFile multipartFile,
+    public String saveProduct(ProductSaveDto productSaveDto, @RequestParam("fileImage") MultipartFile mainImageMultipart,
+                              @RequestParam("extraImage") MultipartFile[] extraImageMultiparts,
                               RedirectAttributes ra) throws IOException {
-        if (!multipartFile.isEmpty()){
-            String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        Product savedProduct = service.saveWithImages(productSaveDto, mainImageName(mainImageMultipart), extraImageNames(extraImageMultiparts));
 
-            Product product = service.saveWithImage(productSaveDto, fileName);
-            String uploadDir = "../product-images/" + product.getId();
-
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-        }else{
-            service.save(productSaveDto);
-        }
+        saveUploadedImages(mainImageMultipart, extraImageMultiparts, savedProduct);
 
         ra.addFlashAttribute("message", "Product Created Succeffuly");
         return REDIRECT_PRODUCTS;
     }
 
+    private void saveUploadedImages(MultipartFile mainImageMultipart, MultipartFile[] extraImageMultiparts, Product savedProduct) throws IOException {
+        if (!mainImageMultipart.isEmpty()) {
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(mainImageMultipart.getOriginalFilename()));
+            String uploadDir = "../product-images/" + savedProduct.getId();
+
+            FileUploadUtil.cleanDir(uploadDir);
+            FileUploadUtil.saveFile(uploadDir, fileName, mainImageMultipart);
+        }
+
+        if (extraImageMultiparts.length > 0) {
+            String uploadDir = "../product-images/" + savedProduct.getId() + "/extras";
+
+            for (MultipartFile multipartFile : extraImageMultiparts) {
+                if (multipartFile.isEmpty()) continue;
+
+                String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            }
+        }
+    }
+
+    private List<String> extraImageNames(MultipartFile[] extraImageMultiparts){
+        return Arrays.stream(extraImageMultiparts)
+                .filter(multipartFile -> !multipartFile.isEmpty())
+                .map(multipartFile -> StringUtils.cleanPath(multipartFile.getOriginalFilename()))
+                .collect(Collectors.toList());
+    }
+
+    private String mainImageName(MultipartFile mainImageMultipart) {
+        String fileName = " ";
+        if (!mainImageMultipart.isEmpty()) {
+            fileName = StringUtils.cleanPath(Objects.requireNonNull(mainImageMultipart.getOriginalFilename()));
+        }
+        return fileName;
+    }
+
+
     @GetMapping({"/products/new", "/products/edit/{id}"})
-    public String createProduct(@PathVariable(required = false, name = "id")Integer id,
+    public String createProduct(@PathVariable(required = false, name = "id") Integer id,
                                 Model model) throws ProductNotFoundException {
         ProductSaveDto productSaveDto = ProductSaveDto.empty();
 
-        if(id == null){//new Product
+        if (id == null) {//New Product
             productSaveDto = new ProductSaveDto(null, null, null,
                     null, null, true, true,
                     null, null, null, null, null
-                    ,null, null, null, null, "/images/image-thumbnail.png");
-        }else{//existing product
+                    , null, null, null, null, "/images/image-thumbnail.png");
+        } else {//Edit existing product
             Product existingProduct = service.findById(id);
             productSaveDto = productSaveDto.fromProduct(existingProduct);
         }
@@ -90,14 +121,14 @@ public class ProductController {
         List<Brand> listBrands = brandService.listAll(Sort.by("name").ascending());
 
         model.addAttribute("productSaveDto", productSaveDto);
-        model.addAttribute("listBrands" ,listBrands);
+        model.addAttribute("listBrands", listBrands);
         model.addAttribute("pageTitle", "Create New Product");
 
         return "products/product_form";
     }
 
     @GetMapping("/products/{id}/enabled/{enabled}")
-    public String updateProductStatus(@PathVariable(name = "id")Integer id, @PathVariable(name = "enabled")boolean enabled, RedirectAttributes ra){
+    public String updateProductStatus(@PathVariable(name = "id") Integer id, @PathVariable(name = "enabled") boolean enabled, RedirectAttributes ra) {
         service.updtadeStatus(id, enabled);
 
         String message = enabled ? "Product ID: " + id + " has been Enabled" : "Product ID: " + id + " has been Disabled";
@@ -107,11 +138,18 @@ public class ProductController {
     }
 
     @GetMapping("/products/delete/{id}")
-    public String deleteProducto(@PathVariable(name = "id")Integer id, RedirectAttributes ra) throws ProductNotFoundException {
-        try{
+    public String deleteProducto(@PathVariable(name = "id") Integer id, RedirectAttributes ra) throws ProductNotFoundException {
+        try {
             service.deleteProductById(id);
+            String productImagesDir = "../product-images/" + id;
+            String productExtrasImageDir = "../product-images/" + id + "/extras";
+            FileUploadUtil.cleanDir(productImagesDir);
+            FileUploadUtil.deleteDir(productImagesDir);
+            FileUploadUtil.cleanDir(productExtrasImageDir);
+            FileUploadUtil.deleteDir(productExtrasImageDir);
+
             ra.addFlashAttribute("message", "Product ID: " + id + " has been deleted");
-        }catch (ProductNotFoundException ex){
+        } catch (ProductNotFoundException ex) {
             ra.addFlashAttribute("message", ex.getMessage());
         }
 

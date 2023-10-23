@@ -36,7 +36,7 @@ public record ProductSaveDto(
                 existingProduct.isEnabled(), existingProduct.isInStock(), existingProduct.getCost(),
                 existingProduct.getPrice(), existingProduct.getDiscountPercent(), existingProduct.getShortDescription(),
                 existingProduct.getFullDescription(), existingProduct.getLength(), existingProduct.getWidth(),
-                existingProduct.getHeigth(), existingProduct.getWeigth(), existingProduct.getMainImage());
+                existingProduct.getHeigth(), existingProduct.getWeigth(), existingProduct.getMainImagePath());
     }
     
 }
