@@ -139,7 +139,10 @@ public class Product{
 
     public void addExtraImage(String name){
         this.images.add(new ProductImage(name, this));
+    }
 
+    public void addDetail(String name, String value) {
+        this.details.add(new ProductDetail(name, value, this));
     }
 
     @Transient

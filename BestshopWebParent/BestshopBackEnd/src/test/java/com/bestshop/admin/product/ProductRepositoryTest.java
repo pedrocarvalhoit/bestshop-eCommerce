@@ -135,4 +135,16 @@ class ProductRepositoryTest {
         assertTrue(savedProduct.getImages().size() > 1);
     }
 
+    @Test
+    @Rollback(value = false)
+    public void testAddProductDetails(){
+        Integer id = 10;
+        Product product = productRepository.findById(id).get();
+
+        product.addDetail("Device Memory", "128 Gb");
+
+        assertFalse(product.getDetails().isEmpty());
+
+    }
+
 }
