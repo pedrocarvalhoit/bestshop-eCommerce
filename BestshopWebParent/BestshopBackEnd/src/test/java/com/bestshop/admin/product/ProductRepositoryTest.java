@@ -15,7 +15,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTest(showSql = false)
+@DataJpaTest(showSql = true)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ProductRepositoryTest {
 
@@ -138,7 +138,7 @@ class ProductRepositoryTest {
     @Test
     @Rollback(value = false)
     public void testAddProductDetails(){
-        Integer id = 10;
+        Integer id = 20;
         Product product = productRepository.findById(id).get();
 
         product.addDetail("Device Memory", "128 Gb");

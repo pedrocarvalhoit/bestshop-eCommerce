@@ -11,7 +11,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Service
 public class ProductService {
@@ -47,23 +49,39 @@ public class ProductService {
         return repository.save(product);
     }
 
-    public Product saveWithImages(ProductSaveDto productSaveDto, String mainImage, List<String> extraImageNames) {
-        Product product = new Product(productSaveDto);
+    public Product save(ProductSaveDto dto, String mainImage, List<String> extraImageNames,
+                        String[] detailNames, String[] detailValues) {
+        Product product = new Product(dto);
         product.setMainImage(mainImage);
         extraImageNames.forEach(product::addExtraImage);
 
-        if (productSaveDto.id() == null) {
+        setProductDetails(detailNames, detailValues, product);
+
+        if (dto.id() == null) {
             product.setCreatedTime(LocalDateTime.now());
         }
 
-        if (productSaveDto.alias() == null || productSaveDto.alias().isEmpty()) {
-            String defaultAlias = productSaveDto.name().replace(" ", "-").toLowerCase();
+        if (dto.alias() == null || dto.alias().isEmpty()) {
+            String defaultAlias = dto.name().replace(" ", "-").toLowerCase();
             product.setAlias(defaultAlias);
         } else {
-            product.setAlias(productSaveDto.alias().replace(" ", "-").toLowerCase());
+            product.setAlias(dto.alias().replace(" ", "-").toLowerCase());
         }
 
         return repository.save(product);
+    }
+
+    private void setProductDetails(String[] detailNames, String[] detailValues, Product product){
+        if (detailNames == null || detailNames.length == 0) return;
+        for (int i = 0; i < detailNames.length; i++) {
+            String name = detailNames[i];
+            String value = detailValues[i];
+
+            if (!name.isEmpty() || !value.isEmpty()) {
+                product.addDetail(name, value);
+            }
+        }
+
     }
 
     public String checkUnique(Integer id, String name) {

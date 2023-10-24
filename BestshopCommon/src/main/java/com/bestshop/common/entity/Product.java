@@ -69,7 +69,6 @@ public class Product{
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductDetail> details = new ArrayList<>();
 
-
     public Product(ProductSaveDto dto){
         this.name = dto.name();
         this.alias = dto.alias();

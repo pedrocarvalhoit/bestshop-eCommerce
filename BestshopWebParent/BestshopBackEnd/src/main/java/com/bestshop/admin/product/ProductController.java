@@ -7,6 +7,7 @@ import com.bestshop.common.dto.ProductExibitionDto;
 import com.bestshop.common.dto.ProductSaveDto;
 import com.bestshop.common.entity.Brand;
 import com.bestshop.common.entity.Product;
+import com.bestshop.common.entity.ProductDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -57,8 +58,13 @@ public class ProductController {
     @PostMapping("/products/save")
     public String saveProduct(ProductSaveDto productSaveDto, @RequestParam("fileImage") MultipartFile mainImageMultipart,
                               @RequestParam("extraImage") MultipartFile[] extraImageMultiparts,
+                              @RequestParam(name = "detailNames", required = false)String[] detailNames,
+                              @RequestParam(name = "detailValues", required = false)String[] detailValues,
                               RedirectAttributes ra) throws IOException {
-        Product savedProduct = service.saveWithImages(productSaveDto, mainImageName(mainImageMultipart), extraImageNames(extraImageMultiparts));
+
+
+        Product savedProduct = service.save(productSaveDto, mainImageName(mainImageMultipart),
+                extraImageNames(extraImageMultiparts), detailNames, detailValues);
 
         saveUploadedImages(mainImageMultipart, extraImageMultiparts, savedProduct);
 
@@ -143,10 +149,10 @@ public class ProductController {
             service.deleteProductById(id);
             String productImagesDir = "../product-images/" + id;
             String productExtrasImageDir = "../product-images/" + id + "/extras";
-            FileUploadUtil.cleanDir(productImagesDir);
-            FileUploadUtil.deleteDir(productImagesDir);
             FileUploadUtil.cleanDir(productExtrasImageDir);
             FileUploadUtil.deleteDir(productExtrasImageDir);
+            FileUploadUtil.cleanDir(productImagesDir);
+            FileUploadUtil.deleteDir(productImagesDir);
 
             ra.addFlashAttribute("message", "Product ID: " + id + " has been deleted");
         } catch (ProductNotFoundException ex) {
