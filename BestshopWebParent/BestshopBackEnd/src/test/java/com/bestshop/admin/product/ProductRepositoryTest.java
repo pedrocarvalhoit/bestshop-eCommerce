@@ -11,6 +11,7 @@ import org.springframework.test.annotation.Rollback;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,8 +37,8 @@ class ProductRepositoryTest {
         product.setAlias("dell_insipiron");
         product.setShortDescription("Brand New Samsumg Galaxy 256gb.");
         product.setFullDescription("Brand New Samsumg Galaxy 256gb 6.1 screen inch model 2023");
-        product.setCreatedTime(LocalDateTime.now());
-        product.setUpdatedTime(LocalDateTime.now());
+        product.setCreatedTime(new Date());
+        product.setUpdatedTime(new Date());
         product.setEnabled(true);
         product.setCost(new BigDecimal("10.0"));
         product.setPrice(new BigDecimal("15.0"));
@@ -63,8 +64,8 @@ class ProductRepositoryTest {
         product.setAlias("iphone_11");
         product.setShortDescription("Brand New Iphone 15 256gb.");
         product.setFullDescription("Brand New Iphone 15 256gb 6.1 screen inch model 2023");
-        product.setCreatedTime(LocalDateTime.now());
-        product.setUpdatedTime(LocalDateTime.now());
+        product.setCreatedTime(new Date());
+        product.setUpdatedTime(new Date());
         product.setCost(new BigDecimal("10.0"));
         product.setPrice(new BigDecimal("15.0"));
         product.setLength(1);

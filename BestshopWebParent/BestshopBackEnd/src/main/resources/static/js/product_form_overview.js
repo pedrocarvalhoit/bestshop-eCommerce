@@ -14,14 +14,17 @@ $(document).ready(function() {
     getCategoriesForNewForm();
 });
 
-function getCategoriesForNewForm(){
+function getCategoriesForNewForm() {
     catIdField = $("#categoryId");
     editMode = false;
 
-    if (catIdField.length){
+    if (catIdField.length) {
         editMode = true;
     }
+
+    if (!editMode) getCategories();
 }
+
 
 //Show categories on the form
 

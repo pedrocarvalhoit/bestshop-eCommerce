@@ -15,10 +15,10 @@
     </div>
 
     <form th:action="@{/products/save}" method="post"
-          th:object="${productSaveDto}" enctype="multipart/form-data"
+          th:object="${product}" enctype="multipart/form-data"
           onsubmit="return checkUnique(this)">
         <input type="hidden" name="id" th:field="*{id}" />
-        <input th:if="${productSaveDto.category != null}" type="hidden" id="cateogryId" th:value="${productSaveDto.category.id}">
+        <input th:if="${product.category != null}" type="hidden" id="categoryId" th:value="${product.category.id}">
         <div>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">

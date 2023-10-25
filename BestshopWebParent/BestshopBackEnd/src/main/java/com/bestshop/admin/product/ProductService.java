@@ -1,7 +1,5 @@
 package com.bestshop.admin.product;
 
-import com.bestshop.common.dto.ProductExibitionDto;
-import com.bestshop.common.dto.ProductSaveDto;
 import com.bestshop.common.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,11 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Date;
 import java.util.NoSuchElementException;
-import java.util.stream.IntStream;
 
 @Service
 public class ProductService {
@@ -24,62 +21,38 @@ public class ProductService {
 
     private static final int NUMBER_ITEM_PER_PAGE = 5;
 
-    public Page<ProductExibitionDto> findAllProducts(int pageNum) {
+    public Page<Product> findAllProducts(int pageNum) {
         Sort sort = Sort.by("name").ascending();
         Pageable pageable = PageRequest.of(pageNum - 1, NUMBER_ITEM_PER_PAGE, sort);
 
-        return repository.findAll(pageable)
-                .map(product -> new ProductExibitionDto(product.getId(), product.getName(), product.getBrand(),
-                        product.getCategory(), product.isEnabled(), product.getMainImagePath()));
+        return repository.findAll(pageable);
     }
 
-    public Product save(ProductSaveDto dto) {
-        return repository.save(new Product(dto));
-    }
-
-    public Product save(ProductSaveDto dto, String mainImage, List<String> extraImageNames,
-                        String[] detailNames, String[] detailValues) {
-        Product product = new Product(dto);
-        product.setMainImage(mainImage);
-        extraImageNames.forEach(product::addExtraImage);
-
-        setProductDetails(detailNames, detailValues, product);
-
-        if (dto.id() == null) {
-            product.setCreatedTime(LocalDateTime.now());
+    public Product save(Product product) {
+        if (product.getId() == null) {
+            product.setCreatedTime(new Date());
         }
 
-        if (dto.alias() == null || dto.alias().isEmpty()) {
-            String defaultAlias = dto.name().replace(" ", "-").toLowerCase();
+        if (product.getAlias() == null || product.getAlias().isEmpty()) {
+            String defaultAlias = product.getName().replaceAll(" ", "-");
             product.setAlias(defaultAlias);
         } else {
-            product.setAlias(dto.alias().replace(" ", "-").toLowerCase());
+            product.setAlias(product.getAlias().replaceAll(" ", "-"));
         }
+
+        product.setUpdatedTime(new Date());
 
         return repository.save(product);
     }
 
-    private void setProductDetails(String[] detailNames, String[] detailValues, Product product){
-        if (detailNames == null || detailNames.length == 0) return;
-        for (int i = 0; i < detailNames.length; i++) {
-            String name = detailNames[i];
-            String value = detailValues[i];
-
-            if (!name.isEmpty() || !value.isEmpty()) {
-                product.addDetail(name, value);
-            }
-        }
-
-    }
-
     public String checkUnique(Integer id, String name) {
-        boolean newProduct = (id == null || id == 0);
-        Product product = repository.findByName(name);
+        boolean isCreatingNew = (id == null || id == 0);
+        Product productByName = repository.findByName(name);
 
-        if (newProduct && (product != null)) {
-            return "Duplicate";
-        }else {
-            if (product != null && product.getId() != id){
+        if (isCreatingNew) {
+            if (productByName != null) return "Duplicate";
+        } else {
+            if (productByName != null && productByName.getId() != id) {
                 return "Duplicate";
             }
         }

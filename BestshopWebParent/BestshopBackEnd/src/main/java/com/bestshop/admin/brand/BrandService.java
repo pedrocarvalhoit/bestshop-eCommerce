@@ -35,6 +35,10 @@ public class BrandService {
         return repository.findAll(sort);
     }
 
+    public List<Brand> listAll() {
+        return repository.findAll();
+    }
+
     public Brand save(Brand brand) {
         return repository.save(brand);
     }

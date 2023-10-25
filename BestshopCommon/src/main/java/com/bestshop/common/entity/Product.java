@@ -1,6 +1,5 @@
 package com.bestshop.common.entity;
 
-import com.bestshop.common.dto.ProductSaveDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,10 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "products")
@@ -34,10 +30,9 @@ public class Product{
     private String fullDescription;
 
     @Column(name = "created_time")
-    private LocalDateTime createdTime;
+    private Date createdTime;
     @Column(name = "updated_time")
-    private LocalDateTime updatedTime = LocalDateTime.now();
-
+    private Date updatedTime;
     private boolean enabled;
     @Column(name = "in_stock")
     private boolean inStock;
@@ -68,24 +63,6 @@ public class Product{
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductDetail> details = new ArrayList<>();
-
-    public Product(ProductSaveDto dto){
-        this.name = dto.name();
-        this.alias = dto.alias();
-        this.brand = dto.brand();
-        this.category = dto.category();
-        this.enabled = dto.enabled();
-        this.inStock = dto.inStock();
-        this.cost = dto.cost();
-        this.price = dto.price();
-        this.discountPercent = dto.discountPercent();
-        this.shortDescription = dto.shortDescription();
-        this.fullDescription = dto.fullDescription();
-        this.length = dto.length();
-        this.width = dto.width();
-        this.heigth = dto.heigth();
-        this.weigth = dto.weigth();
-    }
 
     public boolean isEnabled() {
         return enabled;
