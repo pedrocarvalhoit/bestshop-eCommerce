@@ -11,8 +11,17 @@ $(document).ready(function() {
         getCategories();
     });
 
-    getCategories();
+    getCategoriesForNewForm();
 });
+
+function getCategoriesForNewForm(){
+    catIdField = $("#categoryId");
+    editMode = false;
+
+    if (catIdField.length){
+        editMode = true;
+    }
+}
 
 //Show categories on the form
 

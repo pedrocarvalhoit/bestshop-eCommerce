@@ -7,7 +7,6 @@ import com.bestshop.common.dto.ProductExibitionDto;
 import com.bestshop.common.dto.ProductSaveDto;
 import com.bestshop.common.entity.Brand;
 import com.bestshop.common.entity.Product;
-import com.bestshop.common.entity.ProductDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -22,7 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
@@ -58,10 +59,12 @@ public class ProductController {
     @PostMapping("/products/save")
     public String saveProduct(ProductSaveDto productSaveDto, @RequestParam("fileImage") MultipartFile mainImageMultipart,
                               @RequestParam("extraImage") MultipartFile[] extraImageMultiparts,
-                              @RequestParam(name = "detailNames", required = false)String[] detailNames,
-                              @RequestParam(name = "detailValues", required = false)String[] detailValues,
+                              @RequestParam(name = "detailNames", required = false) String[] detailNames,
+                              @RequestParam(name = "detailValues", required = false) String[] detailValues,
                               RedirectAttributes ra) throws IOException {
-
+        if (productSaveDto.id() != null){
+            service.save(productSaveDto);
+        }
 
         Product savedProduct = service.save(productSaveDto, mainImageName(mainImageMultipart),
                 extraImageNames(extraImageMultiparts), detailNames, detailValues);
@@ -93,7 +96,7 @@ public class ProductController {
         }
     }
 
-    private List<String> extraImageNames(MultipartFile[] extraImageMultiparts){
+    private List<String> extraImageNames(MultipartFile[] extraImageMultiparts) {
         return Arrays.stream(extraImageMultiparts)
                 .filter(multipartFile -> !multipartFile.isEmpty())
                 .map(multipartFile -> StringUtils.cleanPath(multipartFile.getOriginalFilename()))
@@ -111,7 +114,7 @@ public class ProductController {
 
     @GetMapping({"/products/new", "/products/edit/{id}"})
     public String createProduct(@PathVariable(required = false, name = "id") Integer id,
-                                Model model) throws ProductNotFoundException {
+                                Model model, RedirectAttributes ra) throws ProductNotFoundException {
         ProductSaveDto productSaveDto = ProductSaveDto.empty();
 
         if (id == null) {//New Product
@@ -119,16 +122,25 @@ public class ProductController {
                     null, null, true, true,
                     null, null, null, null, null
                     , null, null, null, null, "/images/image-thumbnail.png");
-        } else {//Edit existing product
-            Product existingProduct = service.findById(id);
-            productSaveDto = productSaveDto.fromProduct(existingProduct);
-        }
 
+            model.addAttribute("pageTitle", "Create New Product");
+        } else {//Edit existing product
+            try{
+                Product existingProduct = service.findById(id);
+
+                productSaveDto = productSaveDto.fromProduct(existingProduct);
+                model.addAttribute("pageTitle", "Edit Product ID: " + id);
+            }catch (ProductNotFoundException e){
+                ra.addFlashAttribute("message", e.getMessage());
+                return "redirect:/products";
+            }
+
+        }
         List<Brand> listBrands = brandService.listAll(Sort.by("name").ascending());
 
         model.addAttribute("productSaveDto", productSaveDto);
         model.addAttribute("listBrands", listBrands);
-        model.addAttribute("pageTitle", "Create New Product");
+
 
         return "products/product_form";
     }

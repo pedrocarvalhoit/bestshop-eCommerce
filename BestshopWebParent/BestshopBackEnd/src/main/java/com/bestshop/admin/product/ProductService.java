@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 
 @Service
@@ -32,21 +33,8 @@ public class ProductService {
                         product.getCategory(), product.isEnabled(), product.getMainImagePath()));
     }
 
-    public Product save(ProductSaveDto productSaveDto) {
-        Product product = new Product(productSaveDto);
-
-        if (productSaveDto.id() == null) {
-            product.setCreatedTime(LocalDateTime.now());
-        }
-
-        if (productSaveDto.alias() == null || productSaveDto.alias().isEmpty()) {
-            String defaultAlias = productSaveDto.name().replace(" ", "-").toLowerCase();
-            product.setAlias(defaultAlias);
-        } else {
-            product.setAlias(productSaveDto.alias().replace(" ", "-").toLowerCase());
-        }
-
-        return repository.save(product);
+    public Product save(ProductSaveDto dto) {
+        return repository.save(new Product(dto));
     }
 
     public Product save(ProductSaveDto dto, String mainImage, List<String> extraImageNames,
@@ -118,6 +106,14 @@ public class ProductService {
     public Product findById(Integer id) throws ProductNotFoundException {
         if (id == null) throw new ProductNotFoundException("Product not found");
         return repository.findById(id).get();
+    }
+
+    public Product get (Integer id) throws ProductNotFoundException {
+        try {
+            return repository.findById(id).get();
+        }catch (NoSuchElementException exception){
+            throw new ProductNotFoundException("Could not found any product with id: " + id);
+        }
     }
 
 }
