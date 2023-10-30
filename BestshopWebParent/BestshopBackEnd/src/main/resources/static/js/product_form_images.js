@@ -11,6 +11,13 @@ $(document).ready(function() {
             showExtraImageThumbnail(this, index);
         });
     });
+
+    $("a[name='linkRemoveExtraImage']").each(function(index){
+        $(this).click(function(){
+            removeExtraImage(index);
+        });
+    });
+
 });
 
 //Show Extra Image Thumbnail

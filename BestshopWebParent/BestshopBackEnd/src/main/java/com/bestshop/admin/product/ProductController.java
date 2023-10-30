@@ -150,7 +150,6 @@ public class ProductController {
             model.addAttribute("pageTitle", "Edit Product (ID: " + id + ")");
             model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
 
-
             return "products/product_form";
 
         } catch (ProductNotFoundException e) {

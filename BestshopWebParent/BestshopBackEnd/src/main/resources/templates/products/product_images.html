@@ -41,10 +41,13 @@
             </div>
         </th:block>
 
-        <div class="col border m-3 p-2" id="divExtraImage0">
-            <div id="extraImageHeader0"><label>Extra Image #1:</label></div>
+        <div class="col border m-3 p-2" th:id="'divExtraImage' + ${numberOfExistingExtraImages}">
+            <div th:id="'extraImageHeader' + ${numberOfExistingExtraImages}">
+                <label>Extra Image #[[${numberOfExistingExtraImages + 1}]]:</label>
+            </div>
             <div class="m-2">
-                <img id="extraThumbnail0" alt="Extra image #1 preview" class="img-fluid"
+                <img th:id="'extraThumbnail' + ${numberOfExistingExtraImages}"
+                     th:alt="'Extra image' + ${numberOfExistingExtraImages} + ' preview'" class="img-fluid"
                      th:src="@{/images/image-thumbnail.png}"/>
             </div>
             <div>
