@@ -137,4 +137,9 @@ public class Product{
                 ", brand=" + brand +
                 '}';
     }
+
+    public boolean containsImageName(String imageName) {
+        return images.stream()
+                .anyMatch(imagem -> Objects.equals(imagem.getName(), imageName));
+    }
 }

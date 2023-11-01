@@ -4,9 +4,9 @@ import com.bestshop.admin.FileUploadUtil;
 import com.bestshop.admin.brand.BrandService;
 import com.bestshop.common.entity.Brand;
 import com.bestshop.common.entity.Product;
+import com.bestshop.common.entity.ProductImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -18,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ProductController {
@@ -51,11 +53,14 @@ public class ProductController {
                               @RequestParam("fileImage") MultipartFile mainImageMultipart,
                               @RequestParam("extraImage") MultipartFile[] extraImageMultiparts,
                               @RequestParam(name = "detailNames", required = false) String[] detailNames,
-                              @RequestParam(name = "detailValues", required = false) String[] detailValues
+                              @RequestParam(name = "detailValues", required = false) String[] detailValues,
+                              @RequestParam(name = "imageID", required = false) String[] imageIDs,
+                              @RequestParam(name = "imageName", required = false) String[] imageNames
     )
             throws IOException {
         setMainImageName(mainImageMultipart, product);
-        setExtraImageNames(extraImageMultiparts, product);
+        setExistingExtraImageNams(imageIDs, imageNames, product);
+        setNewExtraImageNames(extraImageMultiparts, product);
         setProductDetails(detailNames, detailValues, product);
 
         Product savedProduct = service.save(product);
@@ -65,6 +70,20 @@ public class ProductController {
         ra.addFlashAttribute("message", "The product has been saved successfully.");
 
         return "redirect:/products";
+    }
+
+    private void setExistingExtraImageNams(String[] imageIDs, String[] imageNames, Product product) {
+        if (imageIDs == null || imageIDs.length == 0) return;
+
+        Set<ProductImage> images = new HashSet<>();
+
+        for (int i = 0; i < imageIDs.length; i++){
+            Integer id = Integer.parseInt(imageIDs[i]);
+            String name = imageNames[i];
+            images.add(new ProductImage(id, name, product));
+        }
+
+        product.setImages(images);
     }
 
     private void setProductDetails(String[] detailNames, String[] detailValues, Product product) {
@@ -103,12 +122,15 @@ public class ProductController {
 
     }
 
-    private void setExtraImageNames(MultipartFile[] extraImageMultiparts, Product product) {
+    private void setNewExtraImageNames(MultipartFile[] extraImageMultiparts, Product product) {
         if (extraImageMultiparts.length > 0) {
             for (MultipartFile multipartFile : extraImageMultiparts) {
                 if (!multipartFile.isEmpty()) {
                     String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-                    product.addExtraImage(fileName);
+
+                    if (!product.containsImageName(fileName)){
+                        product.addExtraImage(fileName);
+                    }
                 }
             }
         }
