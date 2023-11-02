@@ -12,8 +12,8 @@ $(document).ready(function() {
         });
     });
 
-    $("a[name='linkRemoveExtraImage']").each(function(index){
-        $(this).click(function(){
+    $("a[name='linkRemoveExtraImage']").each(function(index) {
+        $(this).click(function() {
             removeExtraImage(index);
         });
     });

@@ -19,7 +19,7 @@ public class ProductService {
     @Autowired
     ProductRepository repository;
 
-    private static final int NUMBER_ITEM_PER_PAGE = 5;
+    private static final int NUMBER_ITEM_PER_PAGE = 10;
 
     public Page<Product> findAllProducts(int pageNum) {
         Sort sort = Sort.by("name").ascending();
