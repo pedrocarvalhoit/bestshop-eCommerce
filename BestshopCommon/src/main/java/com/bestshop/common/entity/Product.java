@@ -120,6 +120,10 @@ public class Product{
         this.details.add(new ProductDetail(name, value, this));
     }
 
+    public void addDetail(Integer id, String name, String value) {
+        this.details.add(new ProductDetail(id, name, value, this));
+    }
+
     @Transient
     public String getMainImagePath(){
         if(this.id == null || this.mainImage == null || this.mainImage.isEmpty()) return "/images/image-thumbnail.png";

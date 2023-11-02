@@ -58,20 +58,22 @@ public class ProductController {
     public String saveProduct(Product product, RedirectAttributes ra,
                               @RequestParam("fileImage") MultipartFile mainImageMultipart,
                               @RequestParam("extraImage") MultipartFile[] extraImageMultiparts,
+                              @RequestParam(name = "detailIDs", required = false) String[] detailIDs,
                               @RequestParam(name = "detailNames", required = false) String[] detailNames,
                               @RequestParam(name = "detailValues", required = false) String[] detailValues,
-                              @RequestParam(name = "imageID", required = false) String[] imageIDs,
-                              @RequestParam(name = "imageName", required = false) String[] imageNames
+                              @RequestParam(name = "imageIDs", required = false) String[] imageIDs,
+                              @RequestParam(name = "imageNames", required = false) String[] imageNames
     )
             throws IOException {
         setMainImageName(mainImageMultipart, product);
-        setExistingExtraImageNams(imageIDs, imageNames, product);
+        setExistingExtraImageNames(imageIDs, imageNames, product);
         setNewExtraImageNames(extraImageMultiparts, product);
-        setProductDetails(detailNames, detailValues, product);
+        setProductDetails(detailIDs, detailNames, detailValues, product);
 
         Product savedProduct = service.save(product);
 
         saveUploadedImages(mainImageMultipart, extraImageMultiparts, savedProduct);
+
         deleteExtraImagesWeredRemovedOnForm(product);
 
         ra.addFlashAttribute("message", "The product has been saved successfully.");
@@ -83,45 +85,55 @@ public class ProductController {
         String extraImageDir = "../product-images/" + product.getId() + "/extras";
         Path dirPath = Paths.get(extraImageDir);
 
-        try{
+        try {
             Files.list(dirPath).forEach(file -> {
-                String fileName = file.toFile().getName();
-                if (!product.containsImageName(fileName)){
+                String filename = file.toFile().getName();
+
+                if (!product.containsImageName(filename)) {
                     try {
                         Files.delete(file);
-                        LOGGER.info("Deleted extra image: " + fileName);
+                        LOGGER.info("Deleted extra image: " + filename);
+
                     } catch (IOException e) {
-                        LOGGER.error("Could not delete extra image: " + fileName);
+                        LOGGER.error("Could not delete extra image: " + filename);
                     }
                 }
+
             });
-        }catch (IOException ex){
+        } catch (IOException ex) {
             LOGGER.error("Could not list directory: " + dirPath);
         }
     }
 
-    private void setExistingExtraImageNams(String[] imageIDs, String[] imageNames, Product product) {
+    private void setExistingExtraImageNames(String[] imageIDs, String[] imageNames,
+                                            Product product) {
         if (imageIDs == null || imageIDs.length == 0) return;
 
         Set<ProductImage> images = new HashSet<>();
 
-        for (int i = 0; i < imageIDs.length; i++){
-            Integer id = Integer.parseInt(imageIDs[i]);
-            String name = imageNames[i];
+        for (int count = 0; count < imageIDs.length; count++) {
+            Integer id = Integer.parseInt(imageIDs[count]);
+            String name = imageNames[count];
+
             images.add(new ProductImage(id, name, product));
         }
 
         product.setImages(images);
+
     }
 
-    private void setProductDetails(String[] detailNames, String[] detailValues, Product product) {
+    private void setProductDetails(String[] detailIDs, String[] detailNames,
+                                   String[] detailValues, Product product) {
         if (detailNames == null || detailNames.length == 0) return;
 
         for (int count = 0; count < detailNames.length; count++) {
             String name = detailNames[count];
             String value = detailValues[count];
+            Integer id = Integer.parseInt(detailIDs[count]);
 
-            if (!name.isEmpty() && !value.isEmpty()) {
+            if (id != 0) {
+                product.addDetail(id, name, value);
+            } else if (!name.isEmpty() && !value.isEmpty()) {
                 product.addDetail(name, value);
             }
         }
@@ -156,7 +168,7 @@ public class ProductController {
                 if (!multipartFile.isEmpty()) {
                     String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
-                    if (!product.containsImageName(fileName)){
+                    if (!product.containsImageName(fileName)) {
                         product.addExtraImage(fileName);
                     }
                 }
