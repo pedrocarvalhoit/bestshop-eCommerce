@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <div>
+    <div class="full-details">
         <table class="table table-bordered table-striped table-hover table-responsive-xl">
             <thead class="thead-dark">
             <tr>
@@ -66,7 +66,7 @@
                 <td>
                     <a class="fas fa-file-alt fa-2x icon-blue"
                        th:href="@{'/products/detail' + ${product.id}}"
-                        title="View Details"></a>
+                       title="View Details"></a>
                     &nbsp;
                     <div th:replace="~{fragments :: edit('product', '/products/edit/' + ${product.id})}"></div>
                     &nbsp;
