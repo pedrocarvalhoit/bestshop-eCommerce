@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -19,11 +20,22 @@ public class ProductService {
     @Autowired
     ProductRepository repository;
 
-    private static final int NUMBER_ITEM_PER_PAGE = 10;
+    public static final int PRODUCTS_PER_PAGE = 5;
 
-    public Page<Product> findAllProducts(int pageNum) {
-        Sort sort = Sort.by("name").ascending();
-        Pageable pageable = PageRequest.of(pageNum - 1, NUMBER_ITEM_PER_PAGE, sort);
+    public List<Product> listAll() {
+        return (List<Product>) repository.findAll();
+    }
+
+    public Page<Product> listByPage(int pageNum, String sortField, String sortDir, String keyWord){
+        Sort sort = Sort.by(sortField);
+
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+
+        Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE, sort);
+
+        if (keyWord != null){
+            return repository.findAll(keyWord, pageable);
+        }
 
         return repository.findAll(pageable);
     }
