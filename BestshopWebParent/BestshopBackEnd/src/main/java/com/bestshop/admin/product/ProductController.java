@@ -32,7 +32,7 @@ public class ProductController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
     @Autowired
-    ProductService service;
+    ProductService productService;
 
     @Autowired
     BrandService brandService;
@@ -46,7 +46,7 @@ public class ProductController {
 
     @GetMapping("/products/page/{pageNum}")
     public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model) {
-        Page<Product> listProducts = service.findAllProducts(pageNum);
+        Page<Product> listProducts = productService.findAllProducts(pageNum);
 
         model.addAttribute("listProducts", listProducts);
 
@@ -70,7 +70,7 @@ public class ProductController {
         setNewExtraImageNames(extraImageMultiparts, product);
         setProductDetails(detailIDs, detailNames, detailValues, product);
 
-        Product savedProduct = service.save(product);
+        Product savedProduct = productService.save(product);
 
         saveUploadedImages(mainImageMultipart, extraImageMultiparts, savedProduct);
 
@@ -203,7 +203,7 @@ public class ProductController {
     public String editProduct(@PathVariable("id") Integer id, Model model,
                               RedirectAttributes ra) {
         try {
-            Product product = service.get(id);
+            Product product = productService.get(id);
             List<Brand> listBrands = brandService.listAll();
             Integer numberOfExistingExtraImages = product.getImages().size();
 
@@ -221,9 +221,25 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/products/detail/{id}")
+    public String viewProductDetails(@PathVariable("id") Integer id, Model model,
+                                     RedirectAttributes ra) {
+        try {
+            Product product = productService.get(id);
+            model.addAttribute("product", product);
+
+            return "products/product_detail_modal";
+
+        } catch (ProductNotFoundException e) {
+            ra.addFlashAttribute("message", e.getMessage());
+
+            return "redirect:/products";
+        }
+    }
+
     @GetMapping("/products/{id}/enabled/{enabled}")
     public String updateProductStatus(@PathVariable(name = "id") Integer id, @PathVariable(name = "enabled") boolean enabled, RedirectAttributes ra) {
-        service.updtadeStatus(id, enabled);
+        productService.updtadeStatus(id, enabled);
 
         String message = enabled ? "Product ID: " + id + " has been Enabled" : "Product ID: " + id + " has been Disabled";
         ra.addFlashAttribute("message", message);
@@ -234,7 +250,7 @@ public class ProductController {
     @GetMapping("/products/delete/{id}")
     public String deleteProducto(@PathVariable(name = "id") Integer id, RedirectAttributes ra) throws ProductNotFoundException {
         try {
-            service.deleteProductById(id);
+            productService.deleteProductById(id);
             String productImagesDir = "../product-images/" + id;
             String productExtrasImageDir = "../product-images/" + id + "/extras";
             FileUploadUtil.cleanDir(productExtrasImageDir);

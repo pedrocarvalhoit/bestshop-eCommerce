@@ -44,8 +44,8 @@ class ProductRepositoryTest {
         product.setPrice(new BigDecimal("15.0"));
         product.setLength(1);
         product.setWidth(1);
-        product.setHeigth(1);
-        product.setWeigth(1);
+        product.setHeight(1);
+        product.setWeight(1);
 
         product.setCategory(categoryReposiroty.findByName("'Electronics'"));
         product.setBrand(brandRepository.findByName("Samsung"));
@@ -70,8 +70,8 @@ class ProductRepositoryTest {
         product.setPrice(new BigDecimal("15.0"));
         product.setLength(1);
         product.setWidth(1);
-        product.setHeigth(1);
-        product.setWeigth(1);
+        product.setHeight(1);
+        product.setWeight(1);
 
         product.setCategory(categoryReposiroty.findByName("Iphone"));
         product.setBrand(brandRepository.findByName("Apple"));

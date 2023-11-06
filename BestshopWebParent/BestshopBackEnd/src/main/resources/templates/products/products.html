@@ -57,14 +57,19 @@
                 <td>
                     <div th:replace="~{fragments :: product_image}"></div>
                 </td>
-                <td>[[${product.name}]]</td>
+                <td>
+                    <a class="link-detail"
+                       th:href="@{'/products/detail/' + ${product.id}}"
+                       title="View details of this product"
+                    >[[${product.name}]]</a>
+                </td>
                 <td>[[${product.brand}]]</td>
                 <td>[[${product.category}]]</td>
                 <td>
                     <div th:replace="~{fragments :: status(${product.enabled}, 'product', '/products/' + ${product.id})}"></div>
                 </td>
                 <td>
-                    <a class="fas fa-file-alt fa-2x icon-blue"
+                    <a class="fas fa-file-alt fa-2x icon-blue link-detail"
                        th:href="@{'/products/detail' + ${product.id}}"
                        title="View Details"></a>
                     &nbsp;
@@ -80,6 +85,13 @@
 
 <div th:replace="~{modal_fragments :: confirm_modal}"></div>
 
+<div class="modal fade" id="detailModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
 <div th:replace="~{fragments :: footer}"></div>
 
 <script th:src="@{/js/common_list.js}"></script>
@@ -91,6 +103,13 @@
             e.preventDefault();
             showDeleteConfirmModal($(this), 'product');
         });
+
+        $(".link-detail").on("click", function(e) {
+            e.preventDefault();
+            linkDetailURL = $(this).attr("href");
+            $("#detailModal").modal("show").find(".modal-content").load(linkDetailURL);
+        });
+
     });
 </script>
 

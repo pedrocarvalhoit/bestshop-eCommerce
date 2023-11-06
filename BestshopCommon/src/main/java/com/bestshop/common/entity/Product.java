@@ -43,8 +43,8 @@ public class Product{
 
     private float length;
     private float width;
-    private float heigth;
-    private float weigth;
+    private float height;
+    private float weight;
 
     @Column(name = "main_image", nullable = false)
     private String mainImage;
