@@ -3,6 +3,7 @@ package com.bestshop.common.entity;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 @Entity
@@ -149,5 +150,14 @@ public class User {
     public String getPhotosImagePath() {
         if (id == null || photos == null) return "/images/default-user.png";
         return "/user-photos/" + this.id + "/" + this.photos;
+    }
+
+    public boolean hasRole(String roleName) {
+        for (Role role : roles) {
+            if (role.getName().equals(roleName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
