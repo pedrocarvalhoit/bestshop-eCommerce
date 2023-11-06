@@ -26,14 +26,19 @@ public class ProductService {
         return (List<Product>) repository.findAll();
     }
 
-    public Page<Product> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
+    public Page<Product> listByPage(int pageNum, String sortField, String sortDir, String keyword, Integer categoryId) {
         Sort sort = Sort.by(sortField);
 
         sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
 
         Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE, sort);
 
-        if (keyword != null) {
+        if (keyword != null && !keyword.isEmpty()) {
+            if (categoryId != null && categoryId > 0) {
+                String categoryIdMatch = "-" + String.valueOf(categoryId) + "-";
+                return repository.searchInCategory(categoryId, categoryIdMatch, keyword, pageable);
+            }
+
             return repository.findAll(keyword, pageable);
         }
 
