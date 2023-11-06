@@ -26,15 +26,15 @@ public class ProductService {
         return (List<Product>) repository.findAll();
     }
 
-    public Page<Product> listByPage(int pageNum, String sortField, String sortDir, String keyWord){
+    public Page<Product> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
         Sort sort = Sort.by(sortField);
 
         sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
 
         Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE, sort);
 
-        if (keyWord != null){
-            return repository.findAll(keyWord, pageable);
+        if (keyword != null) {
+            return repository.findAll(keyword, pageable);
         }
 
         return repository.findAll(pageable);
