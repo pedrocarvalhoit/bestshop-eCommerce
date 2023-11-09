@@ -53,11 +53,21 @@
         <table class="table table-bordered table-striped table-hover table-responsive-xl">
             <thead class="thead-dark">
             <tr>
-                <th th:replace="~{fragments :: column_link('/products', 'id', 'ID', 'none')}"></th>
+                <th class="hideable-column">
+                <th th:replace="fragments :: column_link('/products', 'id', 'ID', 'tag')"></th>
+                </th>
+
                 <th>Main Image</th>
                 <th th:replace="~{fragments :: column_link('/products', 'name', 'Product Name', 'none')}"></th>
-                <th th:replace="~{fragments :: column_link('/products', 'brand', 'Brand', 'none')}"></th>
-                <th th:replace="~{fragments :: column_link('/products', 'category', 'Category', 'none')}"></th>
+
+                <th class="hideable-column">
+                <th th:replace="fragments :: column_link('/products', 'brand', 'Brand', 'tag')"></th>
+                </th>
+
+                <th class="hideable-column">
+                <th th:replace="fragments :: column_link('/products', 'category', 'Category', 'tag')"></th>
+                </th>
+
                 <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
                     <th>Enabled</th>
                 </th:block>
@@ -66,7 +76,7 @@
             </thead>
             <tbody>
             <tr th:each="product : ${listProducts}">
-                <td>[[${product.id}]]</td>
+                <td class="hideable-column">[[${product.id}]]</td>
                 <td>
                     <div th:replace="~{fragments :: product_image}"></div>
                 </td>
@@ -76,8 +86,8 @@
                        th:title="${product.name}">
                         [[${product.shortName}]]</a>
                 </td>
-                <td>[[${product.brand}]]</td>
-                <td>[[${product.category}]]</td>
+                <td class="hideable-column">[[${product.brand}]]</td>
+                <td class="hideable-column"> [[${product.category}]]</td>
 
                 <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
                     <td>
@@ -102,6 +112,35 @@
             </tr>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="less-details">
+    <div th:each="product : ${listProducts}" class="row m-1">
+        <div class="col-4">
+            <img th:src="@{${product.mainImagePath}}" style="width: 80px" class="img-fluid" />
+        </div>
+        <div class="col-8">
+            <div>
+                <a class="link-detail" th:href="@{'/products/detail/' + ${product.id}}">[[${product.shortName}]]</a>
+            </div>
+            <div class="mt-2">
+                <a class="fas fa-file-alt fa-2x icon-green link-detail"
+                   th:href="@{'/products/detail/' + ${product.id}}"
+                ></a>
+
+                <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
+                    &nbsp;
+                    <div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})"></div>
+                </th:block>
+
+                <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                    &nbsp;
+                    <div th:replace="fragments :: delete('product', ${product.id}, '/products/delete/' + ${product.id}, true)"></div>
+                </th:block>
+            </div>
+        </div>
+        <div>&nbsp;</div>
     </div>
 </div>
 
