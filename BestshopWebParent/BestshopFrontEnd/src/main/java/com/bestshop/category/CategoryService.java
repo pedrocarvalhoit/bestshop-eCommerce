@@ -1,6 +1,7 @@
 package com.bestshop.category;
 
 import com.bestshop.common.entity.Category;
+import com.bestshop.common.exception.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,16 +13,21 @@ import java.util.stream.Collectors;
 public class CategoryService {
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryRepository repo;
 
     public List<Category> listNoChildrenCategories(){
-        return categoryRepository.findAllEnabled().stream()
+        return repo.findAllEnabled().stream()
                 .filter(category -> category.getChildren() == null || category.getChildren().isEmpty())
                 .collect(Collectors.toList());
     }
 
-    public Category getCategory(String alias) {
-        return categoryRepository.findByAliasEnabled(alias);
+    public Category getCategory(String alias) throws CategoryNotFoundException {
+        Category category = repo.findByAliasEnabled(alias);
+        if (category == null) {
+            throw new CategoryNotFoundException("Could not find any categories with alias " + alias);
+        }
+
+        return category;
     }
 
     public List<Category> getCategoryParents(Category child) {

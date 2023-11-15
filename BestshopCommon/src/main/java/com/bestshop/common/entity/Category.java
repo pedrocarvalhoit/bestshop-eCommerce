@@ -36,6 +36,7 @@ public class Category {
     private Category parent;
 
     @OneToMany(mappedBy = "parent")
+    @OrderBy("name asc")
     private Set<Category> children = new HashSet<>();
 
     public Category() {
@@ -156,6 +157,7 @@ public class Category {
     }
 
     public void setChildren(Set<Category> children) {
+
         this.children = children;
     }
 

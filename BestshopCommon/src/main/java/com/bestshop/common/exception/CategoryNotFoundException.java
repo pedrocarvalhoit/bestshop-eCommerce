@@ -1,4 +1,4 @@
-package com.bestshop.admin.category;
+package com.bestshop.common.exception;
 
 public class CategoryNotFoundException extends Throwable{
 

@@ -1,8 +1,6 @@
 package com.bestshop.admin.category;
 
-import com.bestshop.admin.category.CategoryNotFoundException;
-import com.bestshop.admin.category.CategoryPageInfo;
-import com.bestshop.admin.category.CategoryReposiroty;
+import com.bestshop.common.exception.CategoryNotFoundException;
 import com.bestshop.common.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

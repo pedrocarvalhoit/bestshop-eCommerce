@@ -1,4 +1,4 @@
-package com.bestshop.admin.product;
+package com.bestshop.common.exception;
 
 public class ProductNotFoundException extends Exception {
 

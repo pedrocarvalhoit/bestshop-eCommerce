@@ -2,6 +2,7 @@ package com.bestshop.admin.category;
 
 import com.bestshop.admin.FileUploadUtil;
 import com.bestshop.common.entity.Category;
+import com.bestshop.common.exception.CategoryNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
