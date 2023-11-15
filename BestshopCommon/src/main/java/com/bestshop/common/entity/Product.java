@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.*;
 
 @Entity
@@ -137,6 +139,18 @@ public class Product{
         }
 
         return name;
+    }
+
+    @Transient
+    public String getDiscountPrice(){
+        DecimalFormat df = new DecimalFormat("#.##");
+        if (discountPercent.compareTo(BigDecimal.ZERO) > 0){
+            BigDecimal hundred = new BigDecimal("100");
+            BigDecimal discountDecimal = discountPercent.divide(hundred, 2, RoundingMode.HALF_UP); // Convertendo para forma decimal
+            BigDecimal discountAmount = price.multiply(discountDecimal); // Calculando o valor do desconto
+            return df.format(price.subtract(discountAmount));
+        }
+        return df.format(this.price);
     }
 
     @Override
