@@ -13,13 +13,14 @@ public class MvcConfig implements WebMvcConfigurer {
     //Expose a directory on the file system - to be accessible by the clients
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        exposeDiretory("user-photos", registry);
-        exposeDiretory("../category-images", registry);
-        exposeDiretory("../brand-logos", registry);
-        exposeDiretory("../product-images", registry);
+        exposeDirectory("user-photos", registry);
+        exposeDirectory("../category-images", registry);
+        exposeDirectory("../brand-logos", registry);
+        exposeDirectory("../product-images", registry);
+        exposeDirectory("../site-logo", registry);
     }
 
-    private void exposeDiretory(String pathPattern, ResourceHandlerRegistry registry){
+    private void exposeDirectory(String pathPattern, ResourceHandlerRegistry registry){
         Path path = Paths.get(pathPattern);
         String absolutePath = path.toFile().getAbsolutePath();
 

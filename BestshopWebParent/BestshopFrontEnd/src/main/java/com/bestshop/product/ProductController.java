@@ -106,6 +106,7 @@ public class ProductController {
             model.addAttribute("listCategoryParents", listCategoryParents);
             model.addAttribute("product", product);
             model.addAttribute("pageTitle", product.getShortName());
+            model.addAttribute("discountPercent", product.getDiscountPercent().toString());
 
             return "product/product_detail";
         } catch (ProductNotFoundException e) {

@@ -1,4 +1,4 @@
-package com.bestshop.admin.secutiry;
+package com.bestshop.admin.setting;
 
 import com.bestshop.admin.setting.CurrencyRepository;
 import com.bestshop.common.entity.Currency;
@@ -21,21 +21,14 @@ class CurrencyRepositoryTest {
     private CurrencyRepository repo;
 
     @Test
-    @Rollback(value = false)
     public void testCreateCurrencies() {
         List<Currency> listCurrencies = Arrays.asList(
                 new Currency("United States Dollar", "$", "USD"),
                 new Currency("British Pound", "£", "GPB"),
-                new Currency("Japanese Yen", "¥", "JPY"),
                 new Currency("Euro", "€", "EUR"),
-                new Currency("Russian Ruble", "₽", "RUB"),
-                new Currency("South Korean Won", "₩", "KRW"),
-                new Currency("Chinese Yuan", "¥", "CNY"),
                 new Currency("Brazilian Real", "R$", "BRL"),
                 new Currency("Australian Dollar", "$", "AUD"),
-                new Currency("Canadian Dollar", "$", "CAD"),
-                new Currency("Vietnamese đồng ", "₫", "VND"),
-                new Currency("Indian Rupee", "₹", "INR")
+                new Currency("Canadian Dollar", "$", "CAD")
         );
 
         repo.saveAll(listCurrencies);
