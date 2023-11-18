@@ -1,71 +1,81 @@
-var buttonLoad;
-var dropDownCountry;
-var buttonAddCountry;
-var buttonUpdateCountry;
-var buttonDeleteCountry;
-var labelCountryName;
-var fieldCountryName;
-var fieldCountryCode;
+var buttonLoad4States;
+var dropDownCountry4States;
+var dropDownStates;
+var buttonAddState;
+var buttonUpdateState;
+var buttonDeleteState;
+var labelStateName;
+var fieldStateName;
 
 $(document).ready(function() {
-    buttonLoad = $("#buttonLoadCountries");
-    dropDownCountry = $("#dropDownCountries");
-    buttonAddCountry = $("#buttonAddCountry");
-    buttonUpdateCountry = $("#buttonUpdateCountry");
-    buttonDeleteCountry = $("#buttonDeleteCountry");
-    labelCountryName = $("#labelCountryName");
-    fieldCountryName = $("#fieldCountryName");
-    fieldCountryCode = $("#fieldCountryCode");
+    buttonLoad4States = $("#buttonLoadCountriesForStates");
+    dropDownCountry4States = $("#dropDownCountriesForStates");
+    dropDownStates = $("#dropDownStates");
+    buttonAddState = $("#buttonAddState");
+    buttonUpdateState = $("#buttonUpdateState");
+    buttonDeleteState = $("#buttonDeleteState");
+    labelStateName = $("#labelStateName");
+    fieldStateName = $("#fieldStateName");
 
-    buttonLoad.click(function() {
-        loadCountries();
+    buttonLoad4States.click(function() {
+        loadCountries4States();
     });
 
-    dropDownCountry.on("change", function() {
-        changeFormStateToSelectedCountry();
+    dropDownCountry4States.on("change", function() {
+        loadStates4Country();
     });
 
-    buttonAddCountry.click(function() {
-        if (buttonAddCountry.val() == "Add") {
-            addCountry();
+    dropDownStates.on("change", function() {
+        changeFormStateToSelectedState();
+    });
+
+    buttonAddState.click(function() {
+        if (buttonAddState.val() == "Add") {
+            addState();
         } else {
             changeFormStateToNew();
         }
     });
 
-    buttonUpdateCountry.click(function() {
-        updateCountry();
+    buttonUpdateState.click(function() {
+        updateState();
     });
 
-    buttonDeleteCountry.click(function() {
-        deleteCountry();
+    buttonDeleteState.click(function() {
+        deleteState();
     });
 });
 
-function deleteCountry() {
-    optionValue = dropDownCountry.val();
-    countryId = optionValue.split("-")[0];
+function deleteState() {
+    stateId = dropDownStates.val();
 
-    url = contextPath + "countries/delete/" + countryId;
+    url = contextPath + "states/delete/" + stateId;
 
-    $.get(url, function() {
-        $("#dropDownCountries option[value='" + optionValue + "']").remove();
-        changeFormStateToNew();
+    $.ajax({
+        type: 'DELETE',
+        url: url,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(csrfHeaderName, csrfValue);
+        }
     }).done(function() {
-        showToastMessage("The country has been deleted");
+        $("#dropDownStates option[value='" + stateId + "']").remove();
+        changeFormStateToNew();
+        showToastMessage("The state has been deleted");
     }).fail(function() {
         showToastMessage("ERROR: Could not connect to server or server encountered an error");
     });
 }
 
-function updateCountry() {
-    url = contextPath + "countries/save";
-    countryName = fieldCountryName.val();
-    countryCode = fieldCountryCode.val();
+function updateState() {
+    url = contextPath + "states/save";
+    stateId = dropDownStates.val();
+    stateName = fieldStateName.val();
 
-    countryId = dropDownCountry.val().split("-")[0];
+    selectedCountry = $("#dropDownCountriesForStates option:selected");
+    countryId = selectedCountry.val();
+    countryName = selectedCountry.text();
 
-    jsonData = {id: countryId, name: countryName, code: countryCode};
+    jsonData = {id: stateId, name: stateName, country: {id: countryId, name: countryName}};
 
     $.ajax({
         type: 'POST',
@@ -75,22 +85,24 @@ function updateCountry() {
         },
         data: JSON.stringify(jsonData),
         contentType: 'application/json'
-    }).done(function(countryId) {
-        $("#dropDownCountries option:selected").val(countryId + "-" + countryCode);
-        $("#dropDownCountries option:selected").text(countryName);
-        showToastMessage("The country has been updated");
-
+    }).done(function(stateId) {
+        $("#dropDownStates option:selected").text(stateName);
+        showToastMessage("The state has been updated");
         changeFormStateToNew();
     }).fail(function() {
         showToastMessage("ERROR: Could not connect to server or server encountered an error");
     });
 }
 
-function addCountry() {
-    url = contextPath + "countries/save";
-    countryName = fieldCountryName.val();
-    countryCode = fieldCountryCode.val();
-    jsonData = {name: countryName, code: countryCode};
+function addState() {
+    url = contextPath + "states/save";
+    stateName = fieldStateName.val();
+
+    selectedCountry = $("#dropDownCountriesForStates option:selected");
+    countryId = selectedCountry.val();
+    countryName = selectedCountry.text();
+
+    jsonData = {name: stateName, country: {id: countryId, name: countryName}};
 
     $.ajax({
         type: 'POST',
@@ -100,70 +112,78 @@ function addCountry() {
         },
         data: JSON.stringify(jsonData),
         contentType: 'application/json'
-    }).done(function(countryId) {
-        selectNewlyAddedCountry(countryId, countryCode, countryName);
-        showToastMessage("The new country has been added");
+    }).done(function(stateId) {
+        selectNewlyAddedState(stateId, stateName);
+        showToastMessage("The new state has been added");
     }).fail(function() {
         showToastMessage("ERROR: Could not connect to server or server encountered an error");
     });
 
 }
 
-function selectNewlyAddedCountry(countryId, countryCode, countryName) {
-    optionValue = countryId + "-" + countryCode;
-    $("<option>").val(optionValue).text(countryName).appendTo(dropDownCountry);
+function selectNewlyAddedState(stateId, stateName) {
+    $("<option>").val(stateId).text(stateName).appendTo(dropDownStates);
 
-    $("#dropDownCountries option[value='" + optionValue + "']").prop("selected", true);
+    $("#dropDownStates option[value='" + stateId + "']").prop("selected", true);
 
-    fieldCountryCode.val("");
-    fieldCountryName.val("").focus();
+    fieldStateName.val("").focus();
 }
 
 function changeFormStateToNew() {
-    buttonAddCountry.val("Add");
-    labelCountryName.text("Country Name:");
+    buttonAddState.val("Add");
+    labelStateName.text("State/Province Name:");
 
-    buttonUpdateCountry.prop("disabled", true);
-    buttonDeleteCountry.prop("disabled", true);
+    buttonUpdateState.prop("disabled", true);
+    buttonDeleteState.prop("disabled", true);
 
-    fieldCountryCode.val("");
-    fieldCountryName.val("").focus();
+    fieldStateName.val("").focus();
 }
 
-function changeFormStateToSelectedCountry() {
-    buttonAddCountry.prop("value", "New");
-    buttonUpdateCountry.prop("disabled", false);
-    buttonDeleteCountry.prop("disabled", false);
+function changeFormStateToSelectedState() {
+    buttonAddState.prop("value", "New");
+    buttonUpdateState.prop("disabled", false);
+    buttonDeleteState.prop("disabled", false);
 
-    labelCountryName.text("Selected Country:");
+    labelStateName.text("Selected State/Province:");
 
-    selectedCountryName = $("#dropDownCountries option:selected").text();
-    fieldCountryName.val(selectedCountryName);
-
-    countryCode = dropDownCountry.val().split("-")[1];
-    fieldCountryCode.val(countryCode);
+    selectedStateName = $("#dropDownStates option:selected").text();
+    fieldStateName.val(selectedStateName);
 
 }
 
-function loadCountries() {
-    url = contextPath + "countries/list";
+function loadStates4Country() {
+    selectedCountry = $("#dropDownCountriesForStates option:selected");
+    countryId = selectedCountry.val();
+    url = contextPath + "states/list_by_country/" + countryId;
+
     $.get(url, function(responseJSON) {
-        dropDownCountry.empty();
+        dropDownStates.empty();
 
-        $.each(responseJSON, function(index, country) {
-            optionValue = country.id + "-" + country.code;
-            $("<option>").val(optionValue).text(country.name).appendTo(dropDownCountry);
+        $.each(responseJSON, function(index, state) {
+            $("<option>").val(state.id).text(state.name).appendTo(dropDownStates);
         });
 
     }).done(function() {
-        buttonLoad.val("Refresh Country List");
+        changeFormStateToNew();
+        showToastMessage("All states have been loaded for country " + selectedCountry.text());
+    }).fail(function() {
+        showToastMessage("ERROR: Could not connect to server or server encountered an error");
+    });
+}
+
+function loadCountries4States() {
+    url = contextPath + "countries/list";
+    $.get(url, function(responseJSON) {
+        dropDownCountry4States.empty();
+
+        $.each(responseJSON, function(index, country) {
+            $("<option>").val(country.id).text(country.name).appendTo(dropDownCountry4States);
+        });
+
+    }).done(function() {
+        buttonLoad4States.val("Refresh Country List");
         showToastMessage("All countries have been loaded");
     }).fail(function() {
         showToastMessage("ERROR: Could not connect to server or server encountered an error");
     });
-}
-
-function showToastMessage(message) {
-    $("#toastMessage").text(message);
-    $(".toast").toast('show');
 }
