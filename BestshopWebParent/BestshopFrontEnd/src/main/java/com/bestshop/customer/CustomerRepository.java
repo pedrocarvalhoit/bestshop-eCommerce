@@ -1,4 +1,4 @@
-package com.bestshop.admin.customer;
+package com.bestshop.customer;
 
 
 import com.bestshop.common.entity.Customer;

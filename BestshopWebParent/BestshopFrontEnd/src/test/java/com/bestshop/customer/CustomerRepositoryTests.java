@@ -1,9 +1,8 @@
-package com.bestshop.admin.customer;
+package com.bestshop.customer;
 
 
 import com.bestshop.common.entity.Country;
 import com.bestshop.common.entity.Customer;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -13,8 +12,6 @@ import org.springframework.test.annotation.Rollback;
 
 import java.util.Date;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
