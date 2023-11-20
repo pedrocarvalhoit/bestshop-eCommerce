@@ -2,6 +2,7 @@ package com.bestshop.admin.setting.state;
 
 import com.bestshop.common.entity.Country;
 import com.bestshop.common.entity.State;
+import com.bestshop.common.entity.StateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
