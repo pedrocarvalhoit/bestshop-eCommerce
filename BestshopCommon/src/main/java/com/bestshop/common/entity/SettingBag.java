@@ -6,6 +6,7 @@ public class SettingBag {
     private List<Setting> listSettings;
 
     public SettingBag(List<Setting> listSettings) {
+
         this.listSettings = listSettings;
     }
 
