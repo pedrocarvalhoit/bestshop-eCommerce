@@ -51,10 +51,15 @@ function deleteState() {
 
     url = contextPath + "states/delete/" + stateId;
 
-    $.get(url, function() {
+    $.ajax({
+        type: 'DELETE',
+        url: url,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(csrfHeaderName, csrfValue);
+        }
+    }).done(function() {
         $("#dropDownStates option[value='" + stateId + "']").remove();
         changeFormStateToNew();
-    }).done(function() {
         showToastMessage("The state has been deleted");
     }).fail(function() {
         showToastMessage("ERROR: Could not connect to server or server encountered an error");
@@ -62,6 +67,8 @@ function deleteState() {
 }
 
 function updateState() {
+    if (!validateFormState()) return;
+
     url = contextPath + "states/save";
     stateId = dropDownStates.val();
     stateName = fieldStateName.val();
@@ -90,6 +97,8 @@ function updateState() {
 }
 
 function addState() {
+    if (!validateFormState()) return;
+
     url = contextPath + "states/save";
     stateName = fieldStateName.val();
 
@@ -114,6 +123,16 @@ function addState() {
         showToastMessage("ERROR: Could not connect to server or server encountered an error");
     });
 
+}
+
+function validateFormState() {
+    formState = document.getElementById("formState");
+    if (!formState.checkValidity()) {
+        formState.reportValidity();
+        return false;
+    }
+
+    return true;
 }
 
 function selectNewlyAddedState(stateId, stateName) {

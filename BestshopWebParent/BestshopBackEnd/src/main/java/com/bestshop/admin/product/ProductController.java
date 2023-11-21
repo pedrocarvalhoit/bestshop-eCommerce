@@ -171,7 +171,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/{id}/enabled/{enabled}")
-    public String updateProductStatus(@PathVariable(name = "id") Integer id, @PathVariable(name = "enabled") boolean enabled, RedirectAttributes ra) {
+    public String updateProductEnabledStatus(@PathVariable(name = "id") Integer id, @PathVariable(name = "enabled") boolean enabled, RedirectAttributes ra) {
         productService.updtadeStatus(id, enabled);
 
         String message = enabled ? "Product ID: " + id + " has been Enabled" : "Product ID: " + id + " has been Disabled";
