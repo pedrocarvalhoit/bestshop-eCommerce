@@ -3,6 +3,8 @@ package com.bestshop.admin.product;
 import com.bestshop.admin.FileUploadUtil;
 import com.bestshop.admin.brand.BrandService;
 import com.bestshop.admin.category.CategoryService;
+import com.bestshop.admin.paging.PagingAndSortingHelper;
+import com.bestshop.admin.paging.PagingAndSortingParam;
 import com.bestshop.admin.secutiry.BestshopUserDetails;
 import com.bestshop.common.entity.Brand;
 import com.bestshop.common.entity.Category;
@@ -36,46 +38,25 @@ public class ProductController {
     @Autowired
     CategoryService categoryService;
 
-    private static final String REDIRECT_PRODUCTS = "redirect:/products";
+    private String defaultRedirectURL = "redirect:/products/page/1?sortField=name&sortDir=asc&categoryId=0";
 
     @GetMapping("/products")
     public String listFirstPage(Model model) {
-
-        return listByPage(1, model, "name", "asc", null, 0);
+        return defaultRedirectURL;
     }
 
     @GetMapping("/products/page/{pageNum}")
-    public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
-            @Param("sortField") String sortField,
-            @Param("sortDir") String sortDir,
-            @Param("keyword") String keyword,
+    public String listByPage(
+            @PagingAndSortingParam(listName = "listProducts", moduleURL = "/products") PagingAndSortingHelper helper,
+            @PathVariable(name = "pageNum") int pageNum, Model model,
             @Param("categoryId") Integer categoryId
     ) {
-        Page<Product> page = productService.listByPage(pageNum, sortField, sortDir, keyword, categoryId);
-        List<Product> listProducts = page.getContent();
+
+        productService.listByPage(pageNum, helper, categoryId);
 
         List<Category> listCategories = categoryService.listCategoriesUsedInForm();
 
-        long startCount = (pageNum - 1) * ProductService.PRODUCTS_PER_PAGE + 1;
-        long endCount = startCount + ProductService.PRODUCTS_PER_PAGE - 1;
-        if (endCount > page.getTotalElements()) {
-            endCount = page.getTotalElements();
-        }
-
-        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
-
         if (categoryId != null) model.addAttribute("categoryId", categoryId);
-
-        model.addAttribute("currentPage", pageNum);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("startCount", startCount);
-        model.addAttribute("endCount", endCount);
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", reverseSortDir);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("listProducts", listProducts);
         model.addAttribute("listCategories", listCategories);
 
         return "products/products";
@@ -94,10 +75,13 @@ public class ProductController {
                               @AuthenticationPrincipal BestshopUserDetails loggedUser
     )
             throws IOException {
-        if (loggedUser.hasRole("Salesperson")) {
-            productService.saveProductPrice(product);
-            ra.addFlashAttribute("message", "The product has been saved successfully.");
-            return "redirect:/products";
+
+        if (!loggedUser.hasRole("Admin") && !loggedUser.hasRole("Editor")) {
+            if (loggedUser.hasRole("Salesperson")) {
+                productService.saveProductPrice(product);
+                ra.addFlashAttribute("message", "The product has been saved successfully.");
+                return defaultRedirectURL;
+            }
         }
 
         ProductSaveHelper.setMainImageName(mainImageMultipart, product);
@@ -113,7 +97,7 @@ public class ProductController {
 
         ra.addFlashAttribute("message", "The product has been saved successfully.");
 
-        return "redirect:/products";
+        return defaultRedirectURL;
     }
 
     @GetMapping("/products/new")
@@ -150,7 +134,7 @@ public class ProductController {
         } catch (ProductNotFoundException e) {
             ra.addFlashAttribute("message", e.getMessage());
 
-            return "redirect:/products";
+            return defaultRedirectURL;
         }
     }
 
@@ -166,7 +150,7 @@ public class ProductController {
         } catch (ProductNotFoundException e) {
             ra.addFlashAttribute("message", e.getMessage());
 
-            return "redirect:/products";
+            return defaultRedirectURL;
         }
     }
 
@@ -177,7 +161,7 @@ public class ProductController {
         String message = enabled ? "Product ID: " + id + " has been Enabled" : "Product ID: " + id + " has been Disabled";
         ra.addFlashAttribute("message", message);
 
-        return REDIRECT_PRODUCTS;
+        return defaultRedirectURL;
     }
 
     @GetMapping("/products/delete/{id}")
@@ -196,7 +180,7 @@ public class ProductController {
             ra.addFlashAttribute("message", ex.getMessage());
         }
 
-        return REDIRECT_PRODUCTS;
+        return defaultRedirectURL;
     }
 
 }

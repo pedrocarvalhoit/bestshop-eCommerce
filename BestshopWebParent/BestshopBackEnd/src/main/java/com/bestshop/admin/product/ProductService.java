@@ -1,5 +1,6 @@
 package com.bestshop.admin.product;
 
+import com.bestshop.admin.paging.PagingAndSortingHelper;
 import com.bestshop.common.entity.Product;
 import com.bestshop.common.exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,23 +26,28 @@ public class ProductService {
         return (List<Product>) repository.findAll();
     }
 
-    public Page<Product> listByPage(int pageNum, String sortField, String sortDir, String keyword, Integer categoryId) {
-        Sort sort = Sort.by(sortField);
-
-        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
-
-        Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE, sort);
+    public void listByPage(int pageNum, PagingAndSortingHelper helper, Integer categoryId) {
+        Pageable pageable = helper.createPageable(PRODUCTS_PER_PAGE, pageNum);
+        String keyword = helper.getKeyword();
+        Page<Product> page = null;
 
         if (keyword != null && !keyword.isEmpty()) {
             if (categoryId != null && categoryId > 0) {
                 String categoryIdMatch = "-" + String.valueOf(categoryId) + "-";
-                return repository.searchInCategory(categoryId, categoryIdMatch, keyword, pageable);
+                page = repository.searchInCategory(categoryId, categoryIdMatch, keyword, pageable);
+            } else {
+                page = repository.findAll(keyword, pageable);
             }
-
-            return repository.findAll(keyword, pageable);
+        } else {
+            if (categoryId != null && categoryId > 0) {
+                String categoryIdMatch = "-" + String.valueOf(categoryId) + "-";
+                page = repository.findAllInCategory(categoryId, categoryIdMatch, pageable);
+            } else {
+                page = repository.findAll(pageable);
+            }
         }
 
-        return repository.findAll(pageable);
+        helper.updateModelAttributes(pageNum, page);
     }
 
     public Product save(Product product) {
