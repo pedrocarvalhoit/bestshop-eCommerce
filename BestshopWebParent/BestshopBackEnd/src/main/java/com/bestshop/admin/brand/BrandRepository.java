@@ -1,5 +1,6 @@
 package com.bestshop.admin.brand;
 
+import com.bestshop.admin.paging.SearchRepository;
 import com.bestshop.common.entity.Brand;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BrandRepository extends JpaRepository<Brand,Integer> {
+public interface BrandRepository extends SearchRepository<Brand,Integer> {
 
     Brand findByName(String name);
 

@@ -575,7 +575,7 @@ org.hibernate.query.SemanticException: Could not resolve attribute 'firstName22'
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:756) ~[spring-aop-6.0.11.jar:6.0.11]
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708) ~[spring-aop-6.0.11.jar:6.0.11]
 	at com.bestshop.admin.user.UserService$$SpringCGLIB$$0.listByPage(<generated>) ~[classes/:na]
-	at com.bestshop.admin.user.UserController.listByPage(UserController.java:40) ~[classes/:na]
+	at com.bestshop.admin.user.controller.UserController.listByPage(UserController.java:40) ~[classes/:na]
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:577) ~[na:na]
 	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-6.0.11.jar:6.0.11]
