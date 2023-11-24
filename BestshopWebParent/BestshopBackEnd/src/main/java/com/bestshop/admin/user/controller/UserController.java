@@ -1,6 +1,12 @@
-package com.bestshop.admin.user;
+package com.bestshop.admin.user.controller;
 
 import com.bestshop.admin.FileUploadUtil;
+import com.bestshop.admin.paging.PagingAndSortingHelper;
+import com.bestshop.admin.paging.PagingAndSortingParam;
+import com.bestshop.admin.user.*;
+import com.bestshop.admin.user.export.UserCsvExporter;
+import com.bestshop.admin.user.export.UserExcelExporter;
+import com.bestshop.admin.user.export.UserPDFExporter;
 import com.bestshop.common.entity.Role;
 import com.bestshop.common.entity.User;
 import com.itextpdf.text.DocumentException;
@@ -24,35 +30,19 @@ public class UserController {
     @Autowired
     private UserService service;
 
+    private String defaultRedirectURL = "redirect:/users/page/1?sortField=firstName&sortDir=asc";
+
     @GetMapping("/users")
-    public String listFirstPage(Model model){
-        return listByPage(1, model, "firstName", "asc", null);
+    public String listFirstPage() {
+        return defaultRedirectURL;
     }
 
     @GetMapping("/users/page/{pageNum}")
-    public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,@Param("sortField") String sortField,
-                             @Param("sortDir") String sortDir, @Param("keyword") String keyword ){
-        Page<User> page = service.listByPage(pageNum, sortField, sortDir, keyword);
-        List<User> listUsers = page.getContent();
+    public String listByPage(
+            @PagingAndSortingParam(listName = "listUsers", moduleURL = "/users") PagingAndSortingHelper helper,
+            @PathVariable(name = "pageNum") int pageNum) {
+        service.listByPage(pageNum, helper);
 
-        long startCount = (pageNum - 1) * UserService.USERS_PER_PAGE + 1;
-        long endCount = startCount + UserService.USERS_PER_PAGE -1;
-        if(endCount > page.getTotalElements()){
-            endCount = page.getTotalElements();
-        }
-
-        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
-
-        model.addAttribute("currentPage", pageNum);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("startCount", startCount);
-        model.addAttribute("endCount", endCount);
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("listUsers", listUsers);
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("reverseSortDir", reverseSortDir);
         return "users/users";
     }
 
@@ -110,7 +100,7 @@ public class UserController {
             return "users/user_form";
         } catch (UserNotFoundException ex) {
             redirectAttributes.addFlashAttribute("message", ex.getMessage());
-            return "redirect:/users";
+            return defaultRedirectURL;
         }
     }
 
@@ -126,7 +116,7 @@ public class UserController {
         }catch (UserNotFoundException ex){
             redirectAttributes.addFlashAttribute("message", ex.getMessage());
         }
-        return "redirect:/users";
+        return defaultRedirectURL;
     }
 
     @GetMapping("users/{id}/enabled/{enabled}")

@@ -1,5 +1,6 @@
 package com.bestshop.admin.brand;
 
+import com.bestshop.admin.paging.PagingAndSortingHelper;
 import com.bestshop.common.entity.Brand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,55 +16,43 @@ import java.util.NoSuchElementException;
 public class BrandService {
 
     @Autowired
-    private BrandRepository repository;
+    private BrandRepository repo;
 
-    public static final int NUMBER_ITEM_PER_PAGE = 10;
+    public static final int BRANDS_PER_PAGE = 10;
 
-    public Page<Brand> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
-        Sort sort = Sort.by(sortField);
-        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
-        Pageable pageable = PageRequest.of(pageNum - 1, NUMBER_ITEM_PER_PAGE, sort);
-
-        if (keyword != null) {
-            return repository.findAll(keyword, pageable);
-        }
-
-        return repository.findAll(pageable);
-    }
-
-    public List<Brand> listAll(Sort sort) {
-        return repository.findAll(sort);
+    public void listByPage(int pageNum, PagingAndSortingHelper helper) {
+        helper.listEntities(pageNum, BRANDS_PER_PAGE, repo);
     }
 
     public List<Brand> listAll() {
-        return repository.findAll();
+        return (List<Brand>) repo.findAll();
     }
 
     public Brand save(Brand brand) {
-        return repository.save(brand);
+        return repo.save(brand);
     }
 
     public Brand get(Integer id) throws BrandNotFoundException {
         try {
-            return repository.findById(id).get();
+            return repo.findById(id).get();
         } catch (NoSuchElementException ex) {
             throw new BrandNotFoundException("Could not find any brand with ID " + id);
         }
     }
 
     public void delete(Integer id) throws BrandNotFoundException {
-        Long countById = repository.countByid(id);
+        Long countById = repo.countByid(id);
 
         if (countById == null || countById == 0) {
             throw new BrandNotFoundException("Could not find any brand whith ID " + id);
         }
 
-        repository.deleteById(id);
+        repo.deleteById(id);
     }
 
     public String checkUnique(Integer id, String name) {
         boolean isCreatingNew = (id == null || id == 0);
-        Brand brand = repository.findByName(name);
+        Brand brand = repo.findByName(name);
 
         if (isCreatingNew) {
             if (brand != null) return "Duplicate";

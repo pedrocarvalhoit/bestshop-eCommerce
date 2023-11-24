@@ -1,15 +1,15 @@
 package com.bestshop.admin.customer;
 
+import com.bestshop.admin.paging.SearchRepository;
 import com.bestshop.common.entity.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, Integer> {
+public interface CustomerRepository extends SearchRepository<Customer, Integer> {
 
     @Query("SELECT c FROM Customer c WHERE CONCAT(c.email, ' ', c.firstName, ' ', c.lastName, ' ', "
             + "c.addressLine1, ' ', c.addressLine2, ' ', c.city, ' ', c.state, "
