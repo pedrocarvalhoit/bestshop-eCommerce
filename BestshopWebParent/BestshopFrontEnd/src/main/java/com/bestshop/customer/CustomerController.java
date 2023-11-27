@@ -34,7 +34,7 @@ public class CustomerController {
 
         model.addAttribute("listCountries", listCountries);
         model.addAttribute("pageTitle", "Customer Registration");
-        model.addAttribute("customers", new Customer());
+        model.addAttribute("customer", new Customer());
 
         return "register/register_form";
     }
