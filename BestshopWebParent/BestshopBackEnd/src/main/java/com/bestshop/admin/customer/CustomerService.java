@@ -2,6 +2,7 @@ package com.bestshop.admin.customer;
 
 import com.bestshop.admin.paging.PagingAndSortingHelper;
 import com.bestshop.admin.setting.country.CountryRepository;
+import com.bestshop.common.entity.AuthenticationType;
 import com.bestshop.common.entity.Country;
 import com.bestshop.common.entity.Customer;
 import com.bestshop.common.exception.CustomerNotFoundException;
@@ -87,5 +88,7 @@ public class CustomerService {
 
         customerRepo.deleteById(id);
     }
+
+
 
 }

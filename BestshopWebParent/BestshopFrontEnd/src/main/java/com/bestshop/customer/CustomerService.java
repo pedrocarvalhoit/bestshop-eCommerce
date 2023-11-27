@@ -1,5 +1,6 @@
 package com.bestshop.customer;
 
+import com.bestshop.common.entity.AuthenticationType;
 import com.bestshop.common.entity.Country;
 import com.bestshop.common.entity.Customer;
 import com.bestshop.setting.CountryRepository;
@@ -65,5 +66,12 @@ public class CustomerService {
             customerRepo.enable(customer.getId());
             return true;
         }
+    }
+
+    public void updateAuthentication(Customer customer, AuthenticationType type){
+        if (!customer.getAuthenticationType().equals(type)){
+            customerRepo.updateAuthenticationType(customer.getId(), type);
+        }
+
     }
 }

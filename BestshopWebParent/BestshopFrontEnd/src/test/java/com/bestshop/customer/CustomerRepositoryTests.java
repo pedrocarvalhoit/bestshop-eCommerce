@@ -1,6 +1,7 @@
 package com.bestshop.customer;
 
 
+import com.bestshop.common.entity.AuthenticationType;
 import com.bestshop.common.entity.Country;
 import com.bestshop.common.entity.Customer;
 import org.junit.jupiter.api.Test;
@@ -139,5 +140,15 @@ public class CustomerRepositoryTests {
 
         Customer customer = repo.findById(customerId).get();
         org.assertj.core.api.Assertions.assertThat(customer.isEnabled()).isTrue();
+    }
+
+    @Test
+    public void testUpdateAuthenticationType() {
+        Integer id = 1;
+        repo.updateAuthenticationType(id, AuthenticationType.DATABASE);
+
+        Customer customer = repo.findById(id).get();
+
+        org.assertj.core.api.Assertions.assertThat(customer.getAuthenticationType()).isEqualTo(AuthenticationType.DATABASE);
     }
 }
