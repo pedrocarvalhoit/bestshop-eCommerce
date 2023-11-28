@@ -1,5 +1,8 @@
 package com.bestshop.security;
 
+import com.bestshop.security.oauth.CsutomerOAuth2UserService;
+import com.bestshop.security.oauth.CustomerOAuth2User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +22,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class WebSecurityConfig {
 
+    @Autowired
+    private CsutomerOAuth2UserService oAuth2Service;
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -37,7 +43,10 @@ public class WebSecurityConfig {
                 ).formLogin((form) -> form.loginPage("/login")
                         .usernameParameter("email")
                         .permitAll()
-                ).logout(LogoutConfigurer::permitAll)
+                ).oauth2Login((oAuthform) -> oAuthform.loginPage("/login")
+                        .userInfoEndpoint()
+                        .userService(oAuth2Service))
+                .logout(LogoutConfigurer::permitAll)
                 .rememberMe((remember) -> remember.key("abcdefghijklmnopq_1234567890").tokenValiditySeconds(7 * 24 * 60 * 60));
 
 
