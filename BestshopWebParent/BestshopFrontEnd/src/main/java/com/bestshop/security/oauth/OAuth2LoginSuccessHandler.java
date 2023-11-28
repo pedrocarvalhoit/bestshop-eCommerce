@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+
 @Component
 public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-    @Autowired
-    private CustomerService customerService;
+    @Autowired private CustomerService customerService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -27,17 +27,31 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         String name = oauth2User.getName();
         String email = oauth2User.getEmail();
         String countryCode = request.getLocale().getCountry();
+        String clientName = oauth2User.getClientName();
 
         System.out.println("OAuth2LoginSuccessHandler: " + name + " | " + email);
+        System.out.println("Client name: " + clientName);
+
+        AuthenticationType authenticationType = getAuthenticationType(clientName);
 
         Customer customer = customerService.getCustomerByEmail(email);
         if (customer == null) {
-            customerService.addNewCustomerUponOAuthLogin(name, email, countryCode);
+            customerService.addNewCustomerUponOAuthLogin(name, email, countryCode, authenticationType);
         } else {
-            customerService.updateAuthenticationType(customer, AuthenticationType.GOOGLE);
+            customerService.updateAuthenticationType(customer, authenticationType);
         }
 
         super.onAuthenticationSuccess(request, response, authentication);
+    }
+
+    private AuthenticationType getAuthenticationType(String clientName) {
+        if (clientName.equals("Google")) {
+            return AuthenticationType.GOOGLE;
+        } else if (clientName.equals("Facebook")) {
+            return AuthenticationType.FACEBOOK;
+        } else {
+            return AuthenticationType.DATABASE;
+        }
     }
 
 }

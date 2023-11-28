@@ -1,7 +1,7 @@
 package com.bestshop.security;
 
-import com.bestshop.security.oauth.CsutomerOAuth2UserService;
 import com.bestshop.security.oauth.CustomerOAuth2User;
+import com.bestshop.security.oauth.CustomerOAuth2UserService;
 import com.bestshop.security.oauth.OAuth2LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -24,7 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     @Autowired
-    private CsutomerOAuth2UserService oAuth2Service;
+    private CustomerOAuth2UserService oAuth2Service;
 
     @Autowired
     private OAuth2LoginSuccessHandler oAuth2LoginHandler;
