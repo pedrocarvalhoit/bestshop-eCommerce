@@ -1,17 +1,11 @@
 package com.bestshop.common.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "customers")
-@NoArgsConstructor
-@AllArgsConstructor
 public class Customer {
 
     @Id
@@ -63,6 +57,9 @@ public class Customer {
     @Enumerated
     @Column(name = "authentication_type", length = 10)
     private AuthenticationType authenticationType;
+
+    public Customer() {
+    }
 
     public Integer getId() {
         return id;

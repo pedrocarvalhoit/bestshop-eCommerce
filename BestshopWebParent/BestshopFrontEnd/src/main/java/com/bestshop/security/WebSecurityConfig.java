@@ -2,6 +2,7 @@ package com.bestshop.security;
 
 import com.bestshop.security.oauth.CsutomerOAuth2UserService;
 import com.bestshop.security.oauth.CustomerOAuth2User;
+import com.bestshop.security.oauth.OAuth2LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,10 +26,11 @@ public class WebSecurityConfig {
     @Autowired
     private CsutomerOAuth2UserService oAuth2Service;
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+    @Autowired
+    private OAuth2LoginSuccessHandler oAuth2LoginHandler;
+
+    @Autowired
+    private DatabaseLoginSuccessHandler databaseLoginHandler;
 
     @Bean
     UserDetailsService userDetailsService(){
@@ -37,17 +39,20 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((authotize) -> authotize
+        http.authorizeHttpRequests(authotize -> authotize
                 .requestMatchers("/customer").authenticated()
                 .anyRequest().permitAll()
-                ).formLogin((form) -> form.loginPage("/login")
+                ).formLogin(form -> form.loginPage("/login")
                         .usernameParameter("email")
+                        .successHandler(databaseLoginHandler)
                         .permitAll()
-                ).oauth2Login((oAuthform) -> oAuthform.loginPage("/login")
+                ).oauth2Login(oAuthform -> oAuthform.loginPage("/login")
                         .userInfoEndpoint()
-                        .userService(oAuth2Service))
-                .logout(LogoutConfigurer::permitAll)
-                .rememberMe((remember) -> remember.key("abcdefghijklmnopq_1234567890").tokenValiditySeconds(7 * 24 * 60 * 60));
+                        .userService(oAuth2Service)
+                        .and()
+                        .successHandler(oAuth2LoginHandler)
+                ).logout(LogoutConfigurer::permitAll)
+                .rememberMe(remember -> remember.key("abcdefghijklmnopq_1234567890").tokenValiditySeconds(7 * 24 * 60 * 60));
 
 
         return http.build();
