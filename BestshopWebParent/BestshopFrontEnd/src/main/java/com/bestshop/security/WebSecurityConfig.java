@@ -39,7 +39,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authotize -> authotize
-                .requestMatchers("/customer").authenticated()
+                .requestMatchers("/account_details", "/update_account_details").authenticated()
                 .anyRequest().permitAll()
                 ).formLogin(form -> form.loginPage("/login")
                         .usernameParameter("email")
