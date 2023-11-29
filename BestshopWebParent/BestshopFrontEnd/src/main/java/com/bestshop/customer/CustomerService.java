@@ -3,6 +3,7 @@ package com.bestshop.customer;
 import com.bestshop.common.entity.AuthenticationType;
 import com.bestshop.common.entity.Country;
 import com.bestshop.common.entity.Customer;
+import com.bestshop.common.exception.CustomerNotFoundException;
 import com.bestshop.setting.CountryRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class CustomerService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    SecureRandom secureRandom;
+
     public List<Country> listAllCountries() {
         return countryRepo.findAllByOrderByNameAsc();
     }
@@ -38,14 +42,13 @@ public class CustomerService {
     }
 
     public void registerCustomer(Customer customer){
-        passwordEncoder(customer);
+        encodePassword(customer);
         customer.setEnabled(false);
         customer.setCreatedTime(new Date());
         customer.setAuthenticationType(AuthenticationType.DATABASE);
 
-        SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[45];
-        random.nextBytes(bytes);
+        secureRandom.nextBytes(bytes);
 
         String randomCode = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
         customer.setVerificationCode(randomCode);
@@ -57,7 +60,7 @@ public class CustomerService {
         return customerRepo.findByEmail(email);
     }
 
-    private void passwordEncoder(Customer customer) {
+    private void encodePassword(Customer customer) {
         String encodedPassword = passwordEncoder.encode(customer.getPassword());
         customer.setPassword(encodedPassword);
     }
@@ -128,8 +131,43 @@ public class CustomerService {
         customerInForm.setCreatedTime(customerInDB.getCreatedTime());
         customerInForm.setVerificationCode(customerInDB.getVerificationCode());
         customerInForm.setAuthenticationType(customerInDB.getAuthenticationType());
+        customerInForm.setResetPasswordToken(customerInDB.getResetPasswordToken());
 
         customerRepo.save(customerInForm);
+    }
+
+    public String updateResetPasswordToken(String email) throws CustomerNotFoundException {
+        Customer customer = customerRepo.findByEmail(email);
+        if (customer != null) {
+            byte[] bytes = new byte[13];
+            secureRandom.nextBytes(bytes);
+
+            String token = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+
+            customer.setResetPasswordToken(token);
+            customerRepo.save(customer);
+
+            return token;
+        } else {
+            throw new CustomerNotFoundException("Could not find any customer with the email " + email);
+        }
+    }
+
+    public Customer getByResetPasswordToken(String token) {
+        return customerRepo.findByResetPasswordToken(token);
+    }
+
+    public void updatePassword(String token, String newPassword) throws CustomerNotFoundException {
+        Customer customer = customerRepo.findByResetPasswordToken(token);
+        if (customer == null) {
+            throw new CustomerNotFoundException("No customer found: invalid token");
+        }
+
+        customer.setPassword(newPassword);
+        customer.setResetPasswordToken(null);
+        encodePassword(customer);
+
+        customerRepo.save(customer);
     }
 
 }

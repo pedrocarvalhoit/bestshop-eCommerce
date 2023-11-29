@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.security.SecureRandom;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -33,6 +35,7 @@ public class WebSecurityConfig {
 
     @Bean
     UserDetailsService userDetailsService(){
+
         return new CustomerUserDetailService();
     }
 
