@@ -118,11 +118,16 @@ public class ProductController {
 
     @GetMapping("/products/edit/{id}")
     public String editProduct(@PathVariable("id") Integer id, Model model,
-                              RedirectAttributes ra) {
+                              RedirectAttributes ra, @AuthenticationPrincipal BestshopUserDetails loggedUser) {
         try {
             Product product = productService.get(id);
             List<Brand> listBrands = brandService.listAll();
             Integer numberOfExistingExtraImages = product.getImages().size();
+
+            boolean isReadOnlyForSalesperson = !loggedUser.hasRole("Admin") && !loggedUser.hasRole("Editor")
+                    && (loggedUser.hasRole("Salesperson"));
+
+            model.addAttribute("isReadOnlyForSalesperson", isReadOnlyForSalesperson);
 
             model.addAttribute("product", product);
             model.addAttribute("listBrands", listBrands);
