@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="page_head(title, remove)" th:remove="${remove}">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
@@ -29,48 +29,47 @@
         <nav>
             <ul class="pagination justify-content-center flex-wrap">
                 <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: page_link(${moduleURL}, 1, 'First'})"></a>
+                    <a th:replace="fragments :: page_link(${moduleURL}, 1, 'First')"></a>
                 </li>
                 <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: page_link(${moduleURL}, ${currentPage - 1}, 'Previous')}"></a>
+                    <a th:replace="fragments :: page_link(${moduleURL}, ${currentPage - 1}, 'Previous')"></a>
                 </li>
 
                 <li th:class="${currentPage != i ? 'page-item': 'page-item active'}"
                     th:each="i : ${#numbers.sequence(1, totalPages)}">
-                    <a th:replace="~{fragments :: page_link(${moduleURL}, ${i}, ${i})}"></a>
+                    <a th:replace="fragments :: page_link(${moduleURL}, ${i}, ${i})"></a>
                 </li>
 
                 <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: page_link(${moduleURL}, ${currentPage + 1}, 'Next')}"></a>
+                    <a th:replace="fragments :: page_link(${moduleURL}, ${currentPage + 1}, 'Next')"></a>
                 </li>
 
                 <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: page_link(${moduleURL}, ${totalPages}, 'Last')}"></a>
+                    <a th:replace="fragments :: page_link(${moduleURL}, ${totalPages}, 'Last')"></a>
                 </li>
             </ul>
         </nav>
     </div>
-</div>
 
-<div th:fragment="modal_dialog" class="modal fade text-center" id="modalDialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="modalTitle">Warning</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
+    <div th:fragment="modal_dialog" class="modal fade text-center" id="modalDialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalTitle">Warning</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
 
-            <div class="modal-body">
-                <span id="modalBody"></span>
-            </div>
+                <div class="modal-body">
+                    <span id="modalBody"></span>
+                </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
+
 </div>
-
-
 </body>
 </html>
