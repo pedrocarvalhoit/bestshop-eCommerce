@@ -40,8 +40,8 @@ class ProductRepositoryTest {
         product.setCreatedTime(new Date());
         product.setUpdatedTime(new Date());
         product.setEnabled(true);
-        product.setCost(new BigDecimal("10.0"));
-        product.setPrice(new BigDecimal("15.0"));
+        product.setCost(10);
+        product.setPrice(15);
         product.setLength(1);
         product.setWidth(1);
         product.setHeight(1);
@@ -66,8 +66,8 @@ class ProductRepositoryTest {
         product.setFullDescription("Brand New Iphone 15 256gb 6.1 screen inch model 2023");
         product.setCreatedTime(new Date());
         product.setUpdatedTime(new Date());
-        product.setCost(new BigDecimal("10.0"));
-        product.setPrice(new BigDecimal("15.0"));
+        product.setCost(10);
+        product.setPrice(15);
         product.setLength(1);
         product.setWidth(1);
         product.setHeight(1);
@@ -103,7 +103,7 @@ class ProductRepositoryTest {
     @Test
     public void testUpdateProduct(){
         Integer id = 1;
-        BigDecimal price = new BigDecimal("499.0");
+        var price = 499;
         Product product = productRepository.findById(id).get();
         product.setPrice(price);
 

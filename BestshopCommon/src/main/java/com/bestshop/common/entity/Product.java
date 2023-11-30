@@ -37,10 +37,10 @@ public class Product{
     @Column(name = "in_stock")
     private boolean inStock;
 
-    private BigDecimal cost;
-    private BigDecimal price;
+    private float cost;
+    private float price;
     @Column(name = "discount_percent")
-    private BigDecimal discountPercent;
+    private float discountPercent;
 
     private float length;
     private float width;
@@ -87,36 +87,25 @@ public class Product{
         this.inStock = inStock;
     }
 
-    public BigDecimal getCost() {
+    public float getCost() {
         return cost;
     }
 
-    public void setCost(BigDecimal cost) {
-        if(cost == null || cost.compareTo(BigDecimal.ZERO) < 0){
-            throw new IllegalArgumentException("Cost cannot be null or negative");
-        }
+    public void setCost(float cost) {
         this.cost = cost;
     }
 
-    public BigDecimal getPrice() {
+    public float getPrice() {
         return price;
     }
-
-    public void setPrice(BigDecimal price) {
-        if(price == null || price.compareTo(BigDecimal.ZERO) < 0){
-            throw new IllegalArgumentException("Price cannot be null or negative");
-        }
+    public void setPrice(float price) {
         this.price = price;
     }
 
-    public BigDecimal getDiscountPercent() {
+    public float getDiscountPercent() {
         return discountPercent;
     }
-
-    public void setDiscountPercent(BigDecimal discountPercent) {
-        if(discountPercent == null || discountPercent.compareTo(BigDecimal.ZERO) < 0){
-            throw new IllegalArgumentException("Discount Percent cannot be null or negative");
-        }
+    public void setDiscountPercent(float discountPercent) {
         this.discountPercent = discountPercent;
     }
 
@@ -148,15 +137,11 @@ public class Product{
     }
 
     @Transient
-    public String getDiscountPrice(){
-        DecimalFormat df = new DecimalFormat("#.##");
-        if (discountPercent.compareTo(BigDecimal.ZERO) > 0){
-            BigDecimal hundred = new BigDecimal("100");
-            BigDecimal discountDecimal = discountPercent.divide(hundred, 2, RoundingMode.HALF_UP); // Convertendo para forma decimal
-            BigDecimal discountAmount = price.multiply(discountDecimal); // Calculando o valor do desconto
-            return df.format(price.subtract(discountAmount));
+    public float getDiscountPrice() {
+        if (discountPercent > 0) {
+            return price * ((100 - discountPercent) / 100);
         }
-        return df.format(this.price);
+        return this.price;
     }
 
     @Override
