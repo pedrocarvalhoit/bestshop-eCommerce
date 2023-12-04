@@ -2,21 +2,12 @@ package com.bestshop.common.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-
 @Entity
-@Table(name = "customers")
-public class Customer {
-
+@Table(name = "addresses")
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(nullable = false, unique = true, length = 45)
-    private String email;
-
-    @Column(nullable = false, length = 64)
-    private String password;
 
     @Column(name = "first_name", nullable = false, length = 45)
     private String firstName;
@@ -27,7 +18,7 @@ public class Customer {
     @Column(name = "phone_number", nullable = false, length = 15)
     private String phoneNumber;
 
-    @Column(nullable = false, length = 64)
+    @Column(name = "address_line_1", nullable = false, length = 64)
     private String addressLine1;
 
     @Column(name = "address_line_2", length = 64)
@@ -42,40 +33,16 @@ public class Customer {
     @Column(name = "postal_code", nullable = false, length = 10)
     private String postalCode;
 
-    @Column(name = "verification_code", length = 64)
-    private String verificationCode;
-
-    private boolean enabled;
-
-    @Column(name = "created_time")
-    private Date createdTime;
-
     @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @Enumerated
-    @Column(name = "authentication_type", length = 10)
-    private AuthenticationType authenticationType;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
-    @Column(name = "reset_password_token", length = 30)
-    private String resetPasswordToken;
-
-    public Customer(Integer id) {
-        this.id = id;
-    }
-
-
-    public Customer() {
-    }
-
-    public String getResetPasswordToken() {
-        return resetPasswordToken;
-    }
-
-    public void setResetPasswordToken(String resetPasswordToken) {
-        this.resetPasswordToken = resetPasswordToken;
-    }
+    @Column(name = "default_address")
+    private boolean defaultForShipping;
 
     public Integer getId() {
         return id;
@@ -83,22 +50,6 @@ public class Customer {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {
@@ -165,30 +116,6 @@ public class Customer {
         this.postalCode = postalCode;
     }
 
-    public String getVerificationCode() {
-        return verificationCode;
-    }
-
-    public void setVerificationCode(String verificationCode) {
-        this.verificationCode = verificationCode;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
-
     public Country getCountry() {
         return country;
     }
@@ -197,26 +124,24 @@ public class Customer {
         this.country = country;
     }
 
-    public AuthenticationType getAuthenticationType() {
-        return authenticationType;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setAuthenticationType(AuthenticationType authenticationType) {
-        this.authenticationType = authenticationType;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public boolean isDefaultForShipping() {
+        return defaultForShipping;
+    }
+
+    public void setDefaultForShipping(boolean defaultForShipping) {
+        this.defaultForShipping = defaultForShipping;
     }
 
     @Override
     public String toString() {
-        return "Customer [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + "]";
-    }
-
-
-    public String getFullName() {
-        return firstName + " " + lastName;
-    }
-
-    @Transient
-    public String getAddress() {
         String address = firstName;
 
         if (lastName != null && !lastName.isEmpty()) address += " " + lastName;
@@ -236,4 +161,7 @@ public class Customer {
 
         return address;
     }
+
+
+
 }
