@@ -2,15 +2,15 @@ package com.bestshop.adress;
 
 import com.bestshop.common.entity.Address;
 import com.bestshop.common.entity.Customer;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface AddressRepository extends CrudRepository<Address, Integer> {
+public interface AddressRepository extends JpaRepository<Address, Integer> {
 
     public List<Address> findByCustomer(Customer customer);
 
@@ -20,4 +20,13 @@ public interface AddressRepository extends CrudRepository<Address, Integer> {
     @Query("DELETE FROM Address a WHERE a.id = ?1 AND a.customer.id = ?2")
     @Modifying
     public void deleteByIdAndCustomer(Integer addressId, Integer customerId);
+
+    @Query("UPDATE Address a SET a.defaultForShipping = true WHERE a.id = ?1")
+    @Modifying
+    public void setDefaultAddress(Integer id);
+
+    @Query("UPDATE Address a SET a.defaultForShipping = false "
+            + "WHERE a.id != ?1 AND a.customer.id = ?2")
+    @Modifying
+    public void setNonDefaultForOthers(Integer defaultAddressId, Integer customerId);
 }

@@ -8,7 +8,6 @@ import com.bestshop.customer.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -93,6 +92,15 @@ public class AddressController {
         addressService.delete(addressId, customer.getId());
 
         ra.addFlashAttribute("message", "The address ID " + addressId + " has been deleted.");
+
+        return "redirect:/address_book";
+    }
+
+    @GetMapping("/address_book/default/{id}")
+    public String setDefaultAddress(@PathVariable("id") Integer addressId,
+                                    HttpServletRequest request) {
+        Customer customer = getAuthenticatedCustomer(request);
+        addressService.setDefaultAddress(addressId, customer.getId());
 
         return "redirect:/address_book";
     }
