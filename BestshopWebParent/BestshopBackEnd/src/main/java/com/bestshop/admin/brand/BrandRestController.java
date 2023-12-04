@@ -21,7 +21,7 @@ public class BrandRestController {
     BrandService service;
 
     @PostMapping("/brands/check_unique")
-    public ResponseEntity<String> checkUnique(@Param("id")Integer id, @Param("name")String name){
+    public ResponseEntity<String> checkUnique(Integer id, String name){
 
         if (service.checkUnique(id, name) == "Duplicate"){
             return ResponseEntity.ok("Duplicate");

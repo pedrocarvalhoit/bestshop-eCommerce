@@ -13,7 +13,7 @@ public class ProductRestController {
     ProductService service;
 
     @PostMapping("/products/check_unique")
-    public ResponseEntity<String> checkUniquenessOfProduct(@Param("id")Integer id, @Param("name")String name){
+    public ResponseEntity<String> checkUniquenessOfProduct(Integer id, String name){
         if (service.checkUnique(id, name) == "Duplicate"){
             return ResponseEntity.ok("Duplicate");
         }else {
