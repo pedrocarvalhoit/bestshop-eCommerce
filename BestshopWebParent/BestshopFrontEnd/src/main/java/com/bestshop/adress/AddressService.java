@@ -17,4 +17,16 @@ public class AddressService {
         return repo.findByCustomer(customer);
     }
 
+    public void save(Address address) {
+        repo.save(address);
+    }
+
+    public Address get(Integer addressId, Integer customerId) {
+        return repo.findByIdAndCustomer(addressId, customerId);
+    }
+
+    public void delete(Integer addressId, Integer customerId) {
+        repo.deleteByIdAndCustomer(addressId, customerId);
+    }
+
 }
