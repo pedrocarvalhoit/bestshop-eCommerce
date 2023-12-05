@@ -1,6 +1,6 @@
 package com.bestshop.setting;
 
-import com.bestshop.common.entity.Setting;
+import com.bestshop.common.entity.setting.Setting;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

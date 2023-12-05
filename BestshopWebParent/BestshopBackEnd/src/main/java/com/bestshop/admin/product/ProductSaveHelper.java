@@ -1,8 +1,8 @@
 package com.bestshop.admin.product;
 
 import com.bestshop.admin.FileUploadUtil;
-import com.bestshop.common.entity.Product;
-import com.bestshop.common.entity.ProductImage;
+import com.bestshop.common.entity.product.Product;
+import com.bestshop.common.entity.product.ProductImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;

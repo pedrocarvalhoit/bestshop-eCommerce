@@ -2,17 +2,15 @@ package com.bestshop.product;
 
 import com.bestshop.category.CategoryService;
 import com.bestshop.common.entity.Category;
-import com.bestshop.common.entity.Product;
+import com.bestshop.common.entity.product.Product;
 import com.bestshop.common.exception.CategoryNotFoundException;
 import com.bestshop.common.exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 

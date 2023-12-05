@@ -2,7 +2,7 @@ package com.bestshop.admin.order;
 
 
 import com.bestshop.admin.paging.PagingAndSortingHelper;
-import com.bestshop.common.entity.Order;
+import com.bestshop.common.entity.order.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

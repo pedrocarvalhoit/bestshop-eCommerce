@@ -1,9 +1,6 @@
-package com.bestshop.common.entity;
+package com.bestshop.common.entity.product;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "product_details")

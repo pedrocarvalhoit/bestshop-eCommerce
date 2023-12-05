@@ -1,6 +1,11 @@
 package com.bestshop.admin.order;
 
 import com.bestshop.common.entity.*;
+import com.bestshop.common.entity.order.Order;
+import com.bestshop.common.entity.order.OrderDetail;
+import com.bestshop.common.entity.order.OrderStatus;
+import com.bestshop.common.entity.order.PaymentMethod;
+import com.bestshop.common.entity.product.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -10,8 +15,6 @@ import org.springframework.test.annotation.Rollback;
 
 import java.util.Date;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)

@@ -1,7 +1,7 @@
 package com.bestshop.setting;
 
-import com.bestshop.common.entity.Setting;
-import com.bestshop.common.entity.SettingBag;
+import com.bestshop.common.entity.setting.Setting;
+import com.bestshop.common.entity.setting.SettingBag;
 
 import java.util.List;
 

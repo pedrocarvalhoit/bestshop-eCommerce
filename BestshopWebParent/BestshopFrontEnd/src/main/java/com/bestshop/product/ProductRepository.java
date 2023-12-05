@@ -1,6 +1,6 @@
 package com.bestshop.product;
 
-import com.bestshop.common.entity.Product;
+import com.bestshop.common.entity.product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.bestshop.common.entity;
+package com.bestshop.common.entity.setting;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,13 +1,11 @@
-package com.bestshop.common.entity;
+package com.bestshop.common.entity.product;
 
+import com.bestshop.common.entity.Brand;
+import com.bestshop.common.entity.Category;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.*;
 
 @Entity

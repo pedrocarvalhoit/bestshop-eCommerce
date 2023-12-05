@@ -1,6 +1,6 @@
 package com.bestshop.product;
 
-import com.bestshop.common.entity.Product;
+import com.bestshop.common.entity.product.Product;
 import com.bestshop.common.exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

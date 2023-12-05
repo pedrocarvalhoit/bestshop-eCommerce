@@ -8,11 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "brands")
-public class Brand {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Brand extends IdBasedEntity {
 
     @Column(length = 45, nullable = false, unique = true)
     private String name;
@@ -27,10 +23,6 @@ public class Brand {
     private Set<Category> categories = new HashSet<>();
 
     public Brand() {
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Brand(String name, String logo) {
@@ -71,9 +63,6 @@ public class Brand {
         this.categories = categories;
     }
 
-    public Integer getId() {
-        return id;
-    }
 
     @Transient
     public String getLogoPath(){

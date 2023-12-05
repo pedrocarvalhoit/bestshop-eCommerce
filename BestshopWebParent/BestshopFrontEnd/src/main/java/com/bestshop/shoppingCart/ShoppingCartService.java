@@ -2,7 +2,7 @@ package com.bestshop.shoppingCart;
 
 import com.bestshop.common.entity.CartItem;
 import com.bestshop.common.entity.Customer;
-import com.bestshop.common.entity.Product;
+import com.bestshop.common.entity.product.Product;
 import com.bestshop.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

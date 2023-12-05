@@ -8,14 +8,10 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "currencies")
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class Currency {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+@NoArgsConstructor
+public class Currency extends IdBasedEntity {
 
     @Column(nullable = false, length = 64)
     private String name;
