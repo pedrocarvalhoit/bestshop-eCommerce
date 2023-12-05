@@ -253,6 +253,15 @@ public class Order {
         setState(customer.getState());
     }
 
+    @Transient
+    public String getDestination() {
+        String destination =  city + ", ";
+        if (state != null && !state.isEmpty()) destination += state + ", ";
+        destination += country;
+
+        return destination;
+    }
+
     @Override
     public String toString() {
         return "Order [id=" + id + ", subtotal=" + subtotal + ", paymentMethod=" + paymentMethod + ", status=" + status
