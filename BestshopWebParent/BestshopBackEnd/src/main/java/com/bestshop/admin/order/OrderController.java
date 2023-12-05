@@ -21,7 +21,8 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
-    @Autowired private SettingService settingService;
+    @Autowired
+    private SettingService settingService;
 
     @GetMapping("/orders")
     public String listFirstPage() {
@@ -61,6 +62,17 @@ public class OrderController {
             ra.addFlashAttribute("message", ex.getMessage());
             return defaultRedirectURL;
         }
+    }
 
+    @GetMapping("/orders/delete/{id}")
+    public String deleteOrder(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+        try {
+            orderService.delete(id);;
+            ra.addFlashAttribute("message", "The order ID " + id + " has been deleted.");
+        } catch (OrderNotFoundException ex) {
+            ra.addFlashAttribute("message", ex.getMessage());
+        }
+
+        return defaultRedirectURL;
     }
 }
