@@ -1,4 +1,4 @@
-package com.bestshop.shoppingCart;
+package com.bestshop.shoppingcart;
 
 public class ShoppingCartException extends Exception{
 

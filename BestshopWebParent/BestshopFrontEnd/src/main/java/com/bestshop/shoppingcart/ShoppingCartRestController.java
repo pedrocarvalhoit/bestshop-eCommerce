@@ -1,4 +1,4 @@
-package com.bestshop.shoppingCart;
+package com.bestshop.shoppingcart;
 
 import com.bestshop.Utility;
 import com.bestshop.common.entity.Customer;
