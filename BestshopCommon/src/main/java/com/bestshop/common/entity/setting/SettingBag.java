@@ -3,6 +3,7 @@ package com.bestshop.common.entity.setting;
 import java.util.List;
 
 public class SettingBag {
+
     private List<Setting> listSettings;
 
     public SettingBag(List<Setting> listSettings) {
