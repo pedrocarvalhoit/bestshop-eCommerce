@@ -12,6 +12,7 @@ import com.bestshop.customer.CustomerService;
 import com.bestshop.order.OrderService;
 import com.bestshop.setting.CurrencySettingBag;
 import com.bestshop.setting.EmailSettingBag;
+import com.bestshop.setting.PaymentSettingBag;
 import com.bestshop.setting.SettingService;
 import com.bestshop.shipping.ShippingRateService;
 import com.bestshop.shoppingcart.ShoppingCartService;
@@ -71,6 +72,13 @@ public class CheckoutController {
         List<CartItem> cartItems = cartService.listCartItems(customer);
         CheckoutInfo checkoutInfo = checkoutService.prepareCheckout(cartItems, shippingRate);
 
+        String currencyCode = settingService.getCurrencyCode();
+        PaymentSettingBag paymentSettings = settingService.getPaymentSettings();
+        String paypalClientId = paymentSettings.getClientID();
+
+        model.addAttribute("paypalClientId", paypalClientId);
+        model.addAttribute("currencyCode", currencyCode);
+        model.addAttribute("customer", customer);
         model.addAttribute("checkoutInfo", checkoutInfo);
         model.addAttribute("cartItems", cartItems);
 

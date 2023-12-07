@@ -1,7 +1,10 @@
 package com.bestshop.checkout;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class CheckoutInfo {
 
@@ -70,6 +73,12 @@ public class CheckoutInfo {
 
     public void setCodSupported(boolean codSupported) {
         this.codSupported = codSupported;
+    }
+
+    public String getPaymentTotal4PayPal() {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat formatter = new DecimalFormat("0.00", symbols);
+        return formatter.format(paymentTotal);
     }
 
 }

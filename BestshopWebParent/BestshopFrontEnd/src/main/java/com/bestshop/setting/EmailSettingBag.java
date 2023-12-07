@@ -12,6 +12,7 @@ public class EmailSettingBag extends SettingBag {
     }
 
     public String getHost() {
+
         return super.getValue("MAIL_HOST");
     }
 
