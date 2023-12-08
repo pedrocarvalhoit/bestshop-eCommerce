@@ -1,10 +1,7 @@
 package com.bestshop.admin.order;
 
 import com.bestshop.common.entity.*;
-import com.bestshop.common.entity.order.Order;
-import com.bestshop.common.entity.order.OrderDetail;
-import com.bestshop.common.entity.order.OrderStatus;
-import com.bestshop.common.entity.order.PaymentMethod;
+import com.bestshop.common.entity.order.*;
 import com.bestshop.common.entity.product.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @DataJpaTest
@@ -23,7 +21,8 @@ public class OrderRepositoryTests {
 
     @Autowired
     private OrderRepository repo;
-    @Autowired private TestEntityManager entityManager;
+    @Autowired
+    private TestEntityManager entityManager;
 
     @Test
     public void testCreateNewOrderWithSingleProduct() {
@@ -151,4 +150,31 @@ public class OrderRepositoryTests {
         Optional<Order> result = repo.findById(orderId);
         org.assertj.core.api.Assertions.assertThat(result).isNotPresent();
     }
+
+    @Test
+    public void testUpdateOrderTracks() {
+        Integer orderId = 19;
+        Order order = repo.findById(orderId).get();
+
+        OrderTrack newTrack = new OrderTrack();
+        newTrack.setOrder(order);
+        newTrack.setUpdatedTime(new Date());
+        newTrack.setStatus(OrderStatus.NEW);
+        newTrack.setNotes(OrderStatus.NEW.defaultDescription());
+
+        OrderTrack processingTrack = new OrderTrack();
+        processingTrack.setOrder(order);
+        processingTrack.setUpdatedTime(new Date());
+        processingTrack.setStatus(OrderStatus.PROCESSING);
+        processingTrack.setNotes(OrderStatus.PROCESSING.defaultDescription());
+
+        List<OrderTrack> orderTracks = order.getOrderTracks();
+        orderTracks.add(newTrack);
+        orderTracks.add(processingTrack);
+
+        Order updatedOrder = repo.save(order);
+
+        org.assertj.core.api.Assertions.assertThat(updatedOrder.getOrderTracks()).hasSizeGreaterThan(1);
+    }
+
 }
