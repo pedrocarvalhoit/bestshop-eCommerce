@@ -1,7 +1,6 @@
 package com.bestshop.admin.customer;
 
 import com.bestshop.admin.paging.SearchRepository;
-import com.bestshop.common.entity.AuthenticationType;
 import com.bestshop.common.entity.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

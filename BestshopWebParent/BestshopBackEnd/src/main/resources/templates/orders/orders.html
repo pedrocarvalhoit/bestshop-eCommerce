@@ -83,9 +83,9 @@
                            title="View details of this order"
                         ></a>
                         &nbsp;
-                        <div th:replace="fragments :: edit('order', '/orders/edit/' + ${order.id})" />
+                        <div th:replace="fragments :: edit('order', '/orders/edit/' + ${order.id})"></div>
                         &nbsp;
-                        <div th:replace="fragments :: delete('order', ${order.id}, '/orders/delete/' + ${order.id}, true)" />
+                        <div th:replace="fragments :: delete('order', ${order.id}, '/orders/delete/' + ${order.id}, true)"></div>
                     </div>
                 </div>
             </div>
@@ -95,7 +95,7 @@
 
     <div th:replace="fragments :: pagination('orders')"></div>
 
-    <div th:replace="modal_fragments :: confirm_modal" />
+    <div th:replace="modal_fragments :: confirm_modal"></div>
 
     <div class="modal fade" id="customerDetailModal">
         <div class="modal-dialog modal-lg">

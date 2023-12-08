@@ -3,6 +3,7 @@ package com.bestshop.admin.order;
 import com.bestshop.admin.paging.PagingAndSortingHelper;
 import com.bestshop.admin.paging.PagingAndSortingParam;
 import com.bestshop.admin.setting.SettingService;
+import com.bestshop.common.entity.Country;
 import com.bestshop.common.entity.order.Order;
 import com.bestshop.common.entity.setting.Setting;
 import jakarta.servlet.http.HttpServletRequest;
@@ -74,5 +75,26 @@ public class OrderController {
         }
 
         return defaultRedirectURL;
+    }
+
+    @GetMapping("/orders/edit/{id}")
+    public String editOrder(@PathVariable("id") Integer id, Model model, RedirectAttributes ra,
+                            HttpServletRequest request) {
+        try {
+            Order order = orderService.get(id);
+
+            List<Country> listCountries = orderService.listAllCountries();
+
+            model.addAttribute("pageTitle", "Edit Order (ID: " + id + ")");
+            model.addAttribute("order", order);
+            model.addAttribute("listCountries", listCountries);
+
+            return "orders/order_form.html";
+
+        } catch (OrderNotFoundException ex) {
+            ra.addFlashAttribute("message", ex.getMessage());
+            return defaultRedirectURL;
+        }
+
     }
 }

@@ -6,6 +6,8 @@ import com.bestshop.common.entity.Customer;
 import com.bestshop.common.entity.IdBasedEntity;
 import jakarta.persistence.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Entity
@@ -214,6 +216,12 @@ public class Order extends AbstractAdress {
         if (!phoneNumber.isEmpty()) address += ". Phone Number: " + phoneNumber;
 
         return address;
+    }
+
+    @Transient
+    public String getDeliverDateOnForm() {
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormatter.format(this.deliverDate);
     }
 
 }
