@@ -113,4 +113,11 @@ public class ProductService {
 
         repository.save(productInDB);
     }
+
+    public void searchProducts(int pageNum, PagingAndSortingHelper helper) {
+        Pageable pageable = helper.createPageable(PRODUCTS_PER_PAGE, pageNum);
+        String keyword = helper.getKeyword();
+        Page<Product> page = repository.searchProductsByName(keyword, pageable);
+        helper.updateModelAttributes(pageNum, page);
+    }
 }

@@ -63,7 +63,7 @@ public class WebSecurityConfig {
                         .permitAll()
                 ).logout(LogoutConfigurer::permitAll)
                 .rememberMe((remember) -> remember.key("abcdefghijklmnopq_1234567890").tokenValiditySeconds(7 * 24 * 60 * 60));
-
+                http.headers().frameOptions().sameOrigin();
 
         return http.build();
     }

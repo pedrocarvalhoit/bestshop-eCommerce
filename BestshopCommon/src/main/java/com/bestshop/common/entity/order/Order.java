@@ -3,7 +3,6 @@ package com.bestshop.common.entity.order;
 import com.bestshop.common.entity.AbstractAdress;
 import com.bestshop.common.entity.Address;
 import com.bestshop.common.entity.Customer;
-import com.bestshop.common.entity.IdBasedEntity;
 import jakarta.persistence.*;
 
 import java.text.DateFormat;
