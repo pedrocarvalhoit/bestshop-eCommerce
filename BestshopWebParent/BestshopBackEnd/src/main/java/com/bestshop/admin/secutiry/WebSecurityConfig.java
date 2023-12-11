@@ -38,7 +38,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests((authorize) -> authorize
+        http.authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/users/**", "/settings", "/countries/**", "/states/**").hasAuthority("Admin")
                         .requestMatchers("/categories/**", "/brands/**").hasAnyAuthority("Admin", "Editor")
 
@@ -53,16 +53,21 @@ public class WebSecurityConfig {
                         .requestMatchers("/products/**").hasAnyAuthority("Admin", "Editor")
 
                         .requestMatchers("/questions/**", "/reviews/**").hasAnyAuthority("Admin", "Assistant")
-                        .requestMatchers("/customers/**", "/shipping/**", "/get_shipping_cost").hasAnyAuthority("Admin", "Salesperson")
-                        .requestMatchers("/orders/**").hasAnyAuthority("Admin", "Salesperson", "Shipper")
-                        .requestMatchers("/reports/**").hasAnyAuthority("Admin", "Salesperson")
+
+                        .requestMatchers("/customers/**", "/shipping/**", "/get_shipping_cost")
+                            .hasAnyAuthority("Admin", "Salesperson")
+
+                        .requestMatchers("/orders", "/orders/", "/orders/page/**", "/orders/detail/**")
+                            .hasAnyAuthority("Admin", "Salesperson", "Shipper")
+
+                        .requestMatchers("/reports/**", "/states/list_by_country/**").hasAnyAuthority("Admin", "Salesperson")
                         .requestMatchers("/articles/**", "/menus/**").hasAnyAuthority("Admin", "Editor")
                         .anyRequest().authenticated()
-                ).formLogin((form) -> form.loginPage("/login")
+                ).formLogin(form -> form.loginPage("/login")
                         .usernameParameter("email")
                         .permitAll()
                 ).logout(LogoutConfigurer::permitAll)
-                .rememberMe((remember) -> remember.key("abcdefghijklmnopq_1234567890").tokenValiditySeconds(7 * 24 * 60 * 60));
+                .rememberMe(remember -> remember.key("abcdefghijklmnopq_1234567890").tokenValiditySeconds(7 * 24 * 60 * 60));
                 http.headers().frameOptions().sameOrigin();
 
         return http.build();
@@ -70,7 +75,7 @@ public class WebSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/images/**", "/js/**", "/webjars/**", "/webfonts/**", "**.css");
+        return web -> web.ignoring().requestMatchers("/images/**", "/js/**", "/webjars/**", "/webfonts/**", "**.css");
     }
 
     @Bean
