@@ -4,10 +4,7 @@ import com.bestshop.checkout.CheckoutInfo;
 import com.bestshop.common.entity.Address;
 import com.bestshop.common.entity.CartItem;
 import com.bestshop.common.entity.Customer;
-import com.bestshop.common.entity.order.Order;
-import com.bestshop.common.entity.order.OrderDetail;
-import com.bestshop.common.entity.order.OrderStatus;
-import com.bestshop.common.entity.order.PaymentMethod;
+import com.bestshop.common.entity.order.*;
 import com.bestshop.common.entity.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,6 +64,13 @@ public class OrderService {
             orderDetails.add(orderDetail);
         }
 
+        OrderTrack track = new OrderTrack();
+        track.setOrder(newOrder);
+        track.setStatus(OrderStatus.NEW);
+        track.setNotes(OrderStatus.NEW.defaultDescription());
+        track.setUpdatedTime(new Date());
+
+        newOrder.getOrderTracks().add(track);
 
         return repo.save(newOrder);
     }

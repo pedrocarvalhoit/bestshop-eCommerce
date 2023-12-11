@@ -99,6 +99,8 @@ function updateSubtotalWhenQuantityChanged(input) {
     priceValue = getNumberValueRemovedThousandSeparator($("#price" + rowNumber));
     newSubtotal = parseFloat(quantityValue) * priceValue;
 
+    alert(newSubtotal);// problem
+
     setAndFormatNumberForField("subtotal" + rowNumber, newSubtotal);
 }
 
