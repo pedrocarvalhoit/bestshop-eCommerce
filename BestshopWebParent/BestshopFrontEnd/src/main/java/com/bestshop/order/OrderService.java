@@ -7,6 +7,10 @@ import com.bestshop.common.entity.Customer;
 import com.bestshop.common.entity.order.*;
 import com.bestshop.common.entity.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -15,6 +19,8 @@ import java.util.Set;
 
 @Service
 public class OrderService {
+
+    public static final int ORDERS_PER_PAGE = 5;
 
     @Autowired
     private OrderRepository repo;
@@ -73,5 +79,20 @@ public class OrderService {
         newOrder.getOrderTracks().add(track);
 
         return repo.save(newOrder);
+    }
+
+    public Page<Order> listForCustomerByPage(Customer customer, int pageNum,
+                                             String sortField, String sortDir, String keyword) {
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+
+        Pageable pageable = PageRequest.of(pageNum - 1, ORDERS_PER_PAGE, sort);
+
+        if (keyword != null) {
+            return repo.findAll(keyword, customer.getId(), pageable);
+        }
+
+        return repo.findAll(customer.getId(), pageable);
+
     }
 }
