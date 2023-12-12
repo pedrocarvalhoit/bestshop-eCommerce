@@ -1,4 +1,4 @@
-package com.bestshop.admin.order;
+package com.bestshop.common.exception;
 
 public class OrderNotFoundException extends Exception{
 
