@@ -1,6 +1,7 @@
 package com.bestshop.admin.setting;
 
 import com.bestshop.admin.FileUploadUtil;
+import com.bestshop.common.Constants;
 import com.bestshop.common.entity.Currency;
 import com.bestshop.common.entity.setting.Setting;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +37,8 @@ public class SettingController {
         for (Setting setting : listSettings) {
             model.addAttribute(setting.getKey(), setting.getValue());
         }
+
+        model.addAttribute("S3_BASE_URI", Constants.S3_BASE_URI);
 
         return "settings/settings";
     }

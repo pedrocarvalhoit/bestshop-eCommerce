@@ -1,5 +1,6 @@
 package com.bestshop.common.entity;
 
+import com.bestshop.common.Constants;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -169,7 +170,7 @@ public class Category {
     @Transient
     public String getImagePath() {
         if (this.id == null || this.image == null || this.image.isEmpty()) return "/images/image-thumbnail.png";
-        return "/category-images/" + this.id + "/" + this.image;
+        return Constants.S3_BASE_URI + "/category-images/" + this.id + "/" + this.image;
     }
 
     @Transient

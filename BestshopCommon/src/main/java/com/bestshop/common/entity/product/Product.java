@@ -1,5 +1,6 @@
 package com.bestshop.common.entity.product;
 
+import com.bestshop.common.Constants;
 import com.bestshop.common.entity.Brand;
 import com.bestshop.common.entity.Category;
 import jakarta.persistence.*;
@@ -122,7 +123,7 @@ public class Product{
     @Transient
     public String getMainImagePath(){
         if(this.id == null || this.mainImage == null || this.mainImage.isEmpty()) return "/images/image-thumbnail.png";
-        return "/product-images/" + this.id + "/" + this.mainImage;
+        return Constants.S3_BASE_URI + "/product-images/" + this.id + "/" + this.mainImage;
     }
 
     @Transient

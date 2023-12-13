@@ -1,5 +1,6 @@
 package com.bestshop.setting;
 
+import com.bestshop.common.Constants;
 import com.bestshop.common.entity.setting.Setting;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +33,8 @@ public class SettingFilter implements Filter {
             request.setAttribute(setting.getKey(), setting.getValue());
             System.out.println(setting.getKey() + " == > " + setting.getValue());
         });
+
+        request.setAttribute("S3_BASE_URI", Constants.S3_BASE_URI);
 
         chain.doFilter(request, response);
     }

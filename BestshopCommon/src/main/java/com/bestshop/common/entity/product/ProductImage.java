@@ -1,5 +1,6 @@
 package com.bestshop.common.entity.product;
 
+import com.bestshop.common.Constants;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,6 @@ public class ProductImage {
 
     @Transient
     public String getImagePath(){
-        return "/product-images/" + product.getId() + "/extras/" +this.name;
+        return Constants.S3_BASE_URI + "/product-images/" + product.getId() + "/extras/" +this.name;
     }
 }
