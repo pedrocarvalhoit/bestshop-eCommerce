@@ -1,5 +1,6 @@
 package com.bestshop.admin.setting;
 
+import com.bestshop.admin.AmazonS3Util;
 import com.bestshop.admin.FileUploadUtil;
 import com.bestshop.common.Constants;
 import com.bestshop.common.entity.Currency;
@@ -64,9 +65,9 @@ public class SettingController {
             String value = "/site-logo/" + fileName;
             settingBag.updateSiteLogo(value);
 
-            String uploadDir = "../site-logo/";
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            String uploadDir = "site-logo";
+            AmazonS3Util.removeFolder(uploadDir);
+            AmazonS3Util.uploadFile(uploadDir, fileName, multipartFile.getInputStream());
         }
     }
 

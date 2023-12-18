@@ -1,5 +1,6 @@
 package com.bestshop.admin.category;
 
+import com.bestshop.admin.AmazonS3Util;
 import com.bestshop.admin.FileUploadUtil;
 import com.bestshop.common.entity.Category;
 import com.bestshop.common.exception.CategoryNotFoundException;
@@ -83,10 +84,10 @@ public class CategoryController {
             boolean registeredCategory = service.checkExistingCategory(category);
 
             Category savedCategory = service.save(category);
-            String uploadDir = "../category-images/" + savedCategory.getId();//Sets the file upload direction
+            String uploadDir = "category-images/" + savedCategory.getId();//Sets the file upload direction
 
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);//Saves the file
+            AmazonS3Util.removeFolder(uploadDir);
+            AmazonS3Util.uploadFile(uploadDir, fileName, multipartFile.getInputStream());//Saves the file
 
         }else{
             service.save(category);
@@ -126,9 +127,9 @@ public class CategoryController {
     public String deleteCategory(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) throws CategoryNotFoundException{
         try{
             service.deleteCategory(id);
-            String uploadDir = "../category-images/" + id;
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.deleteDir(uploadDir);
+            String categoryDir = "category-images/" + id;
+            AmazonS3Util.removeFolder(categoryDir);
+
             redirectAttributes.addFlashAttribute("message", "Category ID: " + id + " has been delted");
 
         }catch (CategoryNotFoundException exception){

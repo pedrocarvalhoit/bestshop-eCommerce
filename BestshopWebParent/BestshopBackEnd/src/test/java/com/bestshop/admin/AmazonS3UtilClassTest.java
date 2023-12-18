@@ -11,7 +11,7 @@ class AmazonS3UtilClassTest {
 
     @Test
     public void testListFolder(){
-        String folderName = "test-upload";
+        String folderName = "product-images/10/";
         List<String> listKeys = AmazonS3Util.listFolder(folderName);
         listKeys.forEach(System.out::println);
     }

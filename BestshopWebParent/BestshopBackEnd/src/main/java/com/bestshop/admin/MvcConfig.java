@@ -14,25 +14,26 @@ import java.util.List;
 public class MvcConfig implements WebMvcConfigurer {
 
     //Expose a directory on the file system - to be accessible by the clients
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        exposeDirectory("user-photos", registry);
-        exposeDirectory("../category-images", registry);
-        exposeDirectory("../brand-logos", registry);
-        exposeDirectory("../product-images", registry);
-        exposeDirectory("../site-logo", registry);
-    }
-
-    private void exposeDirectory(String pathPattern, ResourceHandlerRegistry registry){
-        Path path = Paths.get(pathPattern);
-        String absolutePath = path.toFile().getAbsolutePath();
-
-        String logicalPath = pathPattern.replace("../", "") + "/**";
-
-        registry.addResourceHandler(logicalPath)
-                .addResourceLocations("file:/" + absolutePath + "/");
-
-    }
+    //Used to store images on DB
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        exposeDirectory("user-photos", registry);
+//        exposeDirectory("../category-images", registry);
+//        exposeDirectory("../brand-logos", registry);
+//        exposeDirectory("../product-images", registry);
+//        exposeDirectory("../site-logo", registry);
+//    }
+//
+//    private void exposeDirectory(String pathPattern, ResourceHandlerRegistry registry){
+//        Path path = Paths.get(pathPattern);
+//        String absolutePath = path.toFile().getAbsolutePath();
+//
+//        String logicalPath = pathPattern.replace("../", "") + "/**";
+//
+//        registry.addResourceHandler(logicalPath)
+//                .addResourceLocations("file:/" + absolutePath + "/");
+//
+//    }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {

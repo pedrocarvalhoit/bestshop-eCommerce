@@ -1,5 +1,6 @@
 package com.bestshop.admin.brand;
 
+import com.bestshop.admin.AmazonS3Util;
 import com.bestshop.admin.FileUploadUtil;
 import com.bestshop.admin.category.CategoryService;
 import com.bestshop.admin.paging.PagingAndSortingHelper;
@@ -71,10 +72,10 @@ public class BrandController {
             brand.setLogo(fileName);
 
             Brand savedBrand = brandService.save(brand);
-            String uploadDir = "../brand-logos/" + savedBrand.getId();
+            String uploadDir = "brand-logos/" + savedBrand.getId();
 
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            AmazonS3Util.removeFolder(uploadDir);
+            AmazonS3Util.uploadFile(uploadDir, fileName, multipartFile.getInputStream());
 
         } else {
             brandService.save(brand);
@@ -105,11 +106,11 @@ public class BrandController {
     @GetMapping("brands/delete/{id}")
     public String deleteBrand(@PathVariable(name = "id") Integer id, RedirectAttributes ra) throws BrandNotFoundException {
         try {
-            String uploadDir = "../brand-logos/" + id;
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.deleteDir(uploadDir);
-
             brandService.delete(id);
+
+            String brandDir = "brand-logos/" + id;
+            AmazonS3Util.removeFolder(brandDir);
+
             ra.addFlashAttribute("message", "Brand with id: " + id + " has been deleted successfuly");
             return defaultRedirectURL;
         } catch (BrandNotFoundException exception) {
