@@ -10,10 +10,16 @@
 
 - [Technical Requirements highlight](#technical-requirements-highlight)
 
+- [Technologies used](#technologies-used)
+
 ## Project Overview
 
 <p align="justify">
 Development and implementation of a comprehensive e-commerce platform utilizing Java, Spring Boot, Thymeleaf, Bootstrap, jQuery, and MySQL database technologies. Two-module project, that comprises firstly, an administrative system capable of managing all areas of the store, as well as control of services, and the second consists of the shopping store application, allowing customers to browse products and make purchases.
+
+- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" alt="java" width="40" height="40"/>, <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/spring/spring-original.svg" alt="java" width="40" height="40"/> For development.
+
+- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/thymeleaf/thymeleaf-original" alt="java" width="40" height="40"/>
 </p>
 
 ## Technical Requirements highlight
