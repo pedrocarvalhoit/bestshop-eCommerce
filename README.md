@@ -22,16 +22,16 @@ Development and implementation of a comprehensive e-commerce platform utilizing 
 Accessible from any devices connected to the internet.
 Any time 24/7.
 - Performance: 
-	Fast response time.
-	No request takes longer than 4 seconds.
+	-> Fast response time.
+	-> No request takes longer than 4 seconds.
 - Secutiry: 
-Required authentication except for visitors.
-Authorization required in the admin CP.
-Passwords are not stored in database.
-Secured payment.
+-> Required authentication except for visitors.
+-> Authorization required in the admin CP.
+-> Passwords are not stored in database.
+-> Secured payment.
 - Scalability: 
-	Apps can be scaled on demand and run well under loads
-	Back and Front end apps can be scale separately.
+	-> Apps can be scaled on demand and run well under loads
+	-> Back and Front end apps can be scale separately.
 
 ## Project Structure
 
