@@ -19,8 +19,7 @@ Development and implementation of a comprehensive e-commerce platform utilizing 
 
 - <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" alt="java" width="40" height="40"/>, <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/spring/spring-original.svg" alt="java" width="40" height="40"/> For development.
 
-- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-original.svg" alt="java" width="40" height="40"/>,
-<img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/thymeleaf.svg" width="40" height="40" alt="Thymeleaf">
+- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-original.svg" alt="java" width="40" height="40"/>, <img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/thymeleaf.svg" width="40" height="40" alt="Thymeleaf">
 
 </p>
 
