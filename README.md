@@ -19,7 +19,7 @@ Development and implementation of a comprehensive e-commerce platform utilizing 
 
 - <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" alt="java" width="40" height="40"/>, <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/spring/spring-original.svg" alt="java" width="40" height="40"/> For development.
 
-- <img src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" width="40" height="40"/>
+- <img src="[https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"](https://github.com/devicons/devicon/blob/master/icons/bootstrap/bootstrap-original.svg) width="40" height="40"/>
 </p>
 
 ## Technical Requirements highlight
