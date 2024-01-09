@@ -20,7 +20,8 @@ Development and implementation of a comprehensive e-commerce platform utilizing 
 Project Structure 
 </p>
 
-![multimodule](https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/6ae9f83d-71cd-42d0-968e-e1e3a14743e8)
+![multimodule2](https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/4cef9c43-c68d-4286-8c1f-eb95c43df575)
+
 
 ![aplicationArchitecture](https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/5ff442cb-148d-4def-80c4-d9173204303f)
 
