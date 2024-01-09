@@ -21,7 +21,9 @@ Development and implementation of a comprehensive e-commerce platform utilizing 
 
 - <img alt="Bootstrap" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-original.svg" alt="java" width="40" height="40"/>, <img alt="Thymeleaf" src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/thymeleaf.svg" width="40" height="40">, <img alt="Jquery" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/jquery/jquery-original-wordmark.svg" alt="java" width="40" height="40"/> In the view layer.
 
-- <img alt="JUnit" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/junit/junit-original.svg" alt="junit" width="40" height="40"/>, <img alt="Mockito" src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/mockito.svg" width="40" height="40">
+- <img alt="JUnit" src="https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/39ec3cee-8bc7-40fd-a07b-593314f25388" alt="junit" width="40" height="40"/>, <img alt="Mockito" src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/mockito.svg" width="40" height="40">
+
+
 
 </p>
 
