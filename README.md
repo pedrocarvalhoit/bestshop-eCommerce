@@ -18,18 +18,18 @@ Development and implementation of a comprehensive e-commerce platform utilizing 
 
 ## Technical Requirements highlight
 
-#### - Accessibility and Availability: 
+Accessibility and Availability: 
 Accessible from any devices connected to the internet.
 Any time 24/7.
-#### - Performance: 
+Performance: 
 	-> Fast response time.
 	-> No request takes longer than 4 seconds.
-#### - Secutiry: 
--> Required authentication except for visitors.
--> Authorization required in the admin CP.
--> Passwords are not stored in database.
--> Secured payment.
-#### - Scalability: 
+Secutiry: 
+	-> Required authentication except for visitors.
+	-> Authorization required in the admin CP.
+	-> Passwords are not stored in database.
+	-> Secured payment.
+Scalability: 
 	-> Apps can be scaled on demand and run well under loads
 	-> Back and Front end apps can be scale separately.
 
