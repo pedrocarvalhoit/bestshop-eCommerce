@@ -17,11 +17,13 @@
 <p align="justify">
 Development and implementation of a comprehensive e-commerce platform utilizing Java, Spring Boot, Thymeleaf, Bootstrap, jQuery, and MySQL database technologies. Two-module project, that comprises firstly, an administrative system capable of managing all areas of the store, as well as control of services, and the second consists of the shopping store application, allowing customers to browse products and make purchases.
 
-- <img alt="Java" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" alt="java" width="40" height="40"/>, <img alt="Spring" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/spring/spring-original.svg" alt="java" width="40" height="40"/> For core development.
+- <img alt="Java" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" width="40" height="40"/>, <img alt="Spring" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/spring/spring-original.svg" width="40" height="40"/> For core development.
 
-- <img alt="Bootstrap" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-original.svg" alt="java" width="40" height="40"/>, <img alt="Thymeleaf" src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/thymeleaf.svg" width="40" height="40">, <img alt="Jquery" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/jquery/jquery-original-wordmark.svg" alt="java" width="40" height="40"/> In the view layer.
+- <img alt="Bootstrap" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-original.svg" width="40" height="40"/>, <img alt="Thymeleaf" src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/thymeleaf.svg" width="40" height="40">, <img alt="Jquery" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/jquery/jquery-original-wordmark.svg" width="40" height="40"/> In the view layer.
 
-- <img alt="JUnit" src="https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/39ec3cee-8bc7-40fd-a07b-593314f25388" alt="junit" width="40" height="40"/>, <img alt="Mockito" src="https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/f8aea68b-06df-497e-bf70-09fb05dd34ef" width="40" height="40">
+- <img alt="JUnit" src="https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/39ec3cee-8bc7-40fd-a07b-593314f25388" alt="junit" width="40" height="40"/>, <img alt="Mockito" src="https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/f8aea68b-06df-497e-bf70-09fb05dd34ef" width="40" height="40"> On unit tests and integration tests.
+
+- <img alt="Heroku" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/heroku/heroku-original.svg" width="40" height="40"/> Deploy. <img alt="Aws" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original.svg" alt="java" width="40" height="40"/> To upload files.
 
 
 </p>
