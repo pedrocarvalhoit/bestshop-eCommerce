@@ -6,7 +6,7 @@
 
 - [Project Overview](#project-overview)
 
-- [Basic Structure](#basic-structure)
+- [Project Structure](#project-structure)
 
 ## Project Overview
 
@@ -14,19 +14,16 @@
 Development and implementation of a comprehensive e-commerce platform utilizing Java, Spring Boot, Thymeleaf, Bootstrap, jQuery, and MySQL database technologies. Two-module project, that comprises firstly, an administrative system capable of managing all areas of the store, as well as control of services, and the second consists of the shopping store application, allowing customers to browse products and make purchases.
 </p>
 
-## Basic Structure
+## Project Structure
 
-<p align="justify">
-Project Structure 
-</p>
 
+### Project Organization 
 ![multimodule2](https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/4cef9c43-c68d-4286-8c1f-eb95c43df575)
 
+### Aplication Architecture
+![aplicationArchitecture2](https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/ff207ac3-480d-40a4-a1ee-e3407c01f4aa)
 
-![aplicationArchitecture](https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/5ff442cb-148d-4def-80c4-d9173204303f)
+### Key actors on the app
+![keyActors2](https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/2e8ce1fc-a7ec-4be6-9577-55112e9f18b0)
 
-![keyActors](https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/a614745a-58fd-40f8-b630-e541f0584de4)
-
-
-### Admin App
 
