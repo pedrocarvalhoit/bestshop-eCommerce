@@ -18,7 +18,7 @@ Development and implementation of a comprehensive e-commerce platform utilizing 
 
 ## Technical Requirements highlight
 
-Accessibility and Availability: 
+`Accessibility and Availability:` 
 	-> Accessible from any devices connected to the internet.
 	-> Any time 24/7.
 
