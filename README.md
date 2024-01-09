@@ -16,7 +16,16 @@ Development and implementation of a comprehensive e-commerce platform utilizing 
 
 ## Basic Structure
 
+<p align="justify">
+Project Structure 
+</p>
+
 ![multimodule](https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/6ae9f83d-71cd-42d0-968e-e1e3a14743e8)
 
-#### Admin App
+![aplicationArchitecture](https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/5ff442cb-148d-4def-80c4-d9173204303f)
+
+![keyActors](https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/a614745a-58fd-40f8-b630-e541f0584de4)
+
+
+### Admin App
 
