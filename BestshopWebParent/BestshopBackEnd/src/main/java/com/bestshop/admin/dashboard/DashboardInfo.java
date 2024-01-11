@@ -5,14 +5,9 @@ public class DashboardInfo {
     private long totalCategories;
     private long totalBrands;
     private long totalProducts;
-    private long totalQuestions;
-    private long totalReviews;
     private long totalCustomers;
     private long totalShippingRates;
-    private long totalArticles;
     private long totalOrders;
-    private long totalMenuItems;
-    private long totalSections;
 
     private long disabledUsersCount;
     private long enabledUsersCount;
@@ -26,11 +21,6 @@ public class DashboardInfo {
     private long inStockProductsCount;
     private long outOfStockProductsCount;
 
-    private long approvedQuestionsCount;
-    private long unapprovedQuestionsCount;
-    private long answeredQuestionsCount;
-    private long unansweredQuestionsCount;
-
     private long enabledCustomersCount;
     private long disabledCustomersCount;
 
@@ -42,18 +32,6 @@ public class DashboardInfo {
     private long shippingOrdersCount;
     private long cancelledOrdersCount;
 
-    private long menuBoundArticlesCount;
-    private long freeArticlesCount;
-    private long publishedArticlesCount;
-    private long unpublishedArticlesCount;
-
-    private long headerMenuItemsCount;
-    private long footerMenuItemsCount;
-    private long enabledMenuItemsCount;
-    private long disabledMenuItemsCount;
-
-    private long reviewedProductsCount;
-
     private long totalCountries;
     private long totalStates;
 
@@ -63,9 +41,6 @@ public class DashboardInfo {
     private String decimalPointType;
     private String decimalDigits;
     private String thousandPointType;
-
-    private long enabledSectionsCount;
-    private long disabledSectionsCount;
 
     private String mailServer;
 
@@ -101,21 +76,6 @@ public class DashboardInfo {
         this.totalProducts = totalProducts;
     }
 
-    public long getTotalQuestions() {
-        return totalQuestions;
-    }
-
-    public void setTotalQuestions(long totalQuestions) {
-        this.totalQuestions = totalQuestions;
-    }
-
-    public long getTotalReviews() {
-        return totalReviews;
-    }
-
-    public void setTotalReviews(long totalReviews) {
-        this.totalReviews = totalReviews;
-    }
 
     public long getTotalCustomers() {
         return totalCustomers;
@@ -133,21 +93,6 @@ public class DashboardInfo {
         this.totalShippingRates = totalShippingRates;
     }
 
-    public long getTotalArticles() {
-        return totalArticles;
-    }
-
-    public void setTotalArticles(long totalArticles) {
-        this.totalArticles = totalArticles;
-    }
-
-    public long getTotalMenuItems() {
-        return totalMenuItems;
-    }
-
-    public void setTotalMenuItems(long totalMenuItems) {
-        this.totalMenuItems = totalMenuItems;
-    }
 
     public long getTotalOrders() {
         return totalOrders;
@@ -157,13 +102,7 @@ public class DashboardInfo {
         this.totalOrders = totalOrders;
     }
 
-    public long getTotalSections() {
-        return totalSections;
-    }
 
-    public void setTotalSections(long totalSections) {
-        this.totalSections = totalSections;
-    }
 
     public long getDisabledUsersCount() {
         return disabledUsersCount;
@@ -237,37 +176,6 @@ public class DashboardInfo {
         this.outOfStockProductsCount = outOfStockProductsCount;
     }
 
-    public long getApprovedQuestionsCount() {
-        return approvedQuestionsCount;
-    }
-
-    public void setApprovedQuestionsCount(long approvedQuestionsCount) {
-        this.approvedQuestionsCount = approvedQuestionsCount;
-    }
-
-    public long getUnapprovedQuestionsCount() {
-        return unapprovedQuestionsCount;
-    }
-
-    public void setUnapprovedQuestionsCount(long unapprovedQuestionsCount) {
-        this.unapprovedQuestionsCount = unapprovedQuestionsCount;
-    }
-
-    public long getAnsweredQuestionsCount() {
-        return answeredQuestionsCount;
-    }
-
-    public void setAnsweredQuestionsCount(long answeredQuestionsCount) {
-        this.answeredQuestionsCount = answeredQuestionsCount;
-    }
-
-    public long getUnansweredQuestionsCount() {
-        return unansweredQuestionsCount;
-    }
-
-    public void setUnansweredQuestionsCount(long unansweredQuestionsCount) {
-        this.unansweredQuestionsCount = unansweredQuestionsCount;
-    }
 
     public long getEnabledCustomersCount() {
         return enabledCustomersCount;
@@ -315,46 +223,6 @@ public class DashboardInfo {
 
     public void setProcessingOrdersCount(long processingOrdersCount) {
         this.processingOrdersCount = processingOrdersCount;
-    }
-
-    public long getMenuBoundArticlesCount() {
-        return menuBoundArticlesCount;
-    }
-
-    public void setMenuBoundArticlesCount(long menuBoundArticlesCount) {
-        this.menuBoundArticlesCount = menuBoundArticlesCount;
-    }
-
-    public long getFreeArticlesCount() {
-        return freeArticlesCount;
-    }
-
-    public void setFreeArticlesCount(long freeArticlesCount) {
-        this.freeArticlesCount = freeArticlesCount;
-    }
-
-    public long getHeaderMenuItemsCount() {
-        return headerMenuItemsCount;
-    }
-
-    public void setHeaderMenuItemsCount(long headerMenuItemsCount) {
-        this.headerMenuItemsCount = headerMenuItemsCount;
-    }
-
-    public long getFooterMenuItemsCount() {
-        return footerMenuItemsCount;
-    }
-
-    public void setFooterMenuItemsCount(long footerMenuItemsCount) {
-        this.footerMenuItemsCount = footerMenuItemsCount;
-    }
-
-    public long getReviewedProductsCount() {
-        return reviewedProductsCount;
-    }
-
-    public void setReviewedProductsCount(long reviewedProductsCount) {
-        this.reviewedProductsCount = reviewedProductsCount;
     }
 
     public long getTotalCountries() {
@@ -437,53 +305,6 @@ public class DashboardInfo {
         this.cancelledOrdersCount = cancelledOrdersCount;
     }
 
-    public long getPublishedArticlesCount() {
-        return publishedArticlesCount;
-    }
-
-    public void setPublishedArticlesCount(long publishedArticlesCount) {
-        this.publishedArticlesCount = publishedArticlesCount;
-    }
-
-    public long getUnpublishedArticlesCount() {
-        return unpublishedArticlesCount;
-    }
-
-    public void setUnpublishedArticlesCount(long unpublishedArticlesCount) {
-        this.unpublishedArticlesCount = unpublishedArticlesCount;
-    }
-
-    public long getEnabledMenuItemsCount() {
-        return enabledMenuItemsCount;
-    }
-
-    public void setEnabledMenuItemsCount(long enabledMenuItemsCount) {
-        this.enabledMenuItemsCount = enabledMenuItemsCount;
-    }
-
-    public long getDisabledMenuItemsCount() {
-        return disabledMenuItemsCount;
-    }
-
-    public void setDisabledMenuItemsCount(long disabledMenuItemsCount) {
-        this.disabledMenuItemsCount = disabledMenuItemsCount;
-    }
-
-    public long getEnabledSectionsCount() {
-        return enabledSectionsCount;
-    }
-
-    public void setEnabledSectionsCount(long enabledSectionsCount) {
-        this.enabledSectionsCount = enabledSectionsCount;
-    }
-
-    public long getDisabledSectionsCount() {
-        return disabledSectionsCount;
-    }
-
-    public void setDisabledSectionsCount(long disabledSectionsCount) {
-        this.disabledSectionsCount = disabledSectionsCount;
-    }
 
     public String getMailServer() {
         return mailServer;
