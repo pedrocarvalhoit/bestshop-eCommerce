@@ -59,4 +59,5 @@ Development and implementation of a comprehensive e-commerce platform utilizing 
 ### Key actors on the app
 ![keyActors2](https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/2e8ce1fc-a7ec-4be6-9577-55112e9f18b0)
 
+## Project Video
 
