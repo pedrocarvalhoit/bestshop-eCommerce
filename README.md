@@ -6,6 +6,8 @@
 
 - [Project Overview](#project-overview)
 
+- [Project Video](#project-video)
+
 - [Project Structure](#project-structure)
 
 - [Technical Requirements highlight](#technical-requirements-highlight)
@@ -27,6 +29,10 @@ Development and implementation of a comprehensive e-commerce platform utilizing 
 
 
 </p>
+
+## Project Video
+
+Clicke <a href="https://youtu.be/rWEMP8WUnhc">here</a> to watch the video with all project features.
 
 ## Technical Requirements highlight
 
@@ -59,5 +65,5 @@ Development and implementation of a comprehensive e-commerce platform utilizing 
 ### Key actors on the app
 ![keyActors2](https://github.com/pedrocarvalhoit/bestshop-eCommerce/assets/100386092/2e8ce1fc-a7ec-4be6-9577-55112e9f18b0)
 
-## Project Video
+
 
