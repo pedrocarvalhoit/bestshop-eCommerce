@@ -32,7 +32,7 @@ Development and implementation of a comprehensive e-commerce platform utilizing 
 
 ## Project Video
 
-Clicke <a href="https://youtu.be/rWEMP8WUnhc">here</a> to watch the video with all project features.
+Click <a href="https://youtu.be/rWEMP8WUnhc">here</a> to watch the video showcasing all project features.
 
 ## Technical Requirements highlight
 
